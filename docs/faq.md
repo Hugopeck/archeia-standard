@@ -51,13 +51,13 @@ Archeia Solo's `execution/` domain replaces the ticket-system-for-yourself use c
 
 ### ...a vector database / memory service (Pinecone, Weaviate, Mem0)?
 
-Vector DBs and memory services are the default answer to "give AI agents memory." They work. They're also dramatically over-engineered for the problem.
+Vector DBs and memory services are the default answer to "give AI agents memory." They work. Archeia's claim is narrower: they are usually the wrong *starting point* for durable project knowledge.
 
 Agents don't usually need semantic search over their memory — they need to find the exact canonical spec, the exact locked decision, the exact current task. Paths and frontmatter beat embeddings for this. The directory `.archeia/product/product.md` is always the product spec. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
 
 Vector databases also have no native concept of ownership, lifecycle shape, or cross-domain contracts — the things Archeia makes central. You end up building those on top.
 
-**When a vector DB is still right:** search over large unstructured corpora where you genuinely don't know where the answer is. For project-scoped knowledge with known structure, the filesystem wins.
+**When a vector DB is right:** search over large unstructured corpora, graph-style traversal across many loosely linked artifacts, or dynamic context serving when the agent doesn't know what to look for. In that setup, Archeia should remain the canonical source of truth and the retrieval layer should sit on top of it.
 
 ### ...RAG (retrieval-augmented generation)?
 

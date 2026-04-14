@@ -4,9 +4,11 @@
 
 Version: [`0.2.1`](VERSION) · License: MIT
 
-Archeia is a standard and a kernel for agentic development: a minimal, in-repo substrate for structured project memory that AI agents read, write, and coordinate through — without a server, a schema registry, or a message broker between them.
+Archeia is a standard and a kernel for agentic development: a minimal, in-repo substrate for structured project knowledge that AI agents read, write, and coordinate through — without a server, a schema registry, or a message broker between them.
 
 This repository contains the formal specification. The reference implementation — **Archeia Solo**, a distribution for solo builders shipping bootstrapped AI-first software — lives at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia).
+
+Archeia defines the durable source-of-truth layer for agent systems. If a distribution later needs vector search, graph traversal, or dynamic context management, those retrieval layers can sit on top of the Archeia tree without changing the canonical store underneath.
 
 ## Start here
 
