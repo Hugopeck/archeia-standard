@@ -2,7 +2,7 @@
 
 > **Claim:** the Archeia Kernel is the minimal substrate any conforming distribution extends. It defines the primitives, the invariants, the kernel operations, the inherent skills every distribution must provide, and the extension mechanism for adding new domains. It is deliberately small — small enough to read in one sitting, small enough to implement in a day, small enough to be non-negotiable.
 
-The kernel is what you're citing when you say "this tool supports the Archeia Standard." The distributions are what you're citing when you say "this repo uses Archeia Solo." The two are different layers, and this document specifies the lower one.
+The kernel is what you're citing when you say "this tool supports the Archeia Standard." The distributions are what you're citing when you say "this repo uses Archeia Solo." The two are different layers, and this document specifies the lower one: the canonical, human-readable source-of-truth layer.
 
 ---
 
@@ -92,7 +92,7 @@ A **writer** is anything that produces artifacts — agents, skills, scripts, hu
 
 Every conforming implementation MUST uphold these seven invariants. Violation of any one means the implementation is non-conforming.
 
-1. **Knowledge lives in the root.** Artifacts are stored in `.archeia/` under the project root. Not in a wiki, not in a URL, not behind auth. In the root, versioned with the code, visible in every clone.
+1. **Knowledge lives in the root.** Artifacts are stored in `.archeia/` under the project root. Not in a wiki, not in a URL, not behind auth. In the root, versioned with the code, visible in every clone, and canonical even when downstream tooling indexes it for retrieval.
 2. **Every artifact has exactly one owning domain.** No shared ownership, no multi-domain artifacts, no cross-domain writes.
 3. **Every artifact has exactly one lifecycle shape.** Living, accumulating, or transient — pick one and follow its rules.
 4. **Reads are free; writes are owner-only.** Any agent, skill, or human can read any artifact under `.archeia/`. Only the domain owner can write. Cross-domain coordination happens through reads of contract-conforming artifacts, not through cross-domain writes.

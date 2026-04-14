@@ -1,6 +1,6 @@
 # Archeia
 
-**Archeia is a standard and a kernel for agentic development: a minimal, in-repo substrate for structured project memory that AI agents read, write, and coordinate through — without a server, a schema registry, or a message broker between them.**
+**Archeia is a standard and a kernel for agentic development: a minimal, in-repo substrate for structured project knowledge that AI agents read, write, and coordinate through — without a server, a schema registry, or a message broker between them.**
 
 ## The problem
 
@@ -24,7 +24,7 @@ A single directory, `.archeia/`, at the root of your project. Five canonical dom
 
 Every artifact inside has a **temporal state** — past, present, or future — in its frontmatter. Every domain has exactly one writer family. Every file is markdown with YAML frontmatter, readable by humans in any editor and parseable by agents in any framework.
 
-That's the whole substrate. No server, no database, no API, no protocol layer. The filesystem is the database. Ownership is the concurrency model. YAML is the schema. Git is the audit log.
+That's the whole substrate. No server, no required external database, no API, no protocol layer. The filesystem is the canonical store. Ownership is the concurrency model. YAML is the schema. Git is the audit log.
 
 ## What makes it new
 
@@ -32,7 +32,7 @@ Six claims, each of them either novel or stated as a first-class principle for t
 
 1. **Context is the bottleneck, not intelligence.** Structure is the cheapest intelligence multiplier available.
 2. **Human-agent collaboration is the second bottleneck.** Without a shared surface where both humans and agents can work safely and recoverably, every collaboration collapses back into the chat window.
-3. **The filesystem is already the database AND the canvas.** Directories, paths, markdown, and git already solve agent memory and human-agent coordination simultaneously. You don't need a memory service, and you don't need a project board.
+3. **The filesystem is already the canonical store AND the canvas.** Directories, paths, markdown, and git already solve durable project knowledge and human-agent coordination simultaneously. You don't need a memory service to get started, and you don't need a project board.
 4. **Ownership plus delegation is the concurrency model.** Each domain has one owner. When the owner needs parallelism, it delegates to subagents that return results; the owner integrates and commits. No concurrent writes, no locks, no CRDTs, no merge algorithms — just disciplined ownership and the subagent primitive.
 5. **Project knowledge comes in three lifecycle shapes: living, accumulating, transient.** Most of `.archeia/` is living documents (one file per concept, edited in place, history in git). A smaller subset is accumulating records (ADRs, retros — append-only, never deleted). A minority is transient artifacts (tasks, drafts — flow through states with bounded retention, then pruned with git as the backstop). Each shape gets the minimum machinery it needs; nothing duplicates git.
 6. **Agents compose via files, not APIs.** The filesystem is the message bus; frontmatter is the schema. Any agent framework in any language can participate.
@@ -41,15 +41,17 @@ Claims #2 and #5 are the ones I haven't seen anywhere else. Every other in-repo 
 
 ## What it replaces
 
-Instead of a wiki + a ticket system + an ADR repo + a docs site + a memory service + a scattered set of specs spread across six tools, you have one canonical location in the repo where everything lives, versioned with the code, visible in every clone.
+Instead of a wiki + a ticket system + an ADR repo + a docs site + a memory silo + a scattered set of specs spread across six tools, you have one canonical location in the repo where everything lives, versioned with the code, visible in every clone.
 
 - Notion and Confluence are replaced by `.archeia/product/` and `.archeia/business/` for the parts agents need to read
 - Jira and Linear are replaced by `.archeia/execution/` for task and project state
 - ADR repos are replaced by `.archeia/product/decisions/`
 - Architecture doc tools are replaced by `.archeia/codebase/architecture/`
-- Agent memory services are replaced by the whole tree
+- Closed or tool-specific memory silos are replaced by the whole tree as the durable source of truth
 
 You keep the tools that serve humans only. You move the tools that should have been serving agents.
+
+If you later need vector search, graph traversal, or dynamic context management, layer that on top of the Archeia tree rather than replacing it. The tree stays canonical; retrieval engines are optional serving layers.
 
 ## The dual structure: Standard + Distribution
 
@@ -78,4 +80,4 @@ If you're building something else — a research pipeline, a game studio workflo
 - **Read the ontology:** [`ONTOLOGY.md`](ONTOLOGY.md) — canonical vocabulary and academic grounding
 - **Try Archeia Solo:** [the reference distribution](https://github.com/Hugopeck/archeia) — `bash install.sh` drops the skills into `~/.claude/skills/` and the agents into `~/.claude/agents/`
 
-Archeia is a way to give AI agents a shared memory and a way of working together. It's small enough to explain on one page and rigorous enough to implement as an open standard. The rest is skills, agents, and the discipline to write everything down where the agents can find it.
+Archeia is a way to give AI agents a shared source of truth and a way of working together. It's small enough to explain on one page and rigorous enough to implement as an open standard. The rest is skills, agents, and the discipline to write everything down where the agents can find it.

@@ -44,9 +44,9 @@ Every agentic project that grows past a solo experiment hits this wall. Most res
 
 ## 3. The filesystem is already the database and the canvas
 
-Truths #1 and #2 look like they require two separate systems: a memory service for agents and a collaboration surface for humans. The standard's claim is that **one substrate already does both, and you're installing infrastructure you don't need**.
+Truths #1 and #2 look like they require two separate systems: a durable knowledge substrate for agents and a collaboration surface for humans. The standard's claim is that **one substrate already does both, and you're installing infrastructure you don't need at the source-of-truth layer**.
 
-**For agent memory, the filesystem is already a database:**
+**For durable project knowledge, the filesystem is already a database:**
 
 - Directories are tables
 - Files are rows
@@ -65,11 +65,11 @@ Truths #1 and #2 look like they require two separate systems: a memory service f
 - Git provides **branches** (asynchronous work)
 - Git provides **diffs** (review surface)
 
-The same tree — plain markdown files under a known schema — serves both. Humans read it the way they already read code. Agents read it the way they already read code. The collaboration surface and the memory layer are the same files.
+The same tree — plain markdown files under a known schema — serves both. Humans read it the way they already read code. Agents read it the way they already read code. The collaboration surface and the durable knowledge layer are the same files.
 
-The only thing missing is a convention about *where things go and who writes them*. That's the standard's entire job. Once the convention is in place, you have both an agent database and a human-agent workspace with zero additional infrastructure, zero auth layer, zero latency, zero operational cost.
+The only thing missing is a convention about *where things go and who writes them*. That's the standard's entire job. Once the convention is in place, you have both an agent-readable source of truth and a human-agent workspace with zero additional infrastructure, zero auth layer, zero latency, zero operational cost.
 
-**Consequence:** do not install a memory service. Do not install a collaboration tool. Do not spin up a vector DB. Structure your filesystem, write down the convention, and let git do the rest.
+**Consequence:** do not start by installing a memory service. Do not install a collaboration tool to compensate for missing structure. Structure your filesystem, write down the convention, and let git do the rest. If you later need vector search, graph traversal, or dynamic context management, layer that on top of the tree rather than replacing the tree.
 
 ---
 
@@ -170,6 +170,6 @@ Each principle is useful alone. Together they compound:
 - **Truth #6** names the composition model: files as the message bus (stigmergy).
 - **Truth #7** names the computational allocation rule: latent vs deterministic work belongs in different places.
 
-Remove any one and the others break. Without naming both bottlenecks, there's no reason to adopt the substrate. Without the substrate, you end up building a memory service *and* a project board and gluing them together. Without ownership + delegation, you need a distributed coordination protocol. Without the three shapes, you either bloat the filesystem forever or delete artifacts that future work needs to reference — wiki rot eats you either way. Without file-based composition, you're back to framework lock-in and adapter code between every pair of agents. Without the latent/deterministic split, you burn LLM budget on work that belongs in compiled code, and the system hallucinates instead of shipping.
+Remove any one and the others break. Without naming both bottlenecks, there's no reason to adopt the substrate. Without the substrate, you end up building a retrieval layer *and* a project board and gluing them together with no canonical source of truth underneath. Without ownership + delegation, you need a distributed coordination protocol. Without the three shapes, you either bloat the filesystem forever or delete artifacts that future work needs to reference — wiki rot eats you either way. Without file-based composition, you're back to framework lock-in and adapter code between every pair of agents. Without the latent/deterministic split, you burn LLM budget on work that belongs in compiled code, and the system hallucinates instead of shipping.
 
 The standard is what you get when you follow all seven at the same time and let them collide. What falls out is Archeia.
