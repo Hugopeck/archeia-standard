@@ -1,5 +1,16 @@
 # The Archeia Kernel
 
+| | |
+|---|---|
+| **Status** | Draft, pre-1.0 |
+| **Version** | See [`VERSION`](VERSION) |
+| **Conformance** | See [`CONFORMANCE.md`](CONFORMANCE.md) |
+| **Reference algorithms** | See [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md) |
+| **Test matrix** | See [`TEST-MATRIX.md`](TEST-MATRIX.md) |
+| **Positioning vs. SOTA** | See [`POSITIONING.md`](POSITIONING.md) |
+| **Normative language** | The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). |
+| **License** | MIT |
+
 > **Claim:** the Archeia Kernel is the minimal substrate any conforming distribution extends. It defines the primitives, the invariants, the kernel operations, the inherent skills every distribution must provide, and the extension mechanism for adding new domains. It is deliberately small — small enough to read in one sitting, small enough to implement in a day, small enough to be non-negotiable.
 
 The kernel is what you're citing when you say "this tool supports the Archeia Standard." The distributions are what you're citing when you say "this repo uses Archeia Solo." The two are different layers, and this document specifies the lower one: the canonical, human-readable source-of-truth layer.
@@ -27,6 +38,7 @@ The kernel does **not** define:
 - Which VCS provides history (git is the reference implementation; any versioned storage works)
 - Which approval workflow governs state transitions (policy, not spec)
 - Which audience reads the artifacts (humans, agents, both — all permitted)
+- **Where prose documentation lives.** `.archeia/` is for operational state and contract artifacts. Prose documentation that humans read — architecture explanations, contributor guides, design narratives — belongs in the project's conventional `docs/` tree, not under `.archeia/`. Distributions MAY designate colocated files in `docs/` as owned by an Archeia domain (see `SCHEMA.md` §5), but those files are not part of the kernel's contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the rationale.
 
 The [canonical software-project application of the kernel](SCHEMA.md) commits to five specific domains (`business/`, `product/`, `codebase/`, `growth/`, `execution/`) for software projects, but that commitment lives in `SCHEMA.md`, not here. The kernel itself is domain-agnostic above the minimum.
 
@@ -92,13 +104,13 @@ A **writer** is anything that produces artifacts — agents, skills, scripts, hu
 
 Every conforming implementation MUST uphold these seven invariants. Violation of any one means the implementation is non-conforming.
 
-1. **Knowledge lives in the root.** Artifacts are stored in `.archeia/` under the project root. Not in a wiki, not in a URL, not behind auth. In the root, versioned with the code, visible in every clone, and canonical even when downstream tooling indexes it for retrieval.
-2. **Every artifact has exactly one owning domain.** No shared ownership, no multi-domain artifacts, no cross-domain writes.
-3. **Every artifact has exactly one lifecycle shape.** Living, accumulating, or transient — pick one and follow its rules.
-4. **Reads are free; writes are owner-only.** Any agent, skill, or human can read any artifact under `.archeia/`. Only the domain owner can write. Cross-domain coordination happens through reads of contract-conforming artifacts, not through cross-domain writes.
-5. **Every factual claim cites a source.** Descriptive artifacts (scan reports, architecture docs derived from code, git history analyses) must cite the file paths or commits their claims come from. Prescriptive artifacts (vision, strategy, decisions) must cite their rationale and the prior artifacts they build on.
-6. **Cross-domain dependencies are declared contracts, not inferred.** If domain B reads from domain A, there must be a JSON Schema under `standard/contracts/` describing the exact frontmatter and structure B relies on.
-7. **History is preserved.** Living documents preserve history in git. Accumulating records preserve history on disk forever. Transient artifacts preserve history in git after pruning. No history is destroyed.
+1. **Knowledge MUST live in the root.** Artifacts MUST be stored in `.archeia/` under the project root. They MUST NOT be stored in a wiki, behind a URL, or behind auth as the canonical copy. Downstream tooling MAY index `.archeia/` for retrieval, but the root tree is the source of truth.
+2. **Every artifact MUST belong to exactly one owning domain.** No shared ownership, no multi-domain artifacts, no cross-domain writes.
+3. **Every artifact MUST have exactly one lifecycle shape** — living, accumulating, or transient. The artifact's shape determines which rules apply to it; an artifact MUST NOT switch shapes during its lifetime.
+4. **Reads MUST be free; writes MUST be owner-only.** Any agent, skill, or human MAY read any artifact under `.archeia/`. Only the declared domain owner MAY write. Cross-domain coordination MUST happen through reads of contract-conforming artifacts, not through cross-domain writes.
+5. **Every factual claim MUST cite a source.** Descriptive artifacts (scan reports, architecture docs derived from code, git history analyses) MUST cite the file paths or commits their claims come from. Prescriptive artifacts (vision, strategy, decisions) MUST cite their rationale and the prior artifacts they build on. Claims that cannot be evidenced MUST be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->` rather than fabricated.
+6. **Cross-domain dependencies MUST be declared contracts, not inferred.** If domain B reads from domain A, there MUST be a JSON Schema under `standard/contracts/` describing the exact frontmatter and structure B relies on. Implementations MUST NOT infer cross-domain dependencies that are not declared.
+7. **History MUST be preserved.** Living documents MUST preserve history in git. Accumulating records MUST preserve history on disk forever. Transient artifacts MUST preserve history in git after pruning. No history MAY be destroyed.
 
 ---
 
@@ -108,10 +120,10 @@ See `[TEMPORAL_MODEL.md](TEMPORAL_MODEL.md)` for the full specification. This se
 
 A conforming implementation MUST:
 
-- **Recognize all three shapes.** Every artifact type in every domain is assigned a shape.
-- **Apply the shape's rules.** Living documents are edited in place. Accumulating records are append-only with the single permitted frontmatter mutation rule. Transient artifacts flow through status values and are pruned after retention.
-- **Store history according to the shape.** Living → git. Accumulating → on-disk forever. Transient → on-disk during retention, git after.
-- **Map status to temporal state for transient artifacts.** The distribution defines the mapping; the kernel requires one to exist.
+- **Recognize all three shapes.** Every artifact type in every domain MUST be assigned exactly one shape.
+- **Apply the shape's rules.** Living documents MUST be edited in place. Accumulating records MUST be append-only and MUST permit only the single frontmatter mutation rule defined for supersession. Transient artifacts MUST flow through status values and MUST be pruned after retention.
+- **Store history according to the shape.** Living artifacts: history MUST be in git. Accumulating: history MUST be on-disk forever. Transient: history MUST be on-disk during retention and in git after pruning.
+- **Map status to temporal state for transient artifacts.** The distribution defines the mapping; the kernel REQUIRES one to exist.
 
 ---
 
@@ -121,11 +133,13 @@ Every conforming distribution MUST provide these six operations, either as skill
 
 Per [Truth #7 of PRINCIPLES.md](PRINCIPLES.md#7-latent-and-deterministic-work-belong-in-different-places), each operation is tagged as **latent** (judgment / synthesis, done by the model) or **deterministic** (mechanical, done by compiled code). Only `consolidate` is latent; the others are deterministic and should not burn LLM tokens.
 
+> **The five deterministic operations are CRUD with shape-specific preconditions.** `advance` and `complete` are Updates that mutate frontmatter status under preconditions on the current status. `prune` is a Delete with a precondition on the retention window. `supersede` is a Create-plus-Update with a precondition on the target shape. `evolve` is a Read with shape-specific traversal. They are named for pedagogical and validation clarity — "advance a task" is teachable, "update a transient artifact's status from a `future`-mapped value to a `present`-mapped value while recording a started timestamp" is the same thing in ten times the words. The named operations survive as the teachable surface; CRUD is the implementation reality. See [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md) for the CRUD mapping in pseudocode. `consolidate` is the only operation that is not CRUD — it is the kernel's only latent operation.
+
 ### 5.1 `advance` — deterministic
 
 **Applies to:** transient artifacts only.
 
-**Effect:** promote an artifact from a status value that maps to `future` to one that maps to `present`. Record a `started` timestamp (or distribution-specific equivalent) in frontmatter.
+**Effect:** the implementation MUST promote an artifact from a status value that maps to `future` to one that maps to `present`. The implementation MUST record a `started` timestamp (or distribution-specific equivalent) in frontmatter. The operation MUST refuse if the precondition fails.
 
 **Example:** a task with `status: todo` (future) → `status: active` (present), `started: <now>`.
 
@@ -133,7 +147,7 @@ Per [Truth #7 of PRINCIPLES.md](PRINCIPLES.md#7-latent-and-deterministic-work-be
 
 **Applies to:** transient artifacts only.
 
-**Effect:** promote an artifact from a status value that maps to `present` to one that maps to `past`. Record a terminal timestamp in frontmatter (e.g., `completed`, `cancelled_at`, `concluded`). This timestamp starts the retention clock.
+**Effect:** the implementation MUST promote an artifact from a status value that maps to `present` to one that maps to `past`. The implementation MUST record a terminal timestamp in frontmatter (e.g., `completed`, `cancelled_at`, `concluded`). This timestamp starts the retention clock. The operation MUST refuse if the precondition fails.
 
 **Example:** a task with `status: active` → `status: done`, `completed: <now>`.
 
@@ -141,7 +155,7 @@ Per [Truth #7 of PRINCIPLES.md](PRINCIPLES.md#7-latent-and-deterministic-work-be
 
 **Applies to:** transient artifacts only.
 
-**Effect:** delete an artifact from disk whose retention window (distribution-defined, per artifact type) has elapsed since its terminal timestamp. The deletion is a git commit so the file is preserved in history.
+**Effect:** the implementation MUST delete an artifact from disk whose retention window (distribution-defined, per artifact type) has elapsed since its terminal timestamp. The deletion MUST be a git commit so the file is preserved in history. The implementation MUST NOT delete artifacts whose retention window has not elapsed.
 
 **Example:** a task with `status: done`, `completed: 2026-03-29T16:45:00Z` and a 14-day retention window is pruned on or after 2026-04-12.
 
@@ -149,7 +163,7 @@ Per [Truth #7 of PRINCIPLES.md](PRINCIPLES.md#7-latent-and-deterministic-work-be
 
 **Applies to:** accumulating records only.
 
-**Effect:** replace one record with a newer one. Write the new record with frontmatter `supersedes: <old-path>`. Perform the single permitted frontmatter mutation on the old record: update its `status` from `active` to `superseded` and add `superseded_by: <new-path>`. Both records remain on disk forever.
+**Effect:** the implementation MUST write a new record with frontmatter `supersedes: <old-path>`. It MUST perform the single permitted frontmatter mutation on the old record: update its `status` from `active` to `superseded` and add `superseded_by: <new-path>`. Both records MUST remain on disk forever. The Create-and-Update sequence MUST be transactional — a half-supersession is non-conforming.
 
 **Example:** ADR `20260115-row-level-security.md` is superseded by `20260801-schema-per-tenant.md`. Both files stay on disk; the old one has `status: superseded`.
 
@@ -157,13 +171,13 @@ Per [Truth #7 of PRINCIPLES.md](PRINCIPLES.md#7-latent-and-deterministic-work-be
 
 **Applies to:** all shapes, with different semantics per shape.
 
-**Effect:** return the history of a named concept.
+**Effect:** the implementation MUST return the history of a named concept, dispatching by shape:
 
 - **Living:** `git log <path>` — walk commit history.
 - **Accumulating:** walk the `supersedes:` / `superseded_by:` chain on disk.
 - **Transient:** walk recent past-state artifacts on disk (during retention) and fall back to `git log` for older history.
 
-The operation's return type is distribution-defined (a structured list, a timeline, a diff view) but the contract is consistent: "show me how this thing changed over time."
+The operation's return type is distribution-defined (a structured list, a timeline, a diff view) but the contract MUST be consistent: "show me how this thing changed over time."
 
 ### 5.6 `consolidate` — latent
 
@@ -176,11 +190,11 @@ The operation's return type is distribution-defined (a structured list, a timeli
 **Contract:**
 
 1. **Inputs**: a set of source artifacts (paths, git refs, external data sources) and a target artifact path.
-2. **Target shape constraint**: the target MUST be a living document or an accumulating record. Transient artifacts are not valid consolidation targets.
-3. **Evidence rule**: every substantive claim in the target MUST cite at least one source from the inputs. Claims that cannot be evidenced must be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->` rather than fabricated.
-4. **Idempotence**: semantically idempotent. Two runs of the same consolidation over the same inputs must produce semantically equivalent outputs; the exact prose may differ because the operation is latent, but the set of claims and citations must be the same up to paraphrase.
+2. **Target shape constraint**: the target MUST be a living document or an accumulating record. Transient artifacts MUST NOT be consolidation targets.
+3. **Evidence rule**: every substantive claim in the target MUST cite at least one source from the inputs. Claims that cannot be evidenced MUST be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->` rather than fabricated.
+4. **Idempotence**: the operation MUST be semantically idempotent. Two runs of the same consolidation over the same inputs MUST produce semantically equivalent outputs; the exact prose MAY differ because the operation is latent, but the set of claims and citations MUST be the same up to paraphrase.
 5. **Bi-temporal metadata**: when consolidating into a living document, the operation MUST update the target's `last_verified` frontmatter field to the current timestamp. This gives readers a staleness signal: a living document whose `last_verified` is months old is less trustworthy than one verified today.
-6. **Latent budget warning**: consolidation is the only kernel operation that burns LLM tokens. Distributions should track consolidation frequency and cost, and skill authors should keep consolidation scopes narrow — large consolidations produce worse output and cost more.
+6. **Latent budget warning**: consolidation is the only kernel operation that burns LLM tokens. Distributions SHOULD track consolidation frequency and cost, and skill authors SHOULD keep consolidation scopes narrow — large consolidations produce worse output and cost more.
 
 **Examples:**
 
@@ -389,20 +403,22 @@ How a skill gets invoked — automatic description-matching, explicit slash comm
 
 ## 11. Validation: what makes a repo conforming
 
-A repo is **kernel-conforming** if `archeia:validate` passes with no errors against it. Validation checks:
+A repo is **kernel-conforming** if `archeia:validate` passes with no errors against it. A conforming validator MUST check:
 
-1. `.archeia/` exists at the project root
-2. `standard/domains.yaml` exists and declares at least one domain
-3. `standard/VERSION` exists and is a valid semver string
-4. Every artifact under `.archeia/` belongs to a declared domain
-5. Every artifact has a declared shape and conforms to that shape's base schema
-6. Every artifact conforms to any applicable artifact-type schema
-7. Every cross-domain read is backed by a contract schema and the referenced artifacts satisfy it
-8. Every transient artifact has a valid status per the domain's status vocabulary
-9. Every transient artifact in a terminal status has a terminal timestamp
-10. Ownership is respected: inspect git history for writes to each domain and confirm they come from the declared owner (this check is advisory — git blame doesn't always identify writer families)
+1. `.archeia/` MUST exist at the project root.
+2. `standard/domains.yaml` MUST exist and MUST declare at least one domain.
+3. `standard/VERSION` MUST exist and MUST be a valid semver string.
+4. Every artifact under `.archeia/` MUST belong to a declared domain.
+5. Every artifact MUST have a declared shape and MUST conform to that shape's base schema.
+6. Every artifact MUST conform to any applicable artifact-type schema.
+7. Every cross-domain read MUST be backed by a contract schema and the referenced artifacts MUST satisfy it.
+8. Every transient artifact MUST have a valid status per the domain's status vocabulary.
+9. Every transient artifact in a terminal status MUST have a terminal timestamp.
+10. The validator SHOULD inspect git history for writes to each domain and SHOULD confirm they come from the declared owner. This check is advisory — git blame does not always identify writer families.
 
-A repo is **distribution-conforming** if it's kernel-conforming AND it satisfies the additional rules of its declared distribution (specific domain layout, specific skill roster, specific retention windows, etc.). The [canonical software distribution](SCHEMA.md) and [Archeia Solo](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md) both add such rules.
+The validator SHOULD report failures with file-path citations so that a conforming repair tool can act on them. See [`CONFORMANCE.md`](CONFORMANCE.md) for the audit checklist and [`TEST-MATRIX.md`](TEST-MATRIX.md) for the concrete tests.
+
+A repo is **distribution-conforming** if it is kernel-conforming AND it satisfies the additional rules of its declared distribution (specific domain layout, specific skill roster, specific retention windows, etc.). The [canonical software distribution](SCHEMA.md) and [Archeia Solo](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md) both add such rules.
 
 ---
 

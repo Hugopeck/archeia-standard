@@ -6,6 +6,8 @@ If any of the seven turn out to be wrong, Archeia is wrong. They are load-bearin
 
 Each principle is cross-referenced to its canonical academic source in [`ONTOLOGY.md`](ONTOLOGY.md), which documents the full citations.
 
+> **A note on normative language.** This document is mostly argument. Where a "Consequence" line states a normative requirement on a conforming implementation, it uses the RFC 2119 keywords **MUST**, **SHOULD**, **MAY**. Where it states a *capability* or a descriptive observation about the standard ("you can…", "this means that…"), it does not. The kernel's binding requirements live in [`KERNEL.md`](KERNEL.md) and [`CONFORMANCE.md`](CONFORMANCE.md); this document explains *why* those requirements take the shape they do.
+
 ---
 
 ## 1. Context is the bottleneck, not intelligence
@@ -148,9 +150,9 @@ This principle has two practical consequences for Archeia. First, **every kernel
 | `evolve` | Deterministic | Git log / on-disk graph traversal |
 | `consolidate` | Latent | Read multiple sources, produce structured synthesis with cited evidence |
 
-Only `consolidate` is latent. The other five are mechanical and should not burn LLM tokens. A distribution that implements them as model calls is wasting budget.
+Only `consolidate` is latent. The other five are mechanical and MUST NOT burn LLM tokens. A distribution that implements them as model calls is non-conforming with the kernel's deterministic-operation contract — and is wasting budget.
 
-Second, distributions must declare which of their custom artifacts and operations are latent and which are deterministic. A skill that "validates" schema conformance by asking the model is doing the wrong work — use a JSON Schema validator. A skill that "reviews" a draft is doing the right work — use the model. Getting this boundary right is the difference between an agent system that ships and one that hallucinates.
+Second, distributions MUST declare which of their custom artifacts and operations are latent and which are deterministic. A skill that "validates" schema conformance by asking the model is doing the wrong work — it MUST use a JSON Schema validator. A skill that "reviews" a draft is doing the right work — it SHOULD use the model. Getting this boundary right is the difference between an agent system that ships and one that hallucinates.
 
 **Consequence:** when designing any part of a distribution, ask "is this judgment or is this computation?" If it is computation, write code. If it is judgment, write a skill. The cheapest LLM budget is the budget you never spent because a validator handled the work.
 
