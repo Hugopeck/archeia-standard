@@ -53,7 +53,9 @@ Archeia Solo's `execution/` domain replaces the ticket-system-for-yourself use c
 
 Vector DBs and memory services are the default answer to "give AI agents memory." They work. Archeia's claim is narrower: they are usually the wrong *starting point* for durable project knowledge.
 
-Agents don't usually need semantic search over their memory — they need to find the exact canonical spec, the exact locked decision, the exact current task. Paths and frontmatter beat embeddings for this. The directory `.archeia/product/product.md` is always the product spec. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
+Agents don't usually need semantic search over their memory — they need to find the exact canonical product index, roadmap, feature spec, decision, or current task. Paths and frontmatter beat embeddings for this. The product entry point is always `.archeia/product/product.md`; executable feature specs live under `.archeia/product/features/`. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
+
+If the product truth depends on an external tool, the local artifact cites that tool through `external_sources` and records how recently it was read. The external tool remains a working surface; `.archeia/product/` remains the durable contract agents plan from.
 
 Vector databases also have no native concept of ownership, lifecycle shape, or cross-domain contracts — the things Archeia makes central. You end up building those on top.
 

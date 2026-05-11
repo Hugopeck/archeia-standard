@@ -90,8 +90,8 @@ A **contract** is a declared read relationship between two domains. For example:
 
 The three contracts the [canonical software application](SCHEMA.md) enforces:
 
-- `business/drafts/*.md` → `product/product.md` (via `draft.schema.json`)
-- `product/product.md` → `execution/tasks/*.md` (via `product.schema.json`)
+- `business/drafts/*.md` → `product/{product.md,roadmap.md,requirements/*.md,features/*.md,decisions/*.md}` (via `draft.schema.json`)
+- `product/{product.md,roadmap.md,features/*.md}` → `execution/{projects/*.md,tasks/*.md}` (via `product.schema.json`)
 - `codebase/architecture/*.json` → `product/decisions/*.md` (via `c4.schema.json`)
 
 ### 2.8 Writer / Reader
@@ -200,7 +200,7 @@ The operation's return type is distribution-defined (a structured list, a timeli
 
 - `archeia:write-tech-docs` reads source files, config, and git history, updates `.archeia/codebase/architecture/*.json`, and MAY render a human-facing view such as `docs/architecture.md`. Every architectural claim cites at least one source file path.
 - `archeia:scan-git` reads git history and MAY consolidate it into a human-facing view such as `docs/git-report.md`. Every claim about contributors or churn cites the git log.
-- `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/architecture/` and consolidates them into updates to `.archeia/product/product.md` plus a new entry in `.archeia/product/decisions/`.
+- `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/architecture/` and consolidates them into updates to `.archeia/product/product.md`, `.archeia/product/roadmap.md`, `.archeia/product/features/*.md`, or a new entry in `.archeia/product/decisions/`.
 - `archeia:clarify-idea` reads the operator's rough idea, prior drafts, and optionally landscape research, and consolidates them into a new business draft.
 
 Most of what Archeia skills actually do is consolidation. Naming the operation explicitly makes it possible to specify its contract, measure its cost, and audit its evidence discipline.
@@ -329,7 +329,7 @@ The harness owns **compaction** — the moment when the context window fills up 
 
 > **Writes to `.archeia/` MUST be flushed to disk before compaction may discard them from in-context state.**
 
-If a harness compacts away a pending write to `.archeia/product/product.md`, that's a harness bug, not an Archeia problem. The filesystem is the durable store; the harness's working memory is ephemeral by design. Compaction policy and persistence guarantees are separate concerns, and the kernel draws this line explicitly so that harness authors know where their responsibility ends and Archeia's begins.
+If a harness compacts away a pending write to `.archeia/product/features/team-invites.md`, that's a harness bug, not an Archeia problem. The filesystem is the durable store; the harness's working memory is ephemeral by design. Compaction policy and persistence guarantees are separate concerns, and the kernel draws this line explicitly so that harness authors know where their responsibility ends and Archeia's begins.
 
 ### What must survive compaction
 
@@ -386,6 +386,8 @@ reads:
   - .archeia/codebase/architecture/
 writes:
   - .archeia/product/product.md
+  - .archeia/product/roadmap.md
+  - .archeia/product/features/
   - .archeia/product/decisions/
 operation: consolidate
 ---

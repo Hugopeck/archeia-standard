@@ -131,7 +131,8 @@ A repo claiming to use the canonical software application from [`SCHEMA.md`](SCH
 - [ ] Exactly the five canonical domains exist under `.archeia/`: `business/`, `product/`, `codebase/`, `growth/`, `execution/`.
 - [ ] No domain directory outside the canonical five exists under `.archeia/`.
 - [ ] `.archeia/codebase/` is the canonical AI-maintained repo-intelligence surface and contains only the C4 JSON contract artifacts listed in [`SCHEMA.md`](SCHEMA.md) §2.3 — no prose docs.
-- [ ] All three cross-domain contracts are enforced: `business → product` (via `draft.schema.json`), `product → execution` (via `product.schema.json`), `codebase → product/decisions` (via `c4.schema.json`).
+- [ ] All three cross-domain contracts are enforced: `business → product` (via `draft.schema.json`), `product → execution` (via `product.schema.json` over `product/product.md`, `product/roadmap.md`, and `product/features/*.md`), `codebase → product/decisions` (via `c4.schema.json`).
+- [ ] Product artifacts that depend on external product sources cite those sources with extraction/freshness metadata; external tools are treated as evidence or working surfaces, not as replacements for local `.archeia/product/` contracts.
 - [ ] Codebase-owned colocated files in `docs/` (per [`SCHEMA.md`](SCHEMA.md) §5) follow the same ownership rules when explicitly designated; generated views are marked as generated or policy-controlled; their absence is not a conformance failure.
 
 ---

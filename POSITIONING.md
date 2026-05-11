@@ -29,7 +29,7 @@ The kernel was already designed in line with the synthesis doc's twelve principl
 | **P4** — Verification must approach perfection | Six JSON Schemas under `contracts/` plus the `archeia:validate` operation. Conformance is checkable, not vibes. (This is the load-bearing contribution `TEST-MATRIX.md` formalizes.) |
 | **P5** — Mechanical guardrails beat polite instructions | The schemas + `archeia:validate` + the `archeia-enforcement` distribution flavor turn Archeia rules into CI checks, not prose. |
 | **P6** — Context is curated, not stuffed | The five-domain layout *is* the curation policy. An agent doing product work reads `product/`; it does not need to sift through the whole tree. |
-| **P7** — Plan before doing | The `business → product → execution` contract chain forces planning to precede execution, mechanically. |
+| **P7** — Plan before doing | The `business → product → execution` contract chain forces planning to precede execution, mechanically: business drafts advance into product truth, and execution reads roadmap plus feature specs before creating work. |
 | **P8** — Long sessions degrade — design for shifts, not marathons | Living documents survive sessions; accumulating records survive forever; transient artifacts have explicit retention windows. The shift change is the model. |
 
 These principles are not Archeia's contribution. They are the shared ground.

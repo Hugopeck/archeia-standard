@@ -65,9 +65,10 @@ For the **canonical software application** specifically:
 | ID | Check | How |
 |---|---|---|
 | C4 | `business/drafts/*.md` validate against `draft.schema.json`. | JSON Schema validate |
-| C5 | `product/product.md` validates against `product.schema.json` (must contain Features, Constraints, Priorities sections; status: locked; locked_at timestamp). | JSON Schema + body parse |
+| C5 | The product execution surface validates against `product.schema.json`: `product/product.md` has Product Summary, Active Scope, Feature Index, Constraints, Priority Model; `product/roadmap.md` has Now, Next, Later; `product/features/*.md` have executable feature specs with stable feature IDs and acceptance criteria. | JSON Schema + body parse |
 | C6 | Every `codebase/architecture/*.json` validates against `c4.schema.json`. | JSON Schema validate |
 | C7 | Every C4 element has at least one `evidence` file path that exists in the source tree. | path check |
+| C8 | Product artifacts with `external_sources` include `type`, `name`, `extraction_method`, `last_read`, and `source_status`; stale, unreachable, or insufficient sources are reported as warnings unless the artifact is required for active execution. | frontmatter parse + status check |
 
 ---
 

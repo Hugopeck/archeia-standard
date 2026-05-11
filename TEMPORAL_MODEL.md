@@ -30,14 +30,14 @@ A living document is a single file that represents one concept. It is edited in 
 
 ### Examples by domain
 
-- **`product/`** — `product.md`, files under `design/`
+- **`product/`** — `product.md`, `roadmap.md`, files under `features/`, `requirements/`, and `design/`
 - **`codebase/`** — `architecture/system.json`, `architecture/containers.json`, `architecture/components.json`, `architecture/dataflow.json`, `architecture/entities.json`, `architecture/statemachine.json`
 - **`business/`** — `vision/vision.md`, `strategy/strategy.md`
 - **`growth/`** — `metrics/current.md` and any ongoing dashboard-style summaries
 
 ### Rules
 
-1. **One file per concept.** There is one `product.md`, one `architecture.md`, one `vision.md`. Never `product-v1.md`, `product-v2.md`, `product-current.md`. The concept has a canonical path and that path is stable forever.
+1. **One file per concept.** There is one `product.md`, one `roadmap.md`, one `vision.md`, and one canonical file per feature. Never `product-v1.md`, `product-v2.md`, `product-current.md`. The concept has a canonical path and that path is stable forever.
 2. **Edit in place.** Updates are commits to the same file. No renames, no suffix games, no supersession chains.
 3. **No `temporal_state` field.** Living documents are implicitly "always present." Frontmatter can have whatever a distribution needs (`title`, `updated_at`, `owner`), but temporal state is not a meaningful question for them.
 4. **No supersession.** There is nothing to supersede — there's only the current version and git history.
@@ -57,7 +57,7 @@ That's the whole frontmatter. No `status`, no `temporal_state`, no supersession 
 
 ### Why this is right
 
-Nobody versions a product spec as separate files. You edit the spec. You commit. You edit again. That's how humans already work on docs, and trying to impose past/present/future state on top of that is fighting the tool (git) that already solved the problem.
+Nobody versions the current roadmap or a feature spec as separate files. You edit the file. You commit. You edit again. That's how humans already work on docs, and trying to impose past/present/future state on top of that is fighting the tool (git) that already solved the problem.
 
 The living-document shape captures the majority of `.archeia/` because most project knowledge is this: the current state of a thing, evolved over time, with history preserved by the version control system you're already using.
 
@@ -133,7 +133,7 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 
 - **`execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
 - **`execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
-- **`business/drafts/`** — draft proposals. Either advance into a living document (draft becomes part of `vision.md` or `product.md` and the draft is deleted) or are discarded outright (retention window 0 — pruned on rejection).
+- **`business/drafts/`** — draft proposals. Either advance into a living document (draft becomes part of `vision.md`, `product.md`, `roadmap.md`, a requirement, or a feature spec and the draft is deleted) or are discarded outright (retention window 0 — pruned on rejection).
 - **`growth/experiments/` (running only)** — an experiment's running state is transient. Once it concludes, it either gets promoted to an accumulating record (shape 2) with its outcome, or — if no learning is worth keeping — it's pruned entirely.
 
 ### Rules
@@ -214,7 +214,7 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
 | **`business/`** | `vision/vision.md`, `strategy/strategy.md` | `landscape/*.md` | `drafts/*.md` |
-| **`product/`** | `product.md`, `design/*.md` | `decisions/*.md` | (none) |
+| **`product/`** | `product.md`, `roadmap.md`, `features/*.md`, `requirements/*.md`, `design/*.md` | `feedback/*.md`, `decisions/*.md` | (none) |
 | **`codebase/`** | `architecture/*.json` | (none in the canonical layout) | (none) |
 | **`growth/`** | `metrics/current.md` | `experiments/*.md` (concluded, with learnings), `channels/*.md` (retired) | `experiments/*.md` (running), `channels/*.md` (active) |
 | **`execution/`** | (none — execution is all action, no living summary doc) | `retros/*.md` | `tasks/*.md`, `plans/*.md`, `projects/*.md` |
@@ -222,7 +222,7 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 A few observations that fall out:
 
 - **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are one-file-per-concept JSON contracts, edited in place, history in git. Human-facing docs derived from them live in `docs/` as views or curated documentation.
-- **`product/` has no transient state at all.** Product spec evolves (living), decisions accumulate (ADRs), and that's it. Drafts proposing product changes live in `business/drafts/`, not `product/`.
+- **`product/` has no transient state at all.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Rough opportunities live in `business/drafts/`; accepted product work becomes living product truth or an accumulating decision.
 - **`execution/` is the only domain with heavy transient presence.** Tasks, plans, projects — these are the things that flow.
 - **`growth/` has all three shapes.** Current metrics are living, channel and experiment records are accumulating, running experiments are transient.
 
@@ -299,29 +299,33 @@ pr: https://github.com/Hugopeck/archeia/pull/42
 # git preserves the full history forever.
 ```
 
-### A product spec (shape 1)
+### A product feature spec (shape 1)
 
 ```markdown
 # 2026-01-15: First version
 ---
-title: Product Spec
+title: Team Invites
+feature_id: FEAT-team-invites
+status: planned
 updated_at: 2026-01-15T09:00:00Z
 ---
 
-# Product Spec
-...initial features, constraints, priorities...
+# Team Invites
+...user problem, acceptance criteria, dependencies, evidence...
 
 # 2026-04-12: Spec has grown
 ---
-title: Product Spec
+title: Team Invites
+feature_id: FEAT-team-invites
+status: active
 updated_at: 2026-04-12T17:00:00Z
 ---
 
-# Product Spec
-...new features added, some edited, priorities reshuffled...
+# Team Invites
+...acceptance criteria refined, dependencies updated, evidence linked...
 ```
 
-Same file. Same path. Edited in place. `git log product.md` shows every version. No superseded files cluttering the directory. The spec is a living document and the living document shape gets out of git's way.
+Same file. Same path. Edited in place. `git log product/features/team-invites.md` shows every version. No superseded files cluttering the directory. The feature spec is a living document and the living document shape gets out of git's way.
 
 ### An ADR (shape 2)
 

@@ -96,8 +96,8 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 | Tulving / Squire / Baddeley term | Archeia artifact shape | Examples |
 |---|---|---|
 | **Working memory** (Baddeley 1974) | (not in `.archeia/`; lives in the harness context window) | active session, current context window |
-| **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `codebase/architecture/*`, `business/vision/vision.md` |
-| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/*.md` |
+| **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/architecture/*`, `business/vision/vision.md` |
+| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/*.md` |
 | **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:consolidate`, `archeia:clarify-idea` |
 | **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, `business/drafts/*.md` |
 
@@ -305,7 +305,7 @@ These four are the canonical framing of what a memory system must do to be usefu
 - Writes artifacts back to `.archeia/` according to the ownership rules in [`SCHEMA.md`](SCHEMA.md)
 - Guarantees that writes are flushed to disk before compaction may discard in-context state
 
-The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/product.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
+The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/features/team-invites.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
 
 ---
 
