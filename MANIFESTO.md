@@ -18,11 +18,11 @@ A single directory, `.archeia/`, at the root of your project. Five canonical dom
 
 - `**business/`** — why we're building, for whom, how we earn
 - `**product/**` — what we've committed to build
-- `**codebase/**` — what the code is, right now
+- `**codebase/**` — AI-maintained repo intelligence: what the code is, right now
 - `**growth/**` — how we acquire, retain, monetize
 - `**execution/**` — what we're doing right now
 
-Every artifact inside has a **temporal state** — past, present, or future — in its frontmatter. Every domain has exactly one writer family. Every file is markdown with YAML frontmatter, readable by humans in any editor and parseable by agents in any framework.
+Every artifact inside has a **temporal state** — past, present, or future — in its frontmatter. Every domain has exactly one writer family. Most artifacts are markdown with YAML frontmatter; codebase contract artifacts may be JSON because they are primarily read by agents and validators.
 
 That's the whole substrate. No server, no required external database, no API, no protocol layer. The filesystem is the canonical store. Ownership is the concurrency model. YAML is the schema. Git is the audit log.
 
@@ -46,10 +46,10 @@ Instead of a wiki + a ticket system + an ADR repo + a docs site + a memory silo 
 - Notion and Confluence are replaced by `.archeia/product/` and `.archeia/business/` for the parts agents need to read
 - Jira and Linear are replaced by `.archeia/execution/` for task and project state
 - ADR repos are replaced by `.archeia/product/decisions/`
-- Architecture doc tools are replaced by `.archeia/codebase/architecture/`
+- Architecture-analysis tools are replaced by `.archeia/codebase/architecture/` for the machine-readable source of truth; human-facing architecture docs can stay in `docs/` as views or curated documentation
 - Closed or tool-specific memory silos are replaced by the whole tree as the durable source of truth
 
-You keep the tools that serve humans only. You move the tools that should have been serving agents.
+You keep the tools and docs that serve humans only. You move the knowledge that should have been serving agents into `.archeia/`, and you may render human-facing docs from it when useful.
 
 If you later need vector search, graph traversal, or dynamic context management, layer that on top of the Archeia tree rather than replacing it. The tree stays canonical; retrieval engines are optional serving layers.
 

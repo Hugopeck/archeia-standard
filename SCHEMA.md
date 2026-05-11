@@ -44,7 +44,7 @@ Every software project that uses Archeia MUST have exactly five domains under `.
 .archeia/
 ├── business/        # Why we're building, for whom, how we earn
 ├── product/         # What we've committed to build
-├── codebase/        # What the code is, right now
+├── codebase/        # AI-maintained repo intelligence: what the code is, right now
 ├── growth/          # How we acquire, retain, monetize
 └── execution/       # What we're doing right now
 ```
@@ -92,7 +92,7 @@ Each domain has one owner (a writer family declared by the distribution), permit
 
 ### 2.3 `codebase/`
 
-**Purpose.** The structured, machine-readable representation of what the code is right now — specifically, the C4 model artifacts that other domains consume as a contract. Every element cites a source file path. No human decisions live here; only observations derived from source, config, and git history.
+**Purpose.** The AI-maintained, evidence-cited representation of what the code is right now — specifically, the structured repo intelligence that other domains consume as a contract. Every element cites a source file path. No human decisions live here; only observations derived from source, config, and git history.
 
 **Permitted shapes:** living **only**.
 
@@ -105,19 +105,19 @@ Each domain has one owner (a writer family declared by the distribution), permit
 | `codebase/architecture/entities.json` | Living | ORM/schema entities (when present). |
 | `codebase/architecture/statemachine.json` | Living | State machines (when present). |
 
-> **The codebase domain inside `.archeia/` is the contract surface only.** The C4 JSON files are read by `product/decisions/` (via [`c4.schema.json`](contracts/c4.schema.json)) when validating feasibility. They are not for human reading — they are the machine-readable evidence other domains rely on.
+> **The codebase domain inside `.archeia/` is the canonical AI-maintained repo-intelligence surface.** In the canonical software application, that surface is intentionally narrow: only the C4 JSON files listed above. Those files are read by `product/decisions/` (via [`c4.schema.json`](contracts/c4.schema.json)) when validating feasibility. They are not documentation pages — they are the machine-readable evidence other domains rely on.
 >
-> **Prose documentation about the codebase lives in `docs/`, not in `.archeia/`.** This is a deliberate departure from the OpenAI "everything in `docs/`" position, taken from the opposite end: prose architecture docs, developer guides, coding standards, scan and git reports, and rendered diagrams all live in the project's conventional `docs/` tree. They are owned by the codebase domain (see §5), but they are not part of the contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the full rationale.
+> **Human-facing prose documentation about the codebase lives in `docs/`, not in `.archeia/`.** This is a deliberate departure from the OpenAI "everything in `docs/`" position, taken from the opposite end: prose architecture docs, developer guides, coding standards, scan and git reports, and rendered diagrams all live in the project's conventional `docs/` tree. They may be generated or assisted by codebase skills, but they are documentation views and publication surfaces, not the canonical repo-intelligence substrate. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the full rationale.
 >
 > **Codebase artifacts inside `.archeia/` are purely shape 1 — living documents only.** The codebase domain has no accumulating records and no transient artifacts. Every C4 JSON is regenerated from source evidence, edited in place as the code evolves, and preserved in git.
 
-**Owner:** declared by the distribution (typically `codebase-skills`). The same owner writes the colocated prose docs in `docs/` (see §5).
+**Owner:** declared by the distribution (typically `codebase-skills`). The same owner MAY write generated or policy-controlled colocated docs in `docs/` (see §5), but distributions SHOULD make that boundary explicit so agents do not casually overwrite human-maintained documentation.
 
 **Reads from:** the codebase itself (source files, config, git history) and optionally `product/product.md` to contextualize architecture against intent.
 
 **Read by:** `product/` (for feasibility validation during draft review), `execution/` (for technical context when scoping work), every other domain as ground-truth reference.
 
-**Regeneration contract.** Every file in `codebase/architecture/` and every codebase-owned file in `docs/` is regenerable — delete any of them and run the codebase skills again and they will be rebuilt from source evidence. Every regeneration is a commit to the same file path; git holds every prior version.
+**Regeneration contract.** Every file in `codebase/architecture/` is regenerable — delete any of them and run the codebase skills again and they will be rebuilt from source evidence. Codebase-owned files in `docs/` SHOULD declare whether they are generated views, AI-assisted human docs, or human-maintained docs with agent edits by request only. Generated views are regenerable; human-maintained docs are not.
 
 ### 2.4 `growth/`
 
@@ -218,7 +218,13 @@ Software-project Archeia MUST enforce three cross-domain contracts. Each is a JS
 
 ## 5. Colocated files outside `.archeia/`
 
-Some files live outside the `.archeia/` tree but are still owned by the codebase domain. They follow the same ownership rules (one owner, free reads).
+Some files live outside the `.archeia/` tree but may still be owned by, generated from, or assisted by the codebase domain. They follow the same ownership rules only when the distribution explicitly designates them as codebase-owned.
+
+The distinction is about audience and maintenance, not file extension:
+
+- `.archeia/codebase/` is the canonical AI-maintained repo-intelligence surface.
+- `docs/` is the conventional human-facing documentation surface.
+- A file in `docs/` may be a generated view of `.archeia/codebase/`, an AI-assisted human document, or a human-maintained document that agents edit only by request.
 
 | File | Location | Owner | Purpose |
 |---|---|---|---|
@@ -226,16 +232,16 @@ Some files live outside the `.archeia/` tree but are still owned by the codebase
 | `CLAUDE.md` | Repo root | codebase | Claude Code-specific instructions |
 | `README.md` | Per directory | codebase | Directory-level context, key concepts, learnings |
 | `agents.md` | Per directory | codebase | Local agent rules where they differ from root |
-| `docs/architecture.md` | Repo `docs/` | codebase | Prose architecture document following C4 Model structure. Rendered from the C4 JSONs in `.archeia/codebase/architecture/`. |
-| `docs/standards.md` | Repo `docs/` | codebase | Coding conventions extracted from the codebase. |
-| `docs/guide.md` | Repo `docs/` | codebase | Developer setup, commands, testing, deployment. |
-| `docs/scan-report.md` | Repo `docs/` | codebase | Quantitative scan: LOC, dependencies, test coverage, README gaps. Regenerated in place. |
-| `docs/git-report.md` | Repo `docs/` | codebase | Contributors, bus factor, churn, velocity. Regenerated in place. |
-| `docs/diagrams/*.mmd` | Repo `docs/` | codebase | Mermaid diagrams rendered from the C4 JSONs. |
+| `docs/architecture.md` | Repo `docs/` | codebase or human-docs | Human-facing architecture narrative. MAY be rendered from `.archeia/codebase/architecture/` or maintained by humans with citations back to the C4 JSONs. |
+| `docs/standards.md` | Repo `docs/` | codebase or human-docs | Human-facing coding conventions. MAY be extracted from the codebase or curated manually. |
+| `docs/guide.md` | Repo `docs/` | codebase or human-docs | Developer setup, commands, testing, deployment. Usually human-facing; agent edits SHOULD be policy-controlled. |
+| `docs/scan-report.md` | Repo `docs/` | codebase | Optional generated quantitative view: LOC, dependencies, test coverage, README gaps. |
+| `docs/git-report.md` | Repo `docs/` | codebase | Optional generated git-history view: contributors, bus factor, churn, velocity. |
+| `docs/diagrams/*.mmd` | Repo `docs/` | codebase or human-docs | Human-facing diagrams. MAY be rendered from the C4 JSONs or curated manually. |
 
-These are living documents. Their history lives in git. They are regenerated by codebase writers on each run and edited in place as the code evolves.
+These are living documents when a distribution chooses to manage them. Their history lives in git. Generated views SHOULD say so in frontmatter or a file header. Human-maintained docs SHOULD NOT be overwritten by codebase skills unless the user explicitly asks for that update or the distribution's policy grants that writer ownership.
 
-**Why `docs/`, not `.archeia/`.** Prose documentation belongs in the conventional location every project already uses. Putting `architecture.md` in `.archeia/codebase/` competes with the project's pre-existing `docs/architecture.md` and creates two-tree drift. Archeia owns the *contract artifacts* (the C4 JSONs that other domains consume) and *colocates* the prose that humans read in the location humans expect. See [`POSITIONING.md`](POSITIONING.md) §4.4. Distributions MAY publish `docs/` as a documentation site; the C4 JSONs in `.archeia/` are not meant to be published.
+**Why `docs/`, not `.archeia/`.** Prose documentation belongs in the conventional location every project already uses. Putting `architecture.md` in `.archeia/codebase/` competes with the project's pre-existing `docs/architecture.md` and creates two-tree drift. Archeia owns the *contract artifacts* (the C4 JSONs that other domains consume). `docs/` owns the human-reading experience: narrative, onboarding, diagrams, and publication. A distribution MAY generate docs from `.archeia/codebase/`, but generated docs are views over the substrate, not the substrate itself. See [`POSITIONING.md`](POSITIONING.md) §4.4.
 
 ---
 
@@ -259,8 +265,8 @@ A repo is **software-conforming** if [`archeia:validate`](KERNEL.md#6-inherent-s
 2. No domain directory outside the canonical five MAY exist under `.archeia/`.
 3. Every artifact MUST conform to its shape's base schema and any applicable specific schema.
 4. All three cross-domain contracts MUST be enforced on the artifacts they apply to.
-5. `.archeia/codebase/` MUST contain only living documents (no accumulating, no transient) — and within it, only the C4 JSON contract artifacts listed in §2.3.
-6. Codebase-owned colocated files in `docs/` (per §5) SHOULD also be living documents, but their absence MUST NOT be a conformance failure — `docs/` is not strictly required for kernel conformance, only for full software-distribution publication.
+5. `.archeia/codebase/` MUST contain only living artifacts (no accumulating, no transient) — and within it, only the C4 JSON contract artifacts listed in §2.3.
+6. Codebase-owned colocated files in `docs/` (per §5) SHOULD also be living documents, but their absence MUST NOT be a conformance failure — `docs/` is not part of the `.archeia/` contract surface.
 7. Ownership SHOULD be respected — writes to each domain (and to its colocated files) SHOULD come from the declared owner per the distribution's `standard/domains.yaml`. This check is advisory — git blame does not always identify writer families.
 
 Repos that diverge from the five canonical domains are not software-conforming and should either adopt the canonical layout or declare a different distribution entirely (e.g., a research distribution with its own domain list).

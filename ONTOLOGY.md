@@ -212,7 +212,7 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 - **Evidence rule:** every claim in the target must cite a source from the inputs. Claims that cannot be evidenced must be flagged in the target with `<!-- INSUFFICIENT EVIDENCE -->` rather than fabricated.
 - **Idempotence:** semantically idempotent. Two runs over the same inputs produce semantically equivalent outputs; exact text may differ.
 
-Most of what `archeia:write-tech-docs` actually does is consolidation (read source files, produce `codebase/architecture/architecture.md`). Most of what `archeia:scan-git` does is consolidation (read git history, produce `codebase/git-report.md`). We have been hand-waving this operation. Naming it makes the kernel honest.
+Most of what `archeia:write-tech-docs` actually does is consolidation (read source files, update `.archeia/codebase/architecture/*.json`, and optionally render `docs/architecture.md`). Most of what `archeia:scan-git` does is consolidation (read git history and optionally produce `docs/git-report.md` as a human-facing view). We have been hand-waving this operation. Naming it makes the kernel honest.
 
 ### 4.7 `prune` operation
 

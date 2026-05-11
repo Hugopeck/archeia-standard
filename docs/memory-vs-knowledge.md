@@ -117,7 +117,7 @@ A future `archeia:verify-stale` skill (not yet shipped) would walk living docume
 
 His example: "A coding agent drifts off-track and violates a pattern your team agreed on three months ago. The memory exists. The agent didn't search for it because it didn't know it was relevant."
 
-**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads `.archeia/execution/tasks/<id>.md`, `.archeia/product/product.md`, `.archeia/codebase/standards/standards.md`, and `.archeia/codebase/guide.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
+**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads `.archeia/execution/tasks/<id>.md`, `.archeia/product/product.md`, `.archeia/codebase/architecture/*.json`, and any policy-designated docs such as `docs/standards.md` or `docs/guide.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
 
 **Archeia's honest limit for peripheral cases**: when the relevant knowledge is not on a standard path — an ADR from 18 months ago that mentions a pattern the current task accidentally violates, a past growth experiment whose learning applies to the current channel decision — Archeia is in the same situation as every other in-repo knowledge system. The agent won't find it unless something triggers the search, and Archeia does not have a good trigger.
 

@@ -31,8 +31,8 @@ This is the test plan for [`CONFORMANCE.md`](CONFORMANCE.md) — the conformance
 | S5 | The kernel base schemas exist in `standard/contracts/`: `living-doc.schema.json`, `accumulating-record.schema.json`, `transient-artifact.schema.json`. | filesystem stat |
 | S6 | Every domain declared in `standard/domains.yaml` has a corresponding directory under `.archeia/`. | walk + compare |
 | S7 (software) | Exactly the five canonical domains are present: `business/`, `product/`, `codebase/`, `growth/`, `execution/`. No others. | walk + assert set equality |
-| S8 (software) | `.archeia/codebase/` contains only the C4 JSON contract artifacts listed in [`SCHEMA.md`](SCHEMA.md) §2.3. | walk + glob filter |
-| S9 (software) | If `docs/architecture.md` exists, it is owned by the codebase domain (per [`SCHEMA.md`](SCHEMA.md) §5). Absence is not a failure. | filesystem stat + ownership check |
+| S8 (software) | `.archeia/codebase/` is the canonical AI-maintained repo-intelligence surface and contains only the C4 JSON contract artifacts listed in [`SCHEMA.md`](SCHEMA.md) §2.3. | walk + glob filter |
+| S9 (software) | If a file in `docs/` is declared codebase-owned or generated from `.archeia/codebase/`, it follows the ownership/generation policy in [`SCHEMA.md`](SCHEMA.md) §5. Absence is not a failure. | filesystem stat + ownership check |
 
 ---
 

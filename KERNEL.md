@@ -38,7 +38,7 @@ The kernel does **not** define:
 - Which VCS provides history (git is the reference implementation; any versioned storage works)
 - Which approval workflow governs state transitions (policy, not spec)
 - Which audience reads the artifacts (humans, agents, both — all permitted)
-- **Where prose documentation lives.** `.archeia/` is for operational state and contract artifacts. Prose documentation that humans read — architecture explanations, contributor guides, design narratives — belongs in the project's conventional `docs/` tree, not under `.archeia/`. Distributions MAY designate colocated files in `docs/` as owned by an Archeia domain (see `SCHEMA.md` §5), but those files are not part of the kernel's contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the rationale.
+- **Where prose documentation lives.** `.archeia/` is for operational state and contract artifacts. In the canonical software application, `.archeia/codebase/` is the AI-maintained repo-intelligence surface, not a documentation folder. Prose documentation that humans read — architecture explanations, contributor guides, design narratives — belongs in the project's conventional `docs/` tree, not under `.archeia/`. Distributions MAY designate colocated files in `docs/` as generated views or codebase-owned docs (see `SCHEMA.md` §5), but those files are not part of the kernel's contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the rationale.
 
 The [canonical software-project application of the kernel](SCHEMA.md) commits to five specific domains (`business/`, `product/`, `codebase/`, `growth/`, `execution/`) for software projects, but that commitment lives in `SCHEMA.md`, not here. The kernel itself is domain-agnostic above the minimum.
 
@@ -198,8 +198,8 @@ The operation's return type is distribution-defined (a structured list, a timeli
 
 **Examples:**
 
-- `archeia:write-tech-docs` reads source files, config, and git history, and consolidates them into `.archeia/codebase/architecture/architecture.md`. Every architectural claim cites at least one source file path.
-- `archeia:scan-git` reads git history and consolidates it into `.archeia/codebase/git-report.md`. Every claim about contributors or churn cites the git log.
+- `archeia:write-tech-docs` reads source files, config, and git history, updates `.archeia/codebase/architecture/*.json`, and MAY render a human-facing view such as `docs/architecture.md`. Every architectural claim cites at least one source file path.
+- `archeia:scan-git` reads git history and MAY consolidate it into a human-facing view such as `docs/git-report.md`. Every claim about contributors or churn cites the git log.
 - `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/architecture/` and consolidates them into updates to `.archeia/product/product.md` plus a new entry in `.archeia/product/decisions/`.
 - `archeia:clarify-idea` reads the operator's rough idea, prior drafts, and optionally landscape research, and consolidates them into a new business draft.
 
