@@ -111,7 +111,7 @@ The "Remediation:" line is the load-bearing piece — agents that re-read the CI
 **Failure message format:**
 
 ```
-[archeia:evidence] FAIL .archeia/codebase/architecture/system.json
+[archeia:evidence] FAIL .archeia/codebase/model/c4/system.json
   → element `auth-service` lists evidence path `src/auth/server.py` which does not exist in tree
   Remediation: regenerate the C4 artifact, OR update the evidence path to match the current source layout.
 ```

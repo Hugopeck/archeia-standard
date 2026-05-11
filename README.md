@@ -69,7 +69,7 @@ The standard uses semantic versioning. `VERSION` at the repo root contains the c
 - **Minor** — additive changes: new optional fields, new operations, new validation checks that don't break existing conforming repos
 - **Patch** — clarifications, documentation fixes, attribution corrections
 
-The current version is **0.3.0**. The 0.2.1 → 0.3.0 bump reflects: (1) the new conformance surface (`CONFORMANCE.md`, `REFERENCE-ALGORITHMS.md`, `TEST-MATRIX.md`), (2) the explicit positioning vs. SOTA harness corpus (`POSITIONING.md`), (3) the codebase-domain split — prose architecture docs now live in `docs/`, only C4 JSON contract artifacts remain under `.archeia/codebase/` (see `SCHEMA.md` §2.3), (4) the SPEC-style header and RFC 2119 reference in `KERNEL.md`, (5) the new `archeia-enforcement` companion distribution. The kernel will reach **1.0.0** when the first external distribution (not Archeia Solo) ships and the kernel has survived that contact with a new audience.
+The current version is **0.3.0**. The 0.2.1 → 0.3.0 bump reflects: (1) the new conformance surface (`CONFORMANCE.md`, `REFERENCE-ALGORITHMS.md`, `TEST-MATRIX.md`), (2) the explicit positioning vs. SOTA harness corpus (`POSITIONING.md`), (3) the codebase-domain split — generated codebase intelligence lives under `.archeia/codebase/`, while `docs/` remains a human-facing publication layer (see `SCHEMA.md` §2.3 and §5), (4) the SPEC-style header and RFC 2119 reference in `KERNEL.md`, (5) the new `archeia-enforcement` companion distribution. The kernel will reach **1.0.0** when the first external distribution (not Archeia Solo) ships and the kernel has survived that contact with a new audience.
 
 ## Contributing
 

@@ -98,24 +98,24 @@ The corpus does not provide a vocabulary anchored this way. Archeia does, and th
 
 OpenAI's harness-engineering post argues for **structured documentation architecture** — design specs, execution plans, architectural maps, all cross-linked, all CI-validated, all in one tree (`docs/`) the agent reads and writes. Documentation IS the substrate. There is no separate hidden tree.
 
-Archeia rejects this for its target audience. The substrate is for *agent coordination state and AI-maintained repo intelligence*; documentation is a human-facing surface that may be generated from the substrate, but it is not the substrate. Concretely:
+Archeia rejects this for its target audience. The substrate is for *agent coordination state and AI-maintained repo intelligence*; documentation is a human-facing publication surface that may draw from the substrate, but it is not the substrate. Concretely:
 
 - **Operational state** — drafts, vision, ADRs, growth experiments, tasks, retros — lives in `.archeia/`. It has owner rules, lifecycle shapes, retention windows, and contract schemas. It is not meant for human publication.
-- **AI-maintained repo intelligence** — for example the C4 JSON files that `product/decisions/` reads from `codebase/` — lives in `.archeia/codebase/`. It is evidence-cited, regenerable, and safe for agents to update as the code changes.
-- **Prose documentation** — architecture explanations, contributor guides, READMEs — lives in `docs/`. It is what every existing project already has, and Archeia adoption does not require reorganizing it. Agents may assist or generate selected pages, but `docs/` remains the human-facing publication and onboarding surface.
+- **AI-maintained repo intelligence** — C4 model contracts, repo analyses, inferred conventions, developer guides, and generated views — lives in `.archeia/codebase/`. It is evidence-cited, regenerable, and safe for agents to update as the code changes.
+- **Prose documentation** — public architecture explanations, contributor guides, READMEs — lives in `docs/`. It is what every existing project already has, and Archeia adoption does not require reorganizing it. Canonical Archeia does not write this tree; publication bridges are project policy, not standard behavior.
 
 This is a deliberate departure from the OpenAI position. The trade-off is real:
 
 | OpenAI "everything in `docs/`" | Archeia "split repo intelligence from documentation" |
 |---|---|
 | One tree to maintain | Two trees, but each with a clear purpose |
-| Native fit with documentation tooling (MkDocs, Docusaurus) | Documentation tooling untouched; `.archeia/` invisible to it |
+| Native fit with documentation tooling (MkDocs, Docusaurus) | Documentation tooling untouched; `.archeia/` can feed it explicitly |
 | Greenfield-friendly | Brownfield-friendly — adoption does not reorganize existing `docs/` |
 | Agents and humans share one surface | Agents have a predictable contract surface; humans have a conventional documentation surface |
 
 The OpenAI position works in their context — homogeneous greenfield projects, an engineering organization that can rebuild documentation conventions on demand. Archeia's audience is solo builders and small teams adopting into projects that already have a `docs/`. Telling them "your `docs/` is now Archeia-shaped" is a much heavier lift than "drop an empty `.archeia/` at the root."
 
-This is also what lets Archeia accommodate documentation tooling without owning it. A solo builder can publish `docs/` as a doc site via MkDocs and never expose `.archeia/` to readers. The `.archeia/codebase/` surface stays machine-readable and regenerable; the publication surface stays human-curated unless a distribution explicitly marks a page as generated.
+This is also what lets Archeia accommodate documentation tooling without owning it. A solo builder can publish `docs/` as a doc site via MkDocs and never expose `.archeia/` to readers. The `.archeia/codebase/` surface stays AI-maintained and regenerable; the publication surface stays human-curated.
 
 ### 4.5 An in-repo substrate that runs on git — no service required
 

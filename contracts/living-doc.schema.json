@@ -25,7 +25,7 @@
     },
     "skill": {
       "type": "string",
-      "description": "Optional: the skill that most recently wrote this file (for generated/regenerated docs)."
+      "description": "Optional: the skill that most recently wrote this file (for generated/regenerated artifacts)."
     },
     "skill_version": {
       "type": "string",

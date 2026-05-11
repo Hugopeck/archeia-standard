@@ -46,7 +46,7 @@ Instead of a wiki + a ticket system + an ADR repo + a docs site + a memory silo 
 - Notion and Confluence are replaced by `.archeia/product/` and `.archeia/business/` for the parts agents need to read
 - Jira and Linear are replaced by `.archeia/execution/` for task and project state
 - ADR repos are replaced by `.archeia/product/decisions/`
-- Architecture-analysis tools are replaced by `.archeia/codebase/architecture/` for the machine-readable source of truth; human-facing architecture docs can stay in `docs/` as views or curated documentation
+- Architecture-analysis tools are replaced by `.archeia/codebase/model/c4/` for the machine-readable contract surface and `.archeia/codebase/analysis/` for generated repo intelligence
 - Closed or tool-specific memory silos are replaced by the whole tree as the durable source of truth
 
 You keep the tools and docs that serve humans only. You move the knowledge that should have been serving agents into `.archeia/`, and you may render human-facing docs from it when useful.

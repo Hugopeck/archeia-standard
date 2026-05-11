@@ -31,7 +31,7 @@ A living document is a single file that represents one concept. It is edited in 
 ### Examples by domain
 
 - **`product/`** — `product.md`, `roadmap.md`, files under `features/`, `requirements/`, and `design/`
-- **`codebase/`** — `architecture/system.json`, `architecture/containers.json`, `architecture/components.json`, `architecture/dataflow.json`, `architecture/entities.json`, `architecture/statemachine.json`
+- **`codebase/`** — `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd`
 - **`business/`** — `vision/vision.md`, `strategy/strategy.md`
 - **`growth/`** — `metrics/current.md` and any ongoing dashboard-style summaries
 
@@ -215,13 +215,13 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 |---|---|---|---|
 | **`business/`** | `vision/vision.md`, `strategy/strategy.md` | `landscape/*.md` | `drafts/*.md` |
 | **`product/`** | `product.md`, `roadmap.md`, `features/*.md`, `requirements/*.md`, `design/*.md` | `feedback/*.md`, `decisions/*.md` | (none) |
-| **`codebase/`** | `architecture/*.json` | (none in the canonical layout) | (none) |
+| **`codebase/`** | `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd` | (none in the canonical layout) | (none) |
 | **`growth/`** | `metrics/current.md` | `experiments/*.md` (concluded, with learnings), `channels/*.md` (retired) | `experiments/*.md` (running), `channels/*.md` (active) |
 | **`execution/`** | (none — execution is all action, no living summary doc) | `retros/*.md` | `tasks/*.md`, `plans/*.md`, `projects/*.md` |
 
 A few observations that fall out:
 
-- **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are one-file-per-concept JSON contracts, edited in place, history in git. Human-facing docs derived from them live in `docs/` as views or curated documentation.
+- **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are regenerated in place, with history in git.
 - **`product/` has no transient state at all.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Rough opportunities live in `business/drafts/`; accepted product work becomes living product truth or an accumulating decision.
 - **`execution/` is the only domain with heavy transient presence.** Tasks, plans, projects — these are the things that flow.
 - **`growth/` has all three shapes.** Current metrics are living, channel and experiment records are accumulating, running experiments are transient.
@@ -234,7 +234,7 @@ A few observations that fall out:
 
 The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The three-shapes model upgrades this to a stronger claim: codebase is purely shape 1. It doesn't plan, it doesn't accumulate decisions (those live in `product/decisions/`), and it doesn't have tasks or drafts (those live in `execution/` and `business/`). It is the current observed state of the code, always, and nothing more.
 
-This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living machine-readable repo intelligence, and commits it. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth. Human-facing prose can be rendered or curated in `docs/`, but that is outside the canonical `.archeia/codebase/` contract surface.
+This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living repo intelligence, and commits it. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth.
 
 ---
 
@@ -392,7 +392,7 @@ Both files stay on disk forever. Future readers can follow the `supersedes` / `s
 ### A generated scan report view (shape 1)
 
 ```markdown
-# docs/scan-report.md may have one generated view.
+# codebase/analysis/repository.md always has one generated analysis.
 # Regeneration edits the view in place; git holds history if committed.
 
 # 2026-04-01 run:
@@ -416,7 +416,7 @@ skill: archeia:scan-repo
 ...LOC, deps, test coverage, README gaps... (updated numbers)
 ```
 
-No `scan-report-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated view, regenerated in place, with history in git if committed. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:docs/scan-report.md`. The canonical `.archeia/codebase/` surface remains the structured repo-intelligence contract; this report is a human-facing view.
+No `repository-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated analysis, regenerated in place, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:.archeia/codebase/analysis/repository.md`.
 
 ### A draft that advances (shape 3 → shape 1)
 
