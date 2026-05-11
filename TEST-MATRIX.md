@@ -31,8 +31,8 @@ This is the test plan for [`CONFORMANCE.md`](CONFORMANCE.md) — the conformance
 | S5 | The kernel base schemas exist in `standard/contracts/`: `living-doc.schema.json`, `accumulating-record.schema.json`, `transient-artifact.schema.json`. | filesystem stat |
 | S6 | Every domain declared in `standard/domains.yaml` has a corresponding directory under `.archeia/`. | walk + compare |
 | S7 (software) | Exactly the five canonical domains are present: `business/`, `product/`, `codebase/`, `growth/`, `execution/`. No others. | walk + assert set equality |
-| S8 (software) | `.archeia/codebase/` contains only the C4 JSON contract artifacts listed in [`SCHEMA.md`](SCHEMA.md) §2.3. | walk + glob filter |
-| S9 (software) | If `docs/architecture.md` exists, it is owned by the codebase domain (per [`SCHEMA.md`](SCHEMA.md) §5). Absence is not a failure. | filesystem stat + ownership check |
+| S8 (software) | `.archeia/codebase/` contains only living generated codebase-intelligence artifacts, with `model/c4/` as the machine-readable contract surface and `analysis/`, `conventions/`, `guide/`, and `views/` as generated intelligence. | walk + glob filter |
+| S9 (software) | The canonical validator does not require or inspect `docs/` for software conformance. | skip / ignore |
 
 ---
 
@@ -65,9 +65,10 @@ For the **canonical software application** specifically:
 | ID | Check | How |
 |---|---|---|
 | C4 | `business/drafts/*.md` validate against `draft.schema.json`. | JSON Schema validate |
-| C5 | `product/product.md` validates against `product.schema.json` (must contain Features, Constraints, Priorities sections; status: locked; locked_at timestamp). | JSON Schema + body parse |
-| C6 | Every `codebase/architecture/*.json` validates against `c4.schema.json`. | JSON Schema validate |
+| C5 | The product execution surface validates against `product.schema.json`: `product/product.md` has Product Summary, Active Scope, Feature Index, Constraints, Priority Model; `product/roadmap.md` has Now, Next, Later; `product/features/*.md` have executable feature specs with stable feature IDs and acceptance criteria. | JSON Schema + body parse |
+| C6 | Every `codebase/model/c4/*.json` validates against `c4.schema.json`. | JSON Schema validate |
 | C7 | Every C4 element has at least one `evidence` file path that exists in the source tree. | path check |
+| C8 | Product artifacts with `external_sources` include `type`, `name`, `extraction_method`, `last_read`, and `source_status`; stale, unreachable, or insufficient sources are reported as warnings unless the artifact is required for active execution. | frontmatter parse + status check |
 
 ---
 

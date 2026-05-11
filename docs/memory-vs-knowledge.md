@@ -47,7 +47,9 @@ Michael Chomsky's "four jobs" framing in his April 11, 2026 analysis is a paraph
 
 **Claim**: path-based lookup is the strongest retrieval primitive available for project knowledge.
 
-**Why it works**: when an agent needs to know the current product specification, it reads `.archeia/product/product.md`. There is no query, no ranking, no top-k, no relevance threshold, no embedding drift, no hallucinated near-match. The file exists at a known path or it doesn't. This is Archeia's central advantage over vector-DB-backed memory systems for well-structured project knowledge.
+**Why it works**: when an agent needs to know the current product truth, it reads `.archeia/product/product.md` as the product index, `.archeia/product/roadmap.md` for sequencing, and `.archeia/product/features/*.md` for executable feature specs. There is no query, no ranking, no top-k, no relevance threshold, no embedding drift, no hallucinated near-match. The files exist at known paths or they don't. This is Archeia's central advantage over vector-DB-backed memory systems for well-structured project knowledge.
+
+External product tools do not break this model as long as they are treated as cited sources rather than hidden canonical stores. A feature spec can record `external_sources` with `last_read` and `source_status`; the local artifact remains the stable memory, while the external tool remains the live workspace.
 
 **Supporting literature**: Cao et al., "Coding Agents are Effective Long-Context Processors" (arXiv:2603.20432, 2026) — demonstrated that agents navigating text corpora as navigable file systems outperform state-of-the-art long-context attention methods by 17.3% on average across benchmarks spanning up to three trillion tokens. The empirical case for path-based retrieval at scale is strong.
 
@@ -59,9 +61,9 @@ Michael Chomsky's "four jobs" framing in his April 11, 2026 analysis is a paraph
 
 **Claim**: writing a new artifact to `.archeia/` and committing is real-time learning at the filesystem layer.
 
-**What works**: when `archeia:review-draft` reads a business draft and produces an update to `product/product.md` plus a new entry in `product/decisions/`, that is real-time learning. The new knowledge is immediately available to the next session. Git commits are the learning events. No retraining, no vector index rebuild, no embedding regeneration — the filesystem already gives us real-time persistence.
+**What works**: when `archeia:review-draft` reads a business draft and produces updates to `product/product.md`, `product/roadmap.md`, `product/features/*.md`, or a new entry in `product/decisions/`, that is real-time learning. The new knowledge is immediately available to the next session. Git commits are the learning events. No retraining, no vector index rebuild, no embedding regeneration — the filesystem already gives us real-time persistence.
 
-**What doesn't work yet**: Archeia has no principle for **when** a living document should be updated. Does an agent edit `architecture.md` after every session? After significant code changes? On a schedule? On demand? The standard is silent. Without a rule, living documents either drift (too-infrequent updates → staleness) or churn (too-frequent updates → noise in git history).
+**What doesn't work yet**: Archeia has no principle for **when** a living document should be updated. Does an agent edit `.archeia/codebase/analysis/repository.md` after every session? After significant code changes? On a schedule? On demand? The standard is silent. Without a rule, living documents either drift (too-infrequent updates → staleness) or churn (too-frequent updates → noise in git history).
 
 This gap is real. The solution — some form of trigger-based re-consolidation policy, probably per-artifact — is future work. Recent research suggests the answer involves something like **Saguaro** (Mesa, 2025) — a separate review agent that runs after every turn and decides whether any living document needs re-consolidation. Or something like **A-MemGuard** (arXiv:2510.02373, 2025) — a proactive defense framework that monitors for context-triggered stale-memory injection. Archeia has neither mechanism yet.
 
@@ -96,7 +98,7 @@ The cross-domain contracts in Archeia are **static schemas** (this frontmatter f
 
 **What works**: a done task that enters its 14-day retention window and is then pruned is a form of selective forgetting. The task is gone from disk; git preserves the history; the agent's working context stays clean. For operational state this is exactly what you want.
 
-**What doesn't work**: for **living documents** and **accumulating records**, Archeia has almost no forgetting mechanism. `architecture.md` can be stale — the code changed but nobody re-ran the consolidator — and nothing flags it. An ADR from 18 months ago can record a decision that was quietly abandoned — the team stopped following it — and nothing flags that either.
+**What doesn't work**: for **living documents** and **accumulating records**, Archeia has almost no forgetting mechanism. `.archeia/codebase/model/c4/system.json` or `.archeia/codebase/analysis/repository.md` can be stale — the code changed but nobody re-ran the consolidator — and nothing flags it. An ADR from 18 months ago can record a decision that was quietly abandoned — the team stopped following it — and nothing flags that either.
 
 **The minimal bi-temporal support** added in 0.2.0 (the `last_verified` frontmatter field on living documents and accumulating records) is a *staleness signal* but not active forgetting. A reader who sees `last_verified: 2025-08-15` on today's architecture doc can infer that the doc is probably stale. Archeia does not currently have a skill that reviews these timestamps and prunes, re-verifies, or flags stale artifacts.
 
@@ -117,7 +119,7 @@ A future `archeia:verify-stale` skill (not yet shipped) would walk living docume
 
 His example: "A coding agent drifts off-track and violates a pattern your team agreed on three months ago. The memory exists. The agent didn't search for it because it didn't know it was relevant."
 
-**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads `.archeia/execution/tasks/<id>.md`, `.archeia/product/product.md`, `.archeia/codebase/standards/standards.md`, and `.archeia/codebase/guide.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
+**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads `.archeia/execution/tasks/<id>.md`, `.archeia/product/product.md`, `.archeia/product/roadmap.md`, the relevant `.archeia/product/features/*.md`, `.archeia/codebase/model/c4/*.json`, `.archeia/codebase/conventions/coding.md`, and `.archeia/codebase/guide/developer.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
 
 **Archeia's honest limit for peripheral cases**: when the relevant knowledge is not on a standard path — an ADR from 18 months ago that mentions a pattern the current task accidentally violates, a past growth experiment whose learning applies to the current channel decision — Archeia is in the same situation as every other in-repo knowledge system. The agent won't find it unless something triggers the search, and Archeia does not have a good trigger.
 

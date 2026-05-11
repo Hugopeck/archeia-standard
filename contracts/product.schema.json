@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/product.schema.json",
-  "title": "Product Specification",
-  "description": "Frontmatter and section contract for product/product.md — the product → execution contract. product.md is a living document. Its body must contain three structured sections (Features, Constraints, Priorities) that execution skills parse to generate tasks.",
+  "title": "Product Execution Surface",
+  "description": "Frontmatter and section contract for the product → execution surface. product/product.md is the living product index and current-state summary; product/roadmap.md sequences work; product/features/*.md supplies executable feature specs. Product artifacts may cite external product sources, but the local artifact remains the durable contract.",
   "allOf": [
     { "$ref": "living-doc.schema.json" }
   ],
@@ -10,47 +10,134 @@
   "properties": {
     "title": {
       "type": "string",
-      "description": "Product name or project title."
+      "description": "Title of the product artifact."
     },
     "status": {
       "type": "string",
-      "enum": ["locked"],
-      "description": "product.md is always locked when it exists. Draft product specs live in business/drafts/ until they advance into this file."
+      "enum": ["current", "planned", "active", "shipped", "paused", "deprecated"],
+      "description": "Status of this product artifact. product.md and roadmap.md are normally current; feature specs use planned, active, shipped, paused, or deprecated."
     },
     "owner": {
       "type": "string",
       "const": "product-skills",
       "description": "Owned by product skills."
     },
-    "locked_at": {
+    "last_reviewed": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp when this version was locked."
+      "description": "ISO 8601 timestamp when this product surface was last reviewed for execution readiness."
     },
     "source_draft": {
       "type": ["string", "null"],
-      "description": "Relative path to the business draft that produced the most recent lock, if any."
+      "description": "Relative path to the business draft that most recently changed this product surface, if any."
+    },
+    "feature_id": {
+      "type": "string",
+      "description": "Stable feature identifier. Required by convention for product/features/*.md so execution tasks can reference the feature they implement."
+    },
+    "external_sources": {
+      "type": "array",
+      "description": "External product sources this artifact depends on. Use for design tools, prototypes, research repositories, feedback systems, analytics dashboards, support systems, planning tools, or other non-repo sources.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["design_tool", "prototype", "research_repo", "feedback_system", "analytics", "support", "planning", "other"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "object_id": {
+            "type": "string"
+          },
+          "extraction_method": {
+            "type": "string",
+            "enum": ["mcp", "api", "export", "manual", "other"]
+          },
+          "source_version": {
+            "type": "string"
+          },
+          "last_read": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_status": {
+            "type": "string",
+            "enum": ["current", "stale", "unreachable", "insufficient"]
+          }
+        },
+        "required": ["type", "name", "extraction_method", "last_read", "source_status"],
+        "additionalProperties": true
+      }
     }
   },
-  "required": ["title", "owner", "status", "locked_at"],
+  "required": ["title", "owner", "status", "last_reviewed"],
   "additionalProperties": true,
   "archeia": {
     "shape": "living",
     "domain": "product",
-    "path": "product/product.md",
+    "paths": [
+      "product/product.md",
+      "product/roadmap.md",
+      "product/features/*.md"
+    ],
     "contract": "product -> execution",
-    "required_body_sections": [
+    "product_md_required_body_sections": [
       {
-        "heading": "Features",
-        "description": "Each feature has a name, a description, and a list of acceptance criteria. Every feature should have a stable identifier (slug or ordinal) that tasks can reference."
+        "heading": "Product Summary",
+        "description": "Current product definition: target users, core value, active scope, and product boundaries."
+      },
+      {
+        "heading": "Active Scope",
+        "description": "What is currently in scope, out of scope, and intentionally deferred."
+      },
+      {
+        "heading": "Feature Index",
+        "description": "Links to product/features/*.md entries with stable feature IDs."
       },
       {
         "heading": "Constraints",
-        "description": "Technical and business constraints that scope the work. One per line or bulleted."
+        "description": "Technical, product, business, compliance, and UX constraints that scope the work."
       },
       {
-        "heading": "Priorities",
-        "description": "Ordered list or MoSCoW classification (Must / Should / Could / Won't)."
+        "heading": "Priority Model",
+        "description": "How product priorities are ordered and interpreted."
+      }
+    ],
+    "roadmap_required_body_sections": [
+      {
+        "heading": "Now",
+        "description": "Committed or active product bets and milestones."
+      },
+      {
+        "heading": "Next",
+        "description": "Likely next bets, sequencing dependencies, and decision gates."
+      },
+      {
+        "heading": "Later",
+        "description": "Deferred opportunities that are known but not yet committed."
+      }
+    ],
+    "feature_required_body_sections": [
+      {
+        "heading": "User Problem",
+        "description": "The concrete user problem or job this feature solves."
+      },
+      {
+        "heading": "Acceptance Criteria",
+        "description": "Observable criteria execution tasks must satisfy."
+      },
+      {
+        "heading": "Dependencies",
+        "description": "Product, design, codebase, or sequencing dependencies."
+      },
+      {
+        "heading": "Evidence",
+        "description": "Links to feedback, requirements, design contracts, external sources, decisions, business drafts, or codebase evidence supporting this feature."
       }
     ]
   }

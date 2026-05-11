@@ -1,6 +1,6 @@
 # The Lifecycle Model
 
-> **Claim:** project knowledge comes in three lifecycle shapes — **living**, **accumulating**, and **transient** — and each one needs different handling. Most of `.archeia/` is living documents backed by git. A minority is accumulating records that stay on disk forever. A smaller minority is transient artifacts that flow through states and get pruned. The standard's job is to recognize which shape each artifact is and apply the minimum machinery required.
+> **Claim:** project knowledge comes in three lifecycle shapes — **living**, **accumulating**, and **transient** — and each one needs different handling. Most of `.archeia/` is living artifacts backed by git. A minority is accumulating records that stay on disk forever. A smaller minority is transient artifacts that flow through states and get pruned. The standard's job is to recognize which shape each artifact is and apply the minimum machinery required.
 
 This document replaces the earlier past/present/future framing. That framing was elegant but wrong: it tried to universalize a lifecycle that most artifacts don't actually have, and it ended up duplicating what git already does perfectly for living documents. The three-shapes model is what falls out when you walk through the real artifacts honestly.
 
@@ -30,14 +30,14 @@ A living document is a single file that represents one concept. It is edited in 
 
 ### Examples by domain
 
-- **`product/`** — `product.md`, files under `design/`
-- **`codebase/`** — `architecture/architecture.md`, `architecture/system.json`, `architecture/containers.json`, `architecture/components.json`, `architecture/dataflow.json`, `architecture/entities.json`, `architecture/statemachine.json`, `standards/standards.md`, `guide.md`, `scan-report.md`, `git-report.md`, everything under `diagrams/`
+- **`product/`** — `product.md`, `roadmap.md`, files under `features/`, `requirements/`, and `design/`
+- **`codebase/`** — `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd`
 - **`business/`** — `vision/vision.md`, `strategy/strategy.md`
 - **`growth/`** — `metrics/current.md` and any ongoing dashboard-style summaries
 
 ### Rules
 
-1. **One file per concept.** There is one `product.md`, one `architecture.md`, one `vision.md`. Never `product-v1.md`, `product-v2.md`, `product-current.md`. The concept has a canonical path and that path is stable forever.
+1. **One file per concept.** There is one `product.md`, one `roadmap.md`, one `vision.md`, and one canonical file per feature. Never `product-v1.md`, `product-v2.md`, `product-current.md`. The concept has a canonical path and that path is stable forever.
 2. **Edit in place.** Updates are commits to the same file. No renames, no suffix games, no supersession chains.
 3. **No `temporal_state` field.** Living documents are implicitly "always present." Frontmatter can have whatever a distribution needs (`title`, `updated_at`, `owner`), but temporal state is not a meaningful question for them.
 4. **No supersession.** There is nothing to supersede — there's only the current version and git history.
@@ -57,7 +57,7 @@ That's the whole frontmatter. No `status`, no `temporal_state`, no supersession 
 
 ### Why this is right
 
-Nobody versions a product spec as separate files. You edit the spec. You commit. You edit again. That's how humans already work on docs, and trying to impose past/present/future state on top of that is fighting the tool (git) that already solved the problem.
+Nobody versions the current roadmap or a feature spec as separate files. You edit the file. You commit. You edit again. That's how humans already work on docs, and trying to impose past/present/future state on top of that is fighting the tool (git) that already solved the problem.
 
 The living-document shape captures the majority of `.archeia/` because most project knowledge is this: the current state of a thing, evolved over time, with history preserved by the version control system you're already using.
 
@@ -133,7 +133,7 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 
 - **`execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
 - **`execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
-- **`business/drafts/`** — draft proposals. Either advance into a living document (draft becomes part of `vision.md` or `product.md` and the draft is deleted) or are discarded outright (retention window 0 — pruned on rejection).
+- **`business/drafts/`** — draft proposals. Either advance into a living document (draft becomes part of `vision.md`, `product.md`, `roadmap.md`, a requirement, or a feature spec and the draft is deleted) or are discarded outright (retention window 0 — pruned on rejection).
 - **`growth/experiments/` (running only)** — an experiment's running state is transient. Once it concludes, it either gets promoted to an accumulating record (shape 2) with its outcome, or — if no learning is worth keeping — it's pruned entirely.
 
 ### Rules
@@ -214,15 +214,15 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
 | **`business/`** | `vision/vision.md`, `strategy/strategy.md` | `landscape/*.md` | `drafts/*.md` |
-| **`product/`** | `product.md`, `design/*.md` | `decisions/*.md` | (none) |
-| **`codebase/`** | `architecture/*`, `standards/*`, `guide.md`, `scan-report.md`, `git-report.md`, `diagrams/*` | (none in the canonical layout) | (none) |
+| **`product/`** | `product.md`, `roadmap.md`, `features/*.md`, `requirements/*.md`, `design/*.md` | `feedback/*.md`, `decisions/*.md` | (none) |
+| **`codebase/`** | `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd` | (none in the canonical layout) | (none) |
 | **`growth/`** | `metrics/current.md` | `experiments/*.md` (concluded, with learnings), `channels/*.md` (retired) | `experiments/*.md` (running), `channels/*.md` (active) |
 | **`execution/`** | (none — execution is all action, no living summary doc) | `retros/*.md` | `tasks/*.md`, `plans/*.md`, `projects/*.md` |
 
 A few observations that fall out:
 
-- **`codebase/` is purely living documents.** No accumulation, no transience. All of it is one-file-per-concept, edited in place, history in git.
-- **`product/` has no transient state at all.** Product spec evolves (living), decisions accumulate (ADRs), and that's it. Drafts proposing product changes live in `business/drafts/`, not `product/`.
+- **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are regenerated in place, with history in git.
+- **`product/` has no transient state at all.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Rough opportunities live in `business/drafts/`; accepted product work becomes living product truth or an accumulating decision.
 - **`execution/` is the only domain with heavy transient presence.** Tasks, plans, projects — these are the things that flow.
 - **`growth/` has all three shapes.** Current metrics are living, channel and experiment records are accumulating, running experiments are transient.
 
@@ -230,11 +230,11 @@ A few observations that fall out:
 
 ## 8. Codebase is purely living documents
 
-> **Named principle (upgraded).** The `codebase/` domain contains only living documents. It has no accumulating records and no transient artifacts. Every file in `codebase/` is edited in place, and every version of every file is preserved by git.
+> **Named principle (upgraded).** The `codebase/` domain contains only living repo-intelligence artifacts. It has no accumulating records and no transient artifacts. Every file in `.archeia/codebase/` is edited in place, and every version of every file is preserved by git.
 
 The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The three-shapes model upgrades this to a stronger claim: codebase is purely shape 1. It doesn't plan, it doesn't accumulate decisions (those live in `product/decisions/`), and it doesn't have tasks or drafts (those live in `execution/` and `business/`). It is the current observed state of the code, always, and nothing more.
 
-This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living docs, and commits them. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth.
+This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living repo intelligence, and commits it. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth.
 
 ---
 
@@ -299,29 +299,33 @@ pr: https://github.com/Hugopeck/archeia/pull/42
 # git preserves the full history forever.
 ```
 
-### A product spec (shape 1)
+### A product feature spec (shape 1)
 
 ```markdown
 # 2026-01-15: First version
 ---
-title: Product Spec
+title: Team Invites
+feature_id: FEAT-team-invites
+status: planned
 updated_at: 2026-01-15T09:00:00Z
 ---
 
-# Product Spec
-...initial features, constraints, priorities...
+# Team Invites
+...user problem, acceptance criteria, dependencies, evidence...
 
 # 2026-04-12: Spec has grown
 ---
-title: Product Spec
+title: Team Invites
+feature_id: FEAT-team-invites
+status: active
 updated_at: 2026-04-12T17:00:00Z
 ---
 
-# Product Spec
-...new features added, some edited, priorities reshuffled...
+# Team Invites
+...acceptance criteria refined, dependencies updated, evidence linked...
 ```
 
-Same file. Same path. Edited in place. `git log product.md` shows every version. No superseded files cluttering the directory. The spec is a living document and the living document shape gets out of git's way.
+Same file. Same path. Edited in place. `git log product/features/team-invites.md` shows every version. No superseded files cluttering the directory. The feature spec is a living document and the living document shape gets out of git's way.
 
 ### An ADR (shape 2)
 
@@ -385,11 +389,11 @@ superseded_by: decisions/20260801-0900-schema-per-tenant.md
 
 Both files stay on disk forever. Future readers can follow the `supersedes` / `superseded_by` links in either direction to understand the full history of the isolation decision.
 
-### A scan report (shape 1)
+### A generated scan report view (shape 1)
 
 ```markdown
-# codebase/scan-report.md always has one file.
-# Regeneration edits in place; git holds history.
+# codebase/analysis/repository.md always has one generated analysis.
+# Regeneration edits the view in place; git holds history if committed.
 
 # 2026-04-01 run:
 ---
@@ -412,7 +416,7 @@ skill: archeia:scan-repo
 ...LOC, deps, test coverage, README gaps... (updated numbers)
 ```
 
-No `scan-report-2026-04-01.md` sitting next to the current one. No archive directory. Just one file, regenerated, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:codebase/scan-report.md`.
+No `repository-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated analysis, regenerated in place, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:.archeia/codebase/analysis/repository.md`.
 
 ### A draft that advances (shape 3 → shape 1)
 

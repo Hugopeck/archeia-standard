@@ -210,7 +210,7 @@ function consolidate(sources, target_path):
     Create(target_path, draft.frontmatter, draft.body)
 ```
 
-`consolidate` is **latent**. It is the ONLY kernel operation that MUST invoke a model. Distributions SHOULD implement consolidate as multiple specialized skills (e.g., `archeia:write-tech-docs`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than a single generic skill, because narrow consolidation scopes produce better output and cost less.
+`consolidate` is **latent**. It is the ONLY kernel operation that MUST invoke a model. Distributions SHOULD implement consolidate as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than a single generic skill, because narrow consolidation scopes produce better output and cost less.
 
 The operation is semantically idempotent: two runs of the same consolidation over the same inputs MUST produce semantically equivalent outputs. Exact prose MAY differ (the operation is latent), but the set of claims and citations MUST be the same up to paraphrase.
 

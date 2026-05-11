@@ -29,7 +29,7 @@ The kernel was already designed in line with the synthesis doc's twelve principl
 | **P4** — Verification must approach perfection | Six JSON Schemas under `contracts/` plus the `archeia:validate` operation. Conformance is checkable, not vibes. (This is the load-bearing contribution `TEST-MATRIX.md` formalizes.) |
 | **P5** — Mechanical guardrails beat polite instructions | The schemas + `archeia:validate` + the `archeia-enforcement` distribution flavor turn Archeia rules into CI checks, not prose. |
 | **P6** — Context is curated, not stuffed | The five-domain layout *is* the curation policy. An agent doing product work reads `product/`; it does not need to sift through the whole tree. |
-| **P7** — Plan before doing | The `business → product → execution` contract chain forces planning to precede execution, mechanically. |
+| **P7** — Plan before doing | The `business → product → execution` contract chain forces planning to precede execution, mechanically: business drafts advance into product truth, and execution reads roadmap plus feature specs before creating work. |
 | **P8** — Long sessions degrade — design for shifts, not marathons | Living documents survive sessions; accumulating records survive forever; transient artifacts have explicit retention windows. The shift change is the model. |
 
 These principles are not Archeia's contribution. They are the shared ground.
@@ -98,24 +98,24 @@ The corpus does not provide a vocabulary anchored this way. Archeia does, and th
 
 OpenAI's harness-engineering post argues for **structured documentation architecture** — design specs, execution plans, architectural maps, all cross-linked, all CI-validated, all in one tree (`docs/`) the agent reads and writes. Documentation IS the substrate. There is no separate hidden tree.
 
-Archeia rejects this for its target audience. The substrate is for *agent coordination state*; documentation is one of the artifact types it carries, but it is not the substrate. Concretely:
+Archeia rejects this for its target audience. The substrate is for *agent coordination state and AI-maintained repo intelligence*; documentation is a human-facing publication surface that may draw from the substrate, but it is not the substrate. Concretely:
 
 - **Operational state** — drafts, vision, ADRs, growth experiments, tasks, retros — lives in `.archeia/`. It has owner rules, lifecycle shapes, retention windows, and contract schemas. It is not meant for human publication.
-- **Prose documentation** — architecture explanations, contributor guides, READMEs — lives in `docs/`. It has no Archeia-imposed lifecycle. It is what every existing project already has, and Archeia adoption does not require reorganizing it.
-- **Contract artifacts that bridge the two** — for example the C4 JSON files that `product/decisions/` reads from `codebase/` — live in `.archeia/codebase/`. The prose architecture doc that humans read lives in `docs/architecture.md`.
+- **AI-maintained repo intelligence** — C4 model contracts, repo analyses, inferred conventions, developer guides, and generated views — lives in `.archeia/codebase/`. It is evidence-cited, regenerable, and safe for agents to update as the code changes.
+- **Prose documentation** — public architecture explanations, contributor guides, READMEs — lives in `docs/`. It is what every existing project already has, and Archeia adoption does not require reorganizing it. Canonical Archeia does not write this tree; publication bridges are project policy, not standard behavior.
 
 This is a deliberate departure from the OpenAI position. The trade-off is real:
 
-| OpenAI "everything in `docs/`" | Archeia "split substrate from documentation" |
+| OpenAI "everything in `docs/`" | Archeia "split repo intelligence from documentation" |
 |---|---|
 | One tree to maintain | Two trees, but each with a clear purpose |
-| Native fit with documentation tooling (MkDocs, Docusaurus) | Documentation tooling untouched; `.archeia/` invisible to it |
+| Native fit with documentation tooling (MkDocs, Docusaurus) | Documentation tooling untouched; `.archeia/` can feed it explicitly |
 | Greenfield-friendly | Brownfield-friendly — adoption does not reorganize existing `docs/` |
-| Agents and humans share one surface | Agents have a predictable contract surface; humans have a conventional one |
+| Agents and humans share one surface | Agents have a predictable contract surface; humans have a conventional documentation surface |
 
 The OpenAI position works in their context — homogeneous greenfield projects, an engineering organization that can rebuild documentation conventions on demand. Archeia's audience is solo builders and small teams adopting into projects that already have a `docs/`. Telling them "your `docs/` is now Archeia-shaped" is a much heavier lift than "drop an empty `.archeia/` at the root."
 
-This is also what lets Archeia accommodate documentation tooling without owning it. A solo builder can publish `docs/` as a doc site via MkDocs and never expose `.archeia/` to readers. The collaboration substrate stays operational; the publication surface stays human-curated.
+This is also what lets Archeia accommodate documentation tooling without owning it. A solo builder can publish `docs/` as a doc site via MkDocs and never expose `.archeia/` to readers. The `.archeia/codebase/` surface stays AI-maintained and regenerable; the publication surface stays human-curated.
 
 ### 4.5 An in-repo substrate that runs on git — no service required
 
@@ -136,7 +136,7 @@ The contribution is not "git is good." That is well-known. The contribution is t
 | Durable state should live outside the context — but what shape does it take? | Three lifecycle shapes (living / accumulating / transient), each with explicit rules for edit, history, and retention. |
 | Coordination needs an information architecture spanning a whole repo — what is it? | Five domains (business / product / codebase / growth / execution), one owner per domain, cross-domain reads via declared contracts. |
 | The vendor vocabularies for "memory," "context," "rules," "skills" disagree — what's the canon? | A taxonomy grounded in Tulving (1972) and CoALA (Sumers et al. 2023), specified in `ONTOLOGY.md`. |
-| OpenAI says everything goes in `docs/` — should Archeia agree? | No. Operational state lives in `.archeia/`; prose documentation stays in `docs/`. Splitting the two reduces adoption friction and preserves lifecycle clarity. |
+| OpenAI says everything goes in `docs/` — should Archeia agree? | No. Operational state and AI-maintained repo intelligence live in `.archeia/`; human-facing documentation stays in `docs/`. Splitting the two reduces adoption friction and preserves lifecycle clarity. |
 | The most elegant coordination architecture needs a hosted service — what if there isn't one? | A file-system-and-git substrate that meets the same goals without infrastructure, contingent on the constraints above. |
 
 ---

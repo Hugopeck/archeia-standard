@@ -53,7 +53,9 @@ Archeia Solo's `execution/` domain replaces the ticket-system-for-yourself use c
 
 Vector DBs and memory services are the default answer to "give AI agents memory." They work. Archeia's claim is narrower: they are usually the wrong *starting point* for durable project knowledge.
 
-Agents don't usually need semantic search over their memory — they need to find the exact canonical spec, the exact locked decision, the exact current task. Paths and frontmatter beat embeddings for this. The directory `.archeia/product/product.md` is always the product spec. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
+Agents don't usually need semantic search over their memory — they need to find the exact canonical product index, roadmap, feature spec, decision, or current task. Paths and frontmatter beat embeddings for this. The product entry point is always `.archeia/product/product.md`; executable feature specs live under `.archeia/product/features/`. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
+
+If the product truth depends on an external tool, the local artifact cites that tool through `external_sources` and records how recently it was read. The external tool remains a working surface; `.archeia/product/` remains the durable contract agents plan from.
 
 Vector databases also have no native concept of ownership, lifecycle shape, or cross-domain contracts — the things Archeia makes central. You end up building those on top.
 
@@ -71,18 +73,18 @@ Archeia is compatible with RAG — you can build a vector index over `.archeia/`
 
 Knowledge graphs model typed relationships between entities. They're powerful for queries like "which components depend on which databases" or "which features require which permissions."
 
-Archeia's `codebase/architecture/*.json` files encode a lightweight knowledge graph (the C4 model with typed relationships). You can load them into a formal graph database if you want to run Cypher queries. But most of the time, the agent reading them needs to answer one specific question ("is this architecture feasible for that draft feature?") and a structured JSON file with `evidence:` citations is enough.
+Archeia's `.archeia/codebase/model/c4/*.json` files encode a lightweight knowledge graph (the C4 model with typed relationships). You can load them into a formal graph database if you want to run Cypher queries. But most of the time, the agent reading them needs to answer one specific question ("is this architecture feasible for that draft feature?") and a structured JSON file with `evidence:` citations is enough.
 
 Archeia is compatible with knowledge graph tooling but doesn't require it.
 
 ### ...docs as code (Docusaurus, MkDocs, arc42, Diataxis)?
 
-Docs-as-code tools render static sites from markdown. Archeia uses markdown for the same reason — human-readable, agent-parseable, git-native. But:
+Docs-as-code tools render static sites from markdown. Archeia uses markdown where the artifact is meant for prose, but the canonical software codebase domain also uses JSON for machine-readable repo intelligence. The split is about audience and ownership, not file type:
 
-- Docs-as-code tools optimize for human-reader rendering (search, navigation, beautiful HTML).
-- Archeia optimizes for agent-writer and multi-shape lifecycle.
+- `docs/` optimizes for human-reader rendering, onboarding, publication, and conventional documentation workflows.
+- `.archeia/codebase/` optimizes for AI-maintained, evidence-cited repo understanding that other domains can consume by contract.
 
-They're compatible. You can point MkDocs at `.archeia/` and get a rendered docs site. But Archeia's primary consumer is the agent reading the raw files, not the human browsing a rendered site. The rendering layer is optional, not central.
+They're compatible. You can publish `docs/` with MkDocs or Docusaurus. Archeia does not require or write that tree for canonical conformance; generated codebase intelligence lives in `.archeia/codebase/`.
 
 ### ...ADR repositories (adr-tools, MADR)?
 
@@ -104,6 +106,8 @@ The kernel is framework-neutral by design. It's what makes Archeia an open stand
 
 "Archeia" comes from the Greek word for archives — a place where authoritative records are kept. The name signals intent: this is the canonical knowledge store, not a generic docs folder. The dot prefix keeps it out of the way in file explorers while remaining visible to agents.
 
+The most important boundary is `docs/` versus `.archeia/codebase/`. `docs/` is where human-facing documentation and publication live. `.archeia/codebase/` is where AI-maintained, evidence-cited repo intelligence lives. Canonical Archeia does not write `docs/`.
+
 ### Can I use only some domains?
 
 Yes. The five domains are the canonical software answer, but not every project uses all of them. A weekend side project might only have `product/` and `execution/` populated, with `business/`, `growth/`, and `codebase/` sitting mostly empty. The kernel requires all five to exist (conformance rule) but allows any of them to be nearly empty in practice.
@@ -120,7 +124,7 @@ You have three options:
 
 ### Is `.archeia/` committed to git?
 
-Yes. The entire point is that project knowledge is versioned with the code. That said, some regenerable files (like `codebase/scan-report.md`) can be `.gitignored` if you prefer to regenerate them on CI rather than commit them — but the default is to commit everything.
+Yes. The entire point is that project knowledge is versioned with the code. Generated codebase intelligence under `.archeia/codebase/` is committed by default. `docs/` remains normal project documentation and is outside canonical conformance.
 
 ### Can I use Archeia on a non-software project?
 

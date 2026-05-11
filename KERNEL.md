@@ -38,7 +38,7 @@ The kernel does **not** define:
 - Which VCS provides history (git is the reference implementation; any versioned storage works)
 - Which approval workflow governs state transitions (policy, not spec)
 - Which audience reads the artifacts (humans, agents, both — all permitted)
-- **Where prose documentation lives.** `.archeia/` is for operational state and contract artifacts. Prose documentation that humans read — architecture explanations, contributor guides, design narratives — belongs in the project's conventional `docs/` tree, not under `.archeia/`. Distributions MAY designate colocated files in `docs/` as owned by an Archeia domain (see `SCHEMA.md` §5), but those files are not part of the kernel's contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the rationale.
+- **Where prose documentation lives.** `.archeia/` is for operational state, contract artifacts, and AI-maintained generated intelligence. In the canonical software application, `.archeia/codebase/` is the AI-maintained repo-intelligence surface, including machine-readable models and generated analyses. Human-owned publication docs — architecture narratives, contributor guides, public docs — belong in the project's conventional `docs/` tree. The kernel does not specify writes to `docs/`; any publication bridge from `.archeia/` to `docs/` is project or distribution policy outside the canonical contract surface. See [`POSITIONING.md`](POSITIONING.md) §4.4 for the rationale.
 
 The [canonical software-project application of the kernel](SCHEMA.md) commits to five specific domains (`business/`, `product/`, `codebase/`, `growth/`, `execution/`) for software projects, but that commitment lives in `SCHEMA.md`, not here. The kernel itself is domain-agnostic above the minimum.
 
@@ -90,9 +90,9 @@ A **contract** is a declared read relationship between two domains. For example:
 
 The three contracts the [canonical software application](SCHEMA.md) enforces:
 
-- `business/drafts/*.md` → `product/product.md` (via `draft.schema.json`)
-- `product/product.md` → `execution/tasks/*.md` (via `product.schema.json`)
-- `codebase/architecture/*.json` → `product/decisions/*.md` (via `c4.schema.json`)
+- `business/drafts/*.md` → `product/{product.md,roadmap.md,requirements/*.md,features/*.md,decisions/*.md}` (via `draft.schema.json`)
+- `product/{product.md,roadmap.md,features/*.md}` → `execution/{projects/*.md,tasks/*.md}` (via `product.schema.json`)
+- `codebase/model/c4/*.json` → `product/decisions/*.md` (via `c4.schema.json`)
 
 ### 2.8 Writer / Reader
 
@@ -108,7 +108,7 @@ Every conforming implementation MUST uphold these seven invariants. Violation of
 2. **Every artifact MUST belong to exactly one owning domain.** No shared ownership, no multi-domain artifacts, no cross-domain writes.
 3. **Every artifact MUST have exactly one lifecycle shape** — living, accumulating, or transient. The artifact's shape determines which rules apply to it; an artifact MUST NOT switch shapes during its lifetime.
 4. **Reads MUST be free; writes MUST be owner-only.** Any agent, skill, or human MAY read any artifact under `.archeia/`. Only the declared domain owner MAY write. Cross-domain coordination MUST happen through reads of contract-conforming artifacts, not through cross-domain writes.
-5. **Every factual claim MUST cite a source.** Descriptive artifacts (scan reports, architecture docs derived from code, git history analyses) MUST cite the file paths or commits their claims come from. Prescriptive artifacts (vision, strategy, decisions) MUST cite their rationale and the prior artifacts they build on. Claims that cannot be evidenced MUST be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->` rather than fabricated.
+5. **Every factual claim MUST cite a source.** Descriptive artifacts (codebase analyses, architecture models derived from code, git history analyses) MUST cite the file paths or commits their claims come from. Prescriptive artifacts (vision, strategy, decisions) MUST cite their rationale and the prior artifacts they build on. Claims that cannot be evidenced MUST be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->` rather than fabricated.
 6. **Cross-domain dependencies MUST be declared contracts, not inferred.** If domain B reads from domain A, there MUST be a JSON Schema under `standard/contracts/` describing the exact frontmatter and structure B relies on. Implementations MUST NOT infer cross-domain dependencies that are not declared.
 7. **History MUST be preserved.** Living documents MUST preserve history in git. Accumulating records MUST preserve history on disk forever. Transient artifacts MUST preserve history in git after pruning. No history MAY be destroyed.
 
@@ -198,9 +198,9 @@ The operation's return type is distribution-defined (a structured list, a timeli
 
 **Examples:**
 
-- `archeia:write-tech-docs` reads source files, config, and git history, and consolidates them into `.archeia/codebase/architecture/architecture.md`. Every architectural claim cites at least one source file path.
-- `archeia:scan-git` reads git history and consolidates it into `.archeia/codebase/git-report.md`. Every claim about contributors or churn cites the git log.
-- `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/architecture/` and consolidates them into updates to `.archeia/product/product.md` plus a new entry in `.archeia/product/decisions/`.
+- `archeia:write-codebase-model` reads source files, config, and git history, updates `.archeia/codebase/model/c4/*.json`, and MAY update `.archeia/codebase/views/architecture/*.mmd`. Every architectural claim cites at least one source file path.
+- `archeia:scan-git` reads git history and consolidates it into `.archeia/codebase/analysis/history.md`. Every claim about contributors or churn cites the git log.
+- `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/model/c4/` and consolidates them into updates to `.archeia/product/product.md`, `.archeia/product/roadmap.md`, `.archeia/product/features/*.md`, or a new entry in `.archeia/product/decisions/`.
 - `archeia:clarify-idea` reads the operator's rough idea, prior drafts, and optionally landscape research, and consolidates them into a new business draft.
 
 Most of what Archeia skills actually do is consolidation. Naming the operation explicitly makes it possible to specify its contract, measure its cost, and audit its evidence discipline.
@@ -218,7 +218,7 @@ Every conforming distribution MUST provide these six skills under its own namesp
 | **`archeia:advance`** | Deterministic | The `advance` kernel operation. |
 | **`archeia:complete`** | Deterministic | The `complete` kernel operation. |
 | **`archeia:prune`** | Deterministic | Walk all transient artifacts, identify expired ones (past-state status with terminal timestamp + retention window elapsed), and delete them. Each deletion is a git commit. Distributions may wrap this as a scheduled maintenance skill. |
-| **`archeia:consolidate`** | **Latent** | The `consolidate` kernel operation. Distributions typically implement this as multiple specialized skills (e.g., `archeia:write-tech-docs`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than as a single generic skill. A generic `archeia:consolidate` is optional; specialized consolidation skills that honor the `consolidate` contract are required. |
+| **`archeia:consolidate`** | **Latent** | The `consolidate` kernel operation. Distributions typically implement consolidate as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than as a single generic skill. A generic `archeia:consolidate` is optional; specialized consolidation skills that honor the `consolidate` contract are required. |
 
 `supersede` and `evolve` are **optional inherent skills** — recommended for convenience but not mandatory. A distribution may inline their effects into other skills (e.g., `review-draft` internally supersedes a prior decision).
 
@@ -329,7 +329,7 @@ The harness owns **compaction** — the moment when the context window fills up 
 
 > **Writes to `.archeia/` MUST be flushed to disk before compaction may discard them from in-context state.**
 
-If a harness compacts away a pending write to `.archeia/product/product.md`, that's a harness bug, not an Archeia problem. The filesystem is the durable store; the harness's working memory is ephemeral by design. Compaction policy and persistence guarantees are separate concerns, and the kernel draws this line explicitly so that harness authors know where their responsibility ends and Archeia's begins.
+If a harness compacts away a pending write to `.archeia/product/features/team-invites.md`, that's a harness bug, not an Archeia problem. The filesystem is the durable store; the harness's working memory is ephemeral by design. Compaction policy and persistence guarantees are separate concerns, and the kernel draws this line explicitly so that harness authors know where their responsibility ends and Archeia's begins.
 
 ### What must survive compaction
 
@@ -380,12 +380,14 @@ parameters:
   - name: codebase_context
     type: directory
     required: false
-    default: .archeia/codebase/architecture/
+    default: .archeia/codebase/model/c4/
 reads:
   - .archeia/business/drafts/
-  - .archeia/codebase/architecture/
+  - .archeia/codebase/model/c4/
 writes:
   - .archeia/product/product.md
+  - .archeia/product/roadmap.md
+  - .archeia/product/features/
   - .archeia/product/decisions/
 operation: consolidate
 ---

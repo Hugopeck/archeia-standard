@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/draft.schema.json",
   "title": "Business Draft",
-  "description": "Frontmatter contract for business/drafts/*.md — the business → product contract. Drafts are transient artifacts that either advance into a living document (vision.md or product.md) or are discarded.",
+  "description": "Frontmatter contract for business/drafts/*.md — the business → product contract. Drafts are transient artifacts that either advance into a living document (vision.md, product.md, roadmap.md, requirements/*.md, or features/*.md) or are discarded.",
   "allOf": [
     { "$ref": "transient-artifact.schema.json" }
   ],
@@ -29,7 +29,7 @@
     },
     "advanced_into": {
       "type": ["string", "null"],
-      "description": "Relative path to the living document this draft was merged into (e.g., 'business/vision/vision.md' or 'product/product.md')."
+      "description": "Relative path to the living document this draft was merged into (e.g., 'business/vision/vision.md', 'product/product.md', 'product/roadmap.md', 'product/requirements/onboarding.md', or 'product/features/onboarding.md')."
     }
   },
   "required": ["title", "created", "status"],

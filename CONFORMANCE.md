@@ -65,7 +65,7 @@ A conforming distribution MUST provide all six operations, either as named skill
 | `prune` | Delete transient artifacts whose retention window has elapsed since their terminal timestamp. Each deletion MUST be a git commit. | Be exposed as a named skill `archeia:prune` and runnable on a schedule. | Be wrapped as a maintenance skill (e.g., `archeia:tidy`). |
 | `supersede` | Write a new accumulating record with `supersedes: <old-path>`; mutate the old record's `status` from `active` to `superseded` and add `superseded_by: <new-path>`. Both records MUST remain on disk. | Be exposed as a named skill. | Be inlined into other skills (e.g., `review-draft` superseding a prior decision). |
 | `evolve` | Return the history of a named concept: `git log` for living, supersession chain for accumulating, on-disk + git for transient. | Be exposed as a named skill. | Return any structured form (timeline, diff, list) the distribution chooses. |
-| `consolidate` | Read source artifacts and produce a target artifact that integrates their content with cited evidence. Target MUST be living or accumulating. Every substantive claim MUST cite at least one source. Operation MUST be semantically idempotent. When the target is a living document, `last_verified` MUST be updated. | Be implemented as multiple specialized skills (e.g., `archeia:write-tech-docs`, `archeia:scan-git`) rather than one generic skill. | Track consolidation cost in distribution telemetry. |
+| `consolidate` | Read source artifacts and produce a target artifact that integrates their content with cited evidence. Target MUST be living or accumulating. Every substantive claim MUST cite at least one source. Operation MUST be semantically idempotent. When the target is a living document, `last_verified` MUST be updated. | Be implemented as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`) rather than one generic skill. | Track consolidation cost in distribution telemetry. |
 
 ---
 
@@ -130,9 +130,10 @@ A repo claiming to use the canonical software application from [`SCHEMA.md`](SCH
 
 - [ ] Exactly the five canonical domains exist under `.archeia/`: `business/`, `product/`, `codebase/`, `growth/`, `execution/`.
 - [ ] No domain directory outside the canonical five exists under `.archeia/`.
-- [ ] `.archeia/codebase/` contains only the C4 JSON contract artifacts listed in [`SCHEMA.md`](SCHEMA.md) §2.3 — no prose docs.
-- [ ] All three cross-domain contracts are enforced: `business → product` (via `draft.schema.json`), `product → execution` (via `product.schema.json`), `codebase → product/decisions` (via `c4.schema.json`).
-- [ ] Codebase-owned colocated files in `docs/` (per [`SCHEMA.md`](SCHEMA.md) §5) follow the same ownership rules; their absence is not a conformance failure.
+- [ ] `.archeia/codebase/` is the canonical AI-maintained repo-intelligence surface and contains only living artifacts: `model/c4/` for machine-readable contracts, plus generated `analysis/`, `conventions/`, `guide/`, and `views/` artifacts.
+- [ ] All three cross-domain contracts are enforced: `business → product` (via `draft.schema.json`), `product → execution` (via `product.schema.json` over `product/product.md`, `product/roadmap.md`, and `product/features/*.md`), `codebase → product/decisions` (via `c4.schema.json`).
+- [ ] Product artifacts that depend on external product sources cite those sources with extraction/freshness metadata; external tools are treated as evidence or working surfaces, not as replacements for local `.archeia/product/` contracts.
+- [ ] `docs/` is not required for software conformance and is not inspected by the canonical validator.
 
 ---
 

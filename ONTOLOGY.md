@@ -96,8 +96,8 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 | Tulving / Squire / Baddeley term | Archeia artifact shape | Examples |
 |---|---|---|
 | **Working memory** (Baddeley 1974) | (not in `.archeia/`; lives in the harness context window) | active session, current context window |
-| **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `codebase/architecture/*`, `business/vision/vision.md` |
-| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/*.md` |
+| **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/model/c4/*`, `codebase/analysis/*`, `business/vision/vision.md` |
+| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/*.md` |
 | **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:consolidate`, `archeia:clarify-idea` |
 | **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, `business/drafts/*.md` |
 
@@ -197,7 +197,7 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 
 **Canonical source:** memory consolidation (Müller & Pilzecker 1900; Squire & Alvarez 1995). Modern LLM-agent adoption as "knowledge consolidation" in MemoryAgentBench (Hu et al. 2025) and the Agent-Memory Survey.
 
-**Definition:** Read a set of source artifacts and produce or update a target artifact that integrates their content with cited evidence. The target is typically a living document (e.g., `architecture.md` consolidating source files, scan reports, and git history) or an accumulating record (e.g., a retrospective consolidating session traces).
+**Definition:** Read a set of source artifacts and produce or update a target artifact that integrates their content with cited evidence. The target is typically a living document (e.g., `.archeia/codebase/analysis/repository.md` consolidating source files, dependency data, and git history) or an accumulating record (e.g., a retrospective consolidating session traces).
 
 **Why this replaces "diarize":** The term "diarize" in Garry Tan's "Thin Harness, Fat Skills" (X post, April 10, 2026) is a metaphor stretched from **speaker diarization** (Tranter & Reynolds, "An overview of automatic speaker diarization systems," *IEEE TASLP* 14(5):1557–1565, 2006), which means "determining who spoke when" in an audio recording. This is a completely different operation — it's speaker identification, not synthesis from multiple sources. Using "diarize" to mean "synthesize structured judgment from many documents" is a category error that would fail peer review.
 
@@ -212,7 +212,7 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 - **Evidence rule:** every claim in the target must cite a source from the inputs. Claims that cannot be evidenced must be flagged in the target with `<!-- INSUFFICIENT EVIDENCE -->` rather than fabricated.
 - **Idempotence:** semantically idempotent. Two runs over the same inputs produce semantically equivalent outputs; exact text may differ.
 
-Most of what `archeia:write-tech-docs` actually does is consolidation (read source files, produce `codebase/architecture/architecture.md`). Most of what `archeia:scan-git` does is consolidation (read git history, produce `codebase/git-report.md`). We have been hand-waving this operation. Naming it makes the kernel honest.
+Most of what `archeia:write-codebase-model` actually does is consolidation (read source files, update `.archeia/codebase/model/c4/*.json`, and optionally render `.archeia/codebase/views/architecture/*.mmd`). Most of what `archeia:scan-git` does is consolidation (read git history and produce `.archeia/codebase/analysis/history.md`). We have been hand-waving this operation. Naming it makes the kernel honest.
 
 ### 4.7 `prune` operation
 
@@ -305,7 +305,7 @@ These four are the canonical framing of what a memory system must do to be usefu
 - Writes artifacts back to `.archeia/` according to the ownership rules in [`SCHEMA.md`](SCHEMA.md)
 - Guarantees that writes are flushed to disk before compaction may discard in-context state
 
-The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/product.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
+The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/features/team-invites.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
 
 ---
 
@@ -350,7 +350,7 @@ parameters:
     required: true
   - name: codebase_context
     type: directory
-    default: .archeia/codebase/architecture/
+    default: .archeia/codebase/model/c4/
 ---
 ```
 
