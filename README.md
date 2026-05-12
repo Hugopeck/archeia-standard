@@ -33,7 +33,6 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 - [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for semantic-memory documents
 - [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for episodic-memory records
 - [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for lifecycle artifacts
-- [`draft.schema.json`](contracts/draft.schema.json) — business → product contract
 - [`product.schema.json`](contracts/product.schema.json) — product → execution contract over the product index, roadmap, and feature specs
 - [`c4.schema.json`](contracts/c4.schema.json) — codebase → product contract (C4 model data)
 

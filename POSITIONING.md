@@ -29,7 +29,7 @@ The kernel was already designed in line with the synthesis doc's twelve principl
 | **P4** — Verification must approach perfection | Six JSON Schemas under `contracts/` plus the `archeia:validate` operation. Conformance is checkable, not vibes. (This is the load-bearing contribution `TEST-MATRIX.md` formalizes.) |
 | **P5** — Mechanical guardrails beat polite instructions | The schemas + `archeia:validate` + the `archeia-enforcement` distribution flavor turn Archeia rules into CI checks, not prose. |
 | **P6** — Context is curated, not stuffed | The five-domain layout *is* the curation policy. An agent doing product work reads `product/`; it does not need to sift through the whole tree. |
-| **P7** — Plan before doing | The `business → product → execution` contract chain forces planning to precede execution, mechanically: business drafts advance into product truth, and execution reads roadmap plus feature specs before creating work. |
+| **P7** — Plan before doing | The `business → product → execution` flow forces planning to precede execution, mechanically: product truth is consolidated from business context, and execution reads roadmap plus feature specs before creating work. |
 | **P8** — Long sessions degrade — design for shifts, not marathons | Living documents survive sessions; accumulating records survive forever; transient artifacts have explicit retention windows. The shift change is the model. |
 
 These principles are not Archeia's contribution. They are the shared ground.
@@ -100,7 +100,7 @@ OpenAI's harness-engineering post argues for **structured documentation architec
 
 Archeia rejects this for its target audience. The substrate is for *agent coordination state and AI-maintained repo intelligence*; documentation is a human-facing publication surface that may draw from the substrate, but it is not the substrate. Concretely:
 
-- **Operational state** — drafts, vision, ADRs, growth experiments, tasks, retros — lives in `.archeia/`. It has owner rules, lifecycle shapes, retention windows, and contract schemas. It is not meant for human publication.
+- **Operational state** — vision, ADRs, growth experiments, tasks, retros, and distribution-defined proposals — lives in `.archeia/`. It has owner rules, lifecycle shapes, retention windows, and contract schemas. It is not meant for human publication.
 - **AI-maintained repo intelligence** — C4 model contracts, repo analyses, inferred conventions, developer guides, and generated views — lives in `.archeia/codebase/`. It is evidence-cited, regenerable, and safe for agents to update as the code changes.
 - **Prose documentation** — public architecture explanations, contributor guides, READMEs — lives in `docs/`. It is what every existing project already has, and Archeia adoption does not require reorganizing it. Canonical Archeia does not write this tree; publication bridges are project policy, not standard behavior.
 

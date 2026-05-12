@@ -88,9 +88,8 @@ The kernel ships base schemas for the three shapes (`living-doc.schema.json`, `a
 
 A **contract** is a declared read relationship between two domains. For example: "Domain B reads artifact X from domain A, which guarantees frontmatter fields Y, Z and body sections P, Q." Contracts live as JSON Schema files under `standard/contracts/`.
 
-The three contracts the [canonical software application](SCHEMA.md) enforces:
+The two contracts the [canonical software application](SCHEMA.md) enforces:
 
-- `business/drafts/*.md` → `product/{product.md,roadmap.md,requirements/*.md,features/*.md,decisions/*.md}` (via `draft.schema.json`)
 - `product/{product.md,roadmap.md,features/*.md}` → `execution/{projects/*.md,tasks/*.md}` (via `product.schema.json`)
 - `codebase/model/c4/*.json` → `product/decisions/*.md` (via `c4.schema.json`)
 
@@ -200,8 +199,8 @@ The operation's return type is distribution-defined (a structured list, a timeli
 
 - `archeia:write-codebase-model` reads source files, config, and git history, updates `.archeia/codebase/model/c4/*.json`, and MAY update `.archeia/codebase/views/architecture/*.mmd`. Every architectural claim cites at least one source file path.
 - `archeia:scan-git` reads git history and consolidates it into `.archeia/codebase/analysis/history.md`. Every claim about contributors or churn cites the git log.
-- `archeia:review-draft` reads a `business/drafts/*.md` proposal plus `.archeia/codebase/model/c4/` and consolidates them into updates to `.archeia/product/product.md`, `.archeia/product/roadmap.md`, `.archeia/product/features/*.md`, or a new entry in `.archeia/product/decisions/`.
-- `archeia:clarify-idea` reads the operator's rough idea, prior drafts, and optionally landscape research, and consolidates them into a new business draft.
+- `archeia:review-product` reads business context plus `.archeia/codebase/model/c4/` and consolidates them into updates to `.archeia/product/product.md`, `.archeia/product/roadmap.md`, `.archeia/product/features/*.md`, or a new entry in `.archeia/product/decisions/`.
+- `archeia:clarify-idea` reads the operator's rough idea and optionally business landscape research, and consolidates it into the appropriate living document, accumulating record, or distribution-defined transient artifact.
 
 Most of what Archeia skills actually do is consolidation. Naming the operation explicitly makes it possible to specify its contract, measure its cost, and audit its evidence discipline.
 
@@ -218,9 +217,9 @@ Every conforming distribution MUST provide these six skills under its own namesp
 | **`archeia:advance`** | Deterministic | The `advance` kernel operation. |
 | **`archeia:complete`** | Deterministic | The `complete` kernel operation. |
 | **`archeia:prune`** | Deterministic | Walk all transient artifacts, identify expired ones (past-state status with terminal timestamp + retention window elapsed), and delete them. Each deletion is a git commit. Distributions may wrap this as a scheduled maintenance skill. |
-| **`archeia:consolidate`** | **Latent** | The `consolidate` kernel operation. Distributions typically implement consolidate as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than as a single generic skill. A generic `archeia:consolidate` is optional; specialized consolidation skills that honor the `consolidate` contract are required. |
+| **`archeia:consolidate`** | **Latent** | The `consolidate` kernel operation. Distributions typically implement consolidate as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-product`) rather than as a single generic skill. A generic `archeia:consolidate` is optional; specialized consolidation skills that honor the `consolidate` contract are required. |
 
-`supersede` and `evolve` are **optional inherent skills** — recommended for convenience but not mandatory. A distribution may inline their effects into other skills (e.g., `review-draft` internally supersedes a prior decision).
+`supersede` and `evolve` are **optional inherent skills** — recommended for convenience but not mandatory. A distribution may inline their effects into other skills (e.g., `review-product` internally supersedes a prior decision).
 
 ---
 
@@ -279,9 +278,6 @@ domains:
     reads: [product, codebase]
 
 contracts:
-  - from: business
-    to: product
-    schema: standard/contracts/draft.schema.json
   - from: product
     to: execution
     schema: standard/contracts/product.schema.json
@@ -306,7 +302,7 @@ Declared alongside the domain entries in `standard/domains.yaml` or in a separat
 Enforceable schemas for every artifact type the distribution uses. At minimum:
 
 - The kernel's three base schemas (`living-doc.schema.json`, `accumulating-record.schema.json`, `transient-artifact.schema.json`)
-- The distribution's cross-domain contract schemas (e.g., `draft.schema.json`, `product.schema.json`, `c4.schema.json`)
+- The distribution's cross-domain contract schemas (e.g., `product.schema.json`, `c4.schema.json`)
 - Any per-artifact-type schema the distribution wants to enforce (e.g., `task.schema.json`, `adr.schema.json`)
 
 ### 8.4 Implementations of the six inherent skills and the archivist agent
@@ -369,20 +365,20 @@ Only `name` and `description` are strictly required. `name` must be unique withi
 
 ```yaml
 ---
-name: review-draft
+name: review-product
 description: ...
 version: 0.1.0
 parameters:
-  - name: draft_path
+  - name: product_path
     type: file
     required: true
-    description: Path to the business draft under .archeia/business/drafts/
+    description: Path to the product artifact under .archeia/product/
   - name: codebase_context
     type: directory
     required: false
     default: .archeia/codebase/model/c4/
 reads:
-  - .archeia/business/drafts/
+  - .archeia/business/
   - .archeia/codebase/model/c4/
 writes:
   - .archeia/product/product.md
@@ -432,7 +428,7 @@ The kernel is small by design. It does not:
 - **Mandate a specific agent framework.** Claude Code, Cursor, custom loops — all fine as long as they produce conforming artifacts.
 - **Provide a UI.** Humans use their editor; agents use their tools. No web dashboard, no SPA, no electron app. If a distribution wants to add a UI, it's a distribution concern.
 - **Replace git.** Git is the history layer. The kernel assumes history exists; it does not provide history.
-- **Define approval workflows.** "Who can advance a draft to locked?" is a policy question, not a kernel question. Distributions layer approval on top via status transitions tied to git PR reviews, human confirmation, or automated checks.
+- **Define approval workflows.** "Who can accept a proposal?" is a policy question, not a kernel question. Distributions layer approval on top via status transitions tied to git PR reviews, human confirmation, or automated checks.
 - **Provide search, full-text indexing, or embeddings.** The kernel is not a knowledge graph or a vector store. If you want search, glob and grep are the default; layer anything fancier on top yourself.
 
 The kernel stays small so it can be implemented in a weekend, so it can be cited by tools from different vendors without intellectual-property friction, and so it can survive ten years of changing agent frameworks without needing a major version bump.

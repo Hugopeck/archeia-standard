@@ -64,11 +64,10 @@ For the **canonical software application** specifically:
 
 | ID | Check | How |
 |---|---|---|
-| C4 | `business/drafts/*.md` validate against `draft.schema.json`. | JSON Schema validate |
-| C5 | The product execution surface validates against `product.schema.json`: `product/product.md` has Product Summary, Active Scope, Feature Index, Constraints, Priority Model; `product/roadmap.md` has Now, Next, Later; `product/features/*.md` have executable feature specs with stable feature IDs and acceptance criteria. | JSON Schema + body parse |
-| C6 | Every `codebase/model/c4/*.json` validates against `c4.schema.json`. | JSON Schema validate |
-| C7 | Every C4 element has at least one `evidence` file path that exists in the source tree. | path check |
-| C8 | Product artifacts with `external_sources` include `type`, `name`, `extraction_method`, `last_read`, and `source_status`; stale, unreachable, or insufficient sources are reported as warnings unless the artifact is required for active execution. | frontmatter parse + status check |
+| C4 | The product execution surface validates against `product.schema.json`: `product/product.md` has Product Summary, Active Scope, Feature Index, Constraints, Priority Model; `product/roadmap.md` has Now, Next, Later; `product/features/*.md` have executable feature specs with stable feature IDs and acceptance criteria. | JSON Schema + body parse |
+| C5 | Every `codebase/model/c4/*.json` validates against `c4.schema.json`. | JSON Schema validate |
+| C6 | Every C4 element has at least one `evidence` file path that exists in the source tree. | path check |
+| C7 | Product artifacts with `external_sources` include `type`, `name`, `extraction_method`, `last_read`, and `source_status`; stale, unreachable, or insufficient sources are reported as warnings unless the artifact is required for active execution. | frontmatter parse + status check |
 
 ---
 
@@ -127,13 +126,13 @@ For every descriptive artifact `D` (codebase domain artifacts plus any artifact 
 | E3 | Cited file paths exist in the source tree. | path check |
 | E4 | Cited commit hashes exist in `git log`. | git lookup |
 
-For every prescriptive artifact `P` (drafts, ADRs, vision documents):
+For every prescriptive artifact `P` (ADRs, vision documents, distribution-defined proposals):
 
 | ID | Check | How |
 |---|---|---|
 | E5 | `P` cites its rationale (a problem statement, a referenced source, or a prior artifact). | scan |
 
-Evidence checks are advisory because correctness requires reading the artifact, not just parsing it. Distributions SHOULD enforce them in CI for the artifacts where evidence discipline is load-bearing (codebase, ADRs, drafts).
+Evidence checks are advisory because correctness requires reading the artifact, not just parsing it. Distributions SHOULD enforce them in CI for the artifacts where evidence discipline is load-bearing (codebase, ADRs, distribution-defined proposals).
 
 ---
 

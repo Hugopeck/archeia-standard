@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/transient-artifact.schema.json",
   "title": "Transient Artifact",
-  "description": "Base schema for Archeia transient artifacts — tasks, drafts, plans, and running experiments that flow through lifecycle states and are pruned after a bounded retention window.",
+  "description": "Base schema for Archeia transient artifacts — tasks, plans, running experiments, and distribution-defined proposals that flow through lifecycle states and are pruned after a bounded retention window.",
   "type": "object",
   "properties": {
     "id": {

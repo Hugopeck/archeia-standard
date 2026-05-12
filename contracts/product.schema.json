@@ -27,9 +27,9 @@
       "format": "date-time",
       "description": "ISO 8601 timestamp when this product surface was last reviewed for execution readiness."
     },
-    "source_draft": {
+    "source_artifact": {
       "type": ["string", "null"],
-      "description": "Relative path to the business draft that most recently changed this product surface, if any."
+      "description": "Relative path to the artifact that most recently changed this product surface, if any."
     },
     "feature_id": {
       "type": "string",
@@ -101,7 +101,7 @@
       },
       {
         "heading": "Constraints",
-        "description": "Technical, product, business, compliance, and UX constraints that scope the work."
+        "description": "Technical, product, business, legal/regulatory, and UX constraints that scope the work."
       },
       {
         "heading": "Priority Model",
@@ -137,7 +137,7 @@
       },
       {
         "heading": "Evidence",
-        "description": "Links to feedback, requirements, design contracts, external sources, decisions, business drafts, or codebase evidence supporting this feature."
+        "description": "Links to feedback, requirements, design contracts, external sources, decisions, business context, or codebase evidence supporting this feature."
       }
     ]
   }

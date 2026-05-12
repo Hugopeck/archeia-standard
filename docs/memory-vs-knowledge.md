@@ -61,7 +61,7 @@ External product tools do not break this model as long as they are treated as ci
 
 **Claim**: writing a new artifact to `.archeia/` and committing is real-time learning at the filesystem layer.
 
-**What works**: when `archeia:review-draft` reads a business draft and produces updates to `product/product.md`, `product/roadmap.md`, `product/features/*.md`, or a new entry in `product/decisions/`, that is real-time learning. The new knowledge is immediately available to the next session. Git commits are the learning events. No retraining, no vector index rebuild, no embedding regeneration — the filesystem already gives us real-time persistence.
+**What works**: when `archeia:review-product` reads business context and codebase evidence and produces updates to `product/product.md`, `product/roadmap.md`, `product/features/*.md`, or a new entry in `product/decisions/`, that is real-time learning. The new knowledge is immediately available to the next session. Git commits are the learning events. No retraining, no vector index rebuild, no embedding regeneration — the filesystem already gives us real-time persistence.
 
 **What doesn't work yet**: Archeia has no principle for **when** a living document should be updated. Does an agent edit `.archeia/codebase/analysis/repository.md` after every session? After significant code changes? On a schedule? On demand? The standard is silent. Without a rule, living documents either drift (too-infrequent updates → staleness) or churn (too-frequent updates → noise in git history).
 
@@ -82,7 +82,7 @@ This gap is real. The solution — some form of trigger-based re-consolidation p
 - "Which retros identified concerns that were later addressed by which decisions?"
 - "What's the chain from the original vision in Q1 2025 to the current product.md spec?"
 
-The cross-domain contracts in Archeia are **static schemas** (this frontmatter field exists) not **navigable relationships** (this artifact points at that one). Frontmatter fields like `supersedes:`, `source_draft:`, and `implements:` already sketch a lightweight graph, but nothing walks it.
+The cross-domain contracts in Archeia are **static schemas** (this frontmatter field exists) not **navigable relationships** (this artifact points at that one). Frontmatter fields like `supersedes:`, `source_artifact:`, and `implements:` already sketch a lightweight graph, but nothing walks it.
 
 **This is where graph-based memory systems (Zep/Graphiti, Supermemory, Mem0) genuinely do more than Archeia.** They build explicit edges between entities and support traversal queries. Archeia currently supports such queries only if a human or an agent reads many files and synthesizes manually — which is expensive.
 
@@ -199,7 +199,7 @@ Currently the `last_verified` frontmatter field is *advisory*. Nothing reads it,
 
 ### 6.2 Cross-artifact graph traversal
 
-The frontmatter fields `supersedes:`, `source_draft:`, `implements:`, `related_to:`, and similar constitute a lightweight graph over `.archeia/` artifacts. Archeia does not currently walk this graph. A planned `archeia:graph` skill would support queries like "show me all decisions that mention feature X" or "what's the chain from this task back to the originating vision." Target: kernel version 0.3 or 0.4.
+The frontmatter fields `supersedes:`, `source_artifact:`, `implements:`, `related_to:`, and similar constitute a lightweight graph over `.archeia/` artifacts. Archeia does not currently walk this graph. A planned `archeia:graph` skill would support queries like "show me all decisions that mention feature X" or "what's the chain from this task back to the originating vision." Target: kernel version 0.3 or 0.4.
 
 ### 6.3 Bi-temporal upgrade for accumulating records
 

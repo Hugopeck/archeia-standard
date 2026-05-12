@@ -71,7 +71,7 @@ Either embedded in `standard/domains.yaml` or in a separate `standard/lifecycles
 Enforceable schemas for every artifact type the distribution uses. At minimum:
 
 - The kernel's three base schemas (`living-doc.schema.json`, `accumulating-record.schema.json`, `transient-artifact.schema.json`) — these can be inherited or re-exported
-- The distribution's cross-domain contract schemas (for software distributions: `draft.schema.json`, `product.schema.json`, `c4.schema.json`)
+- The distribution's cross-domain contract schemas (for software distributions: `product.schema.json`, `c4.schema.json`)
 - Any per-artifact-type schemas the distribution wants to enforce (e.g., `task.schema.json`, `adr.schema.json`)
 
 ### 4. The inherent skills plus whatever else the distribution ships
@@ -122,6 +122,6 @@ Distributions are not exclusive — a single organization can use multiple distr
 ## See also
 
 - **[`../KERNEL.md`](../KERNEL.md)** — the abstract substrate distributions extend
-- **[`../SCHEMA.md`](../SCHEMA.md)** — the canonical software application of the kernel (five domains, three contracts)
+- **[`../SCHEMA.md`](../SCHEMA.md)** — the canonical software application of the kernel (five domains, two contracts)
 - **[`../PRINCIPLES.md`](../PRINCIPLES.md)** — the six fundamental truths that predate any specific distribution
 - **[`../TEMPORAL_MODEL.md`](../TEMPORAL_MODEL.md)** — the three lifecycle shapes and their operations

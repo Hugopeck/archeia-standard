@@ -7,9 +7,9 @@
 | **Conformance** | See [`CONFORMANCE.md`](CONFORMANCE.md) §9 (software-distribution conformance) |
 | **Normative language** | The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** in this document are interpreted per [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119). |
 
-> **This document is the Repository Contract for software projects using Archeia.** It is the standard application of [the Archeia Kernel](KERNEL.md) to software — five domains, their ownership, their lifecycle shapes, and the three cross-domain contracts every software project MUST enforce. It is distribution-agnostic: it does not commit to any specific skill roster, agent roster, or ethos. Those belong in [distributions](distributions/).
+> **This document is the Repository Contract for software projects using Archeia.** It is the standard application of [the Archeia Kernel](KERNEL.md) to software — five domains, their ownership, their lifecycle shapes, and the two cross-domain contracts every software project MUST enforce. It is distribution-agnostic: it does not commit to any specific skill roster, agent roster, or ethos. Those belong in [distributions](distributions/).
 >
-> The "Repository Contract" framing is deliberate. The five-domain layout, the lifecycle assignments, and the three cross-domain contracts together specify what a tool can rely on finding in *any* Archeia software repo. A tool that processes `.archeia/` trees from multiple projects MUST treat this document as its target.
+> The "Repository Contract" framing is deliberate. The five-domain layout, the lifecycle assignments, and the two cross-domain contracts together specify what a tool can rely on finding in *any* Archeia software repo. A tool that processes `.archeia/` trees from multiple projects MUST treat this document as its target.
 >
 > If you are implementing Archeia for a software project, this is what you cite for the directory layout and domain semantics. If you are writing a tool that consumes `.archeia/` trees across many projects, this is the target your tool MUST expect.
 
@@ -22,7 +22,7 @@ This document defines:
 - The five canonical domains for software projects and their purposes
 - The lifecycle shape of every artifact type in each domain (living, accumulating, or transient — per [the lifecycle model](TEMPORAL_MODEL.md))
 - The ownership model (one writer per domain, free reads across domains)
-- The three enforceable cross-domain contracts
+- The two enforceable cross-domain contracts
 - Colocated files outside `.archeia/` that are still owned by Archeia domains
 
 It does **not** define:
@@ -42,7 +42,7 @@ Every software project that uses Archeia MUST have exactly five domains under `.
 
 ```
 .archeia/
-├── business/        # Why we're building, for whom, how we earn
+├── business/        # Business context: intent, constraints, landscape, company reality
 ├── product/         # Product truth: what users need, what we're building, and why
 ├── codebase/        # AI-maintained repo intelligence: what the code is, right now
 ├── growth/          # How we acquire, retain, monetize
@@ -51,24 +51,48 @@ Every software project that uses Archeia MUST have exactly five domains under `.
 
 Each domain has one owner (a writer family declared by the distribution), permitted lifecycle shapes, and a declared set of cross-domain read relationships. The rest of this section specifies each domain in detail.
 
+**Directory README convention.** Every directory suggested by this document SHOULD be scaffolded with a `README.md` when the directory is created. The README explains the directory's purpose, what belongs there, what does not belong there, who owns it, and which other domains commonly read it. A README is directory guidance; it is not a substitute for the artifacts listed below.
+
 ### 2.1 `business/`
 
-**Purpose.** Captures the holistic business vision — why this product exists, who it's for, how it makes money, and what the competitive landscape looks like. Business is the upstream origin of every other domain's intent.
+**Purpose.** Captures the business context product decisions must respect: why the business exists, how it intends to win, what constraints it operates under, what external landscape it competes in, and what internal company realities shape execution. Business is the upstream source of commercial intent and business constraints, not the place where product commitments are specified.
+
+`business/` SHOULD contain both external context (market, competition, industry, legal constraints) and internal context (finance, people, culture, operating constraints). Product writers read this domain to understand the decision boundary around a product choice: what must be true commercially, what must not be violated legally or operationally, and what company capabilities or constraints matter.
 
 **Permitted shapes:** living, accumulating, transient.
 
 | Path | Shape | What it is |
 |---|---|---|
-| `business/vision/vision.md` | Living | The current vision document, evolved over time. Captures premise, target user, value proposition, scope, and differentiation. Edited in place; history in git. |
-| `business/strategy/strategy.md` | Living | Current business model, positioning, pricing, and go-to-market stance. Evolved in place. |
-| `business/landscape/*.md` | Accumulating | Dated market research snapshots. Each snapshot is its own record, kept forever — later strategy decisions reference them. |
-| `business/drafts/*.md` | Transient | Draft proposals that either advance into a living document or are discarded. Retention window: short (distribution-defined). |
+| `business/README.md` | Living | Directory guide: what business owns, how product and growth should read it, and how to choose the right subfolder. |
+| `business/vision/README.md` | Living | Folder guide for business thesis and long-horizon intent. |
+| `business/vision/vision.md` | Living | Current business thesis: why the company exists, who it serves at the business level, what change it is trying to create, and what it will not pursue. |
+| `business/strategy/README.md` | Living | Folder guide for business model and strategic tradeoffs. |
+| `business/strategy/strategy.md` | Living | Current business model, positioning, pricing, packaging, revenue logic, and strategic tradeoffs. |
+| `business/legal/README.md` | Living | Folder guide for legal, regulatory, compliance, privacy, licensing, and contractual constraints. |
+| `business/legal/*.md` | Living | Current legal and compliance constraints that product or operations must respect. |
+| `business/finance/README.md` | Living | Folder guide for financial constraints and assumptions. |
+| `business/finance/*.md` | Living | Current budget, runway, unit economics, margin, pricing-floor, procurement, or investment-capacity constraints. |
+| `business/culture/README.md` | Living | Folder guide for cultural and brand constraints. |
+| `business/culture/*.md` | Living | Current company values, communication norms, trust posture, risk posture, or non-negotiable experience principles. |
+| `business/people/README.md` | Living | Folder guide for internal capability and ownership context. |
+| `business/people/*.md` | Living | Current team structure, ownership boundaries, hiring constraints, stakeholder maps, support capacity, sales capacity, or operational dependencies. |
+| `business/landscape/README.md` | Living | Folder guide for external business landscape evidence and how to choose the right landscape subfolder. |
+| `business/landscape/competition/README.md` | Living | Folder guide for competitor evidence. |
+| `business/landscape/competition/*.md` | Accumulating | Dated competitor snapshots, battlecards, positioning comparisons, and observed competitor moves. |
+| `business/landscape/industry/README.md` | Living | Folder guide for industry, ecosystem, standards, and structural-risk evidence. |
+| `business/landscape/industry/*.md` | Accumulating | Dated industry snapshots: ecosystem movement, standards movement, regulatory shifts, procurement patterns, technology shifts, and structural risks. |
+| `business/landscape/market/README.md` | Living | Folder guide for market and category evidence. |
+| `business/landscape/market/*.md` | Accumulating | Dated market snapshots: customer segments, category dynamics, willingness-to-pay evidence, TAM/SAM/SOM assumptions, and demand signals. |
+
+These subdirectories are populated on demand. A conforming repo MUST have `.archeia/business/`, but it does not need every business subdirectory or artifact until there is useful business context to record. Empty categories SHOULD be omitted rather than filled with placeholder documents.
+
+Business MAY contain transient artifacts when a distribution defines a specific business workflow with a clear owner, purpose, status vocabulary, and retention window. The canonical software layout does not reserve a generic `drafts/` inbox; transient business artifacts SHOULD live under an explicit purpose-named path defined by the distribution.
 
 **Owner:** declared by the distribution (typically `business-skills` or `product-skills` depending on how the distribution partitions this work).
 
-**Reads from:** nothing. Business is the upstream origin.
+**Reads from:** nothing required. Business is the upstream origin for commercial intent and business constraints, though distributions MAY allow business writers to read public external sources and downstream evidence such as `growth/metrics/` when updating strategy, landscape, legal, or finance records.
 
-**Read by:** `product/` (for vision context when reviewing drafts), `growth/` (for strategy context when planning channels).
+**Read by:** `product/` (for commercial intent, internal constraints, and external constraints when making product decisions), `growth/` (for strategy, market, pricing, and channel context).
 
 ### 2.2 `product/`
 
@@ -88,11 +112,11 @@ Product work often happens in external product surfaces: design tools, prototype
 | `product/feedback/*.md` | Accumulating | User interviews, support themes, sales notes, research digests, analytics findings, prototype-test results, and other product evidence. Each record is preserved so future product decisions can cite the original signal. |
 | `product/decisions/*.md` | Accumulating | Product decisions and ADRs. Each decision is its own file, written once, referenced forever. Supersession writes a new decision; both old and new stay on disk. |
 
-**Note:** product has **no transient artifacts.** Rough opportunities and strategic proposals live in `business/drafts/` until they become product work. Once accepted into product, they are consolidated into `product/product.md`, `product/roadmap.md`, `product/requirements/*.md`, `product/features/*.md`, or `product/decisions/*.md`. Product artifacts evolve in place or accumulate as records; they do not flow through a pruneable transient lifecycle.
+**Note:** product has **no canonical transient inbox.** Rough opportunities, sketches, or proposals MAY exist as distribution-defined transient artifacts in the domain that owns them, but the canonical software contract does not reserve a `drafts/` directory. Once accepted into product, the durable result is consolidated into `product/product.md`, `product/roadmap.md`, `product/requirements/*.md`, `product/features/*.md`, or `product/decisions/*.md`. Product artifacts evolve in place or accumulate as records; they do not depend on a pruneable proposal lifecycle.
 
 **Owner:** declared by the distribution.
 
-**Reads from:** `business/drafts/` and `business/strategy/` (for intent and positioning), `codebase/model/c4/` (for feasibility validation), and `growth/metrics/` or `growth/experiments/` when product direction depends on funnel or retention evidence.
+**Reads from:** `business/vision/`, `business/strategy/`, `business/legal/`, `business/finance/`, `business/landscape/`, `business/culture/`, and `business/people/` (for intent, constraints, and business context), `codebase/model/c4/` (for feasibility validation), and `growth/metrics/` or `growth/experiments/` when product direction depends on funnel or retention evidence.
 
 **Read by:** `codebase/` (for framing), `execution/` (to generate projects and tasks from roadmap and feature specs), `growth/` (for feature context when planning channels).
 
@@ -145,7 +169,7 @@ External sources are evidence and working surfaces, not substitutes for Archeia 
 
 **Reads from:** the codebase itself (source files, config, git history) and optionally `product/product.md`, `product/roadmap.md`, and `product/features/*.md` to contextualize architecture against intent.
 
-**Read by:** `product/` (for feasibility validation during draft review), `execution/` (for technical context when scoping work), every other domain as ground-truth reference.
+**Read by:** `product/` (for feasibility validation during product review), `execution/` (for technical context when scoping work), every other domain as ground-truth reference.
 
 **Regeneration contract.** Every file in `.archeia/codebase/` is regenerable — delete any of them and run the codebase skills again and they will be rebuilt from source evidence.
 
@@ -158,14 +182,14 @@ External sources are evidence and working surfaces, not substitutes for Archeia 
 | Path | Shape | What it is |
 |---|---|---|
 | `growth/metrics/current.md` | Living | Current KPIs, funnel definitions, benchmarks, cohort analyses. Updated in place. |
-| `growth/channels/*.md` (retired) | Accumulating | Retired channels with their performance history. Kept forever so later channels can learn from them. |
-| `growth/experiments/*.md` (concluded with learnings) | Accumulating | Concluded experiments whose learnings outlive the raw running state. |
-| `growth/channels/*.md` (active) | Transient | Running acquisition channels. When retired, either promoted to an accumulating record with outcomes or pruned. |
-| `growth/experiments/*.md` (running) | Transient | Running experiments. When concluded, either promoted to an accumulating record or pruned. |
+| `growth/channels/current/*.md` | Living | Current acquisition, activation, retention, referral, sales, or monetization channels. Updated in place while active. |
+| `growth/channels/history/*.md` | Accumulating | Retired channel records with performance history and learnings. Kept forever so later channels can learn from them. |
+| `growth/experiments/running/*.md` | Transient | Running experiments. When concluded, the running artifact is completed and pruned after its retention window. Durable learnings are written separately to `growth/experiments/learnings/*.md` when worth keeping. |
+| `growth/experiments/learnings/*.md` | Accumulating | Concluded experiment learnings whose value outlives the raw running state. Each learning record is preserved so future growth and product decisions can cite it. |
 
 **Owner:** declared by the distribution.
 
-**Reads from:** `business/strategy/strategy.md` (for positioning and pricing context), `product/product.md`, `product/roadmap.md`, and `product/features/*.md` (for product and feature context).
+**Reads from:** `business/strategy/strategy.md`, `business/finance/`, and `business/landscape/` (for positioning, pricing, budget, channel, category, industry, and competitive context), `product/product.md`, `product/roadmap.md`, and `product/features/*.md` (for product and feature context).
 
 **Read by:** `business/` (to inform strategy iteration).
 
@@ -196,35 +220,29 @@ Every file under `.archeia/` MUST have exactly one owning domain. The owning dom
 
 | Domain | Permitted shapes | Reads from |
 |---|---|---|
-| `business/` | living, accumulating, transient | (upstream origin) |
-| `product/` | living, accumulating | `business/drafts/`, `business/strategy/`, `codebase/model/c4/`, `growth/` |
+| `business/` | living, accumulating, transient | nothing required; MAY read public external sources and downstream evidence |
+| `product/` | living, accumulating | `business/vision/`, `business/strategy/`, `business/legal/`, `business/finance/`, `business/landscape/`, `business/culture/`, `business/people/`, `codebase/model/c4/`, `growth/` |
 | `codebase/` | living only | source code, git history, `product/product.md`, `product/roadmap.md`, `product/features/*.md` |
-| `growth/` | living, accumulating, transient | `business/strategy/`, `product/product.md`, `product/roadmap.md`, `product/features/*.md` |
+| `growth/` | living, accumulating, transient | `business/strategy/`, `business/finance/`, `business/landscape/`, `product/product.md`, `product/roadmap.md`, `product/features/*.md` |
 | `execution/` | accumulating, transient | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/` |
 
 **The ownership rules** (restated from [`KERNEL.md`](KERNEL.md#3-invariants) for convenience):
 
 1. **Write to your domain only.** A business writer MUST NOT write to `product/`. A codebase writer MUST NOT write to `execution/`.
 2. **Read across domains freely.** Any writer MAY read any file in `.archeia/` for context. The ownership rule governs writes, not reads.
-3. **No implicit writes.** A writer that reads `business/drafts/` to produce `product/features/onboarding.md` is doing a cross-domain read followed by a same-domain write. The read is from `business/`; the write is to `product/`. This is correct behavior — no rule is violated.
+3. **No implicit writes.** A writer that reads `business/strategy/strategy.md` to produce `product/features/onboarding.md` is doing a cross-domain read followed by a same-domain write. The read is from `business/`; the write is to `product/`. This is correct behavior — no rule is violated.
 4. **Schema enforcement at write time.** Each domain defines the schema its artifacts MUST satisfy. Writers MUST validate before writing; readers MAY re-validate on read. See [`contracts/`](contracts/) for the enforceable JSON Schemas.
 5. **Parallelism via delegation, not concurrent access.** When a domain owner needs to parallelize work, it MUST delegate to subagents (per [Truth #4](PRINCIPLES.md#4-ownership-plus-delegation-is-the-concurrency-model)). Subagents compute; the owner commits.
 
 ---
 
-## 4. The three cross-domain contracts
+## 4. The two cross-domain contracts
 
-Software-project Archeia MUST enforce three cross-domain contracts. Each is a JSON Schema under [`contracts/`](contracts/) that validates the frontmatter and (where applicable) the body structure of an artifact one domain reads from another.
+Software-project Archeia MUST enforce two cross-domain contracts. Each is a JSON Schema under [`contracts/`](contracts/) that validates the frontmatter and (where applicable) the body structure of an artifact one domain reads from another.
 
-### 4.1 `business/drafts/*.md` → `product/` review
+There is no canonical `drafts/` contract. Transient proposals are distribution-defined artifacts owned by the domain that creates them; they use the base transient shape and any distribution-specific schema, not a shared business inbox.
 
-**Contract:** [`contracts/draft.schema.json`](contracts/draft.schema.json)
-
-**What it guarantees:** every business draft MUST have a `title`, a `status` in the draft lifecycle vocabulary (`draft | review | advanced | discarded`), a `created` timestamp, and an `author`. When the status is `advanced`, an `advanced_into` field MUST name the living document the draft was merged into. When `discarded`, a `discarded_at` timestamp MUST be set.
-
-**Who reads it:** product writers read drafts with `status: review` and produce updates to product living documents (`product/product.md`, `product/roadmap.md`, `product/requirements/*.md`, `product/features/*.md`) or new `product/decisions/*.md` entries. After the draft has been reviewed and acted on, the draft's status MUST transition to `advanced` or `discarded`, entering its retention window.
-
-### 4.2 `product/{product.md,roadmap.md,features/*.md}` → `execution/` task generation
+### 4.1 `product/{product.md,roadmap.md,features/*.md}` → `execution/` task generation
 
 **Contract:** [`contracts/product.schema.json`](contracts/product.schema.json)
 
@@ -236,13 +254,13 @@ Software-project Archeia MUST enforce three cross-domain contracts. Each is a JS
 
 **Who reads it:** execution writers parse the roadmap to generate `execution/projects/` and parse feature specs to generate `execution/tasks/`. Each task MUST reference the feature ID it implements. `product/product.md` remains the entry point and index, not the only executable product artifact.
 
-### 4.3 `codebase/model/c4/*.json` → `product/` feasibility review
+### 4.2 `codebase/model/c4/*.json` → `product/` feasibility review
 
 **Contract:** [`contracts/c4.schema.json`](contracts/c4.schema.json)
 
 **What it guarantees:** each C4 JSON file (`system.json`, `containers.json`, `components.json`, `dataflow.json`, `entities.json`, `statemachine.json`) under `codebase/model/c4/` MUST carry structured model data with `level`, `generated_at`, `skill`, and an `elements` array. Each element MUST have an `id`, `name`, `description`, and an `evidence` array citing file paths in the source tree. Elements MAY have `relationships` linking to other elements.
 
-**Who reads it:** product writers read these files during draft review to validate that proposed features are feasible given the current architecture. The `evidence` array is load-bearing: the reviewer MUST be able to open the cited source files and verify each architectural claim. Citations to nonexistent paths MUST fail validation.
+**Who reads it:** product writers read these files during product review to validate that proposed features are feasible given the current architecture. The `evidence` array is load-bearing: the reviewer MUST be able to open the cited source files and verify each architectural claim. Citations to nonexistent paths MUST fail validation.
 
 ---
 
@@ -277,7 +295,7 @@ Every artifact under `.archeia/` MUST have frontmatter sufficient for its shape'
 - **Accumulating records** MUST have at minimum `title`, `created`, `status`. See [`contracts/accumulating-record.schema.json`](contracts/accumulating-record.schema.json).
 - **Transient artifacts** MUST have at minimum `id`, `title`, `created`, `status`. See [`contracts/transient-artifact.schema.json`](contracts/transient-artifact.schema.json).
 
-Specific artifact types (drafts, product execution surface, tasks, ADRs, C4 JSONs) extend these base schemas with their own required fields. See the individual schemas in [`contracts/`](contracts/).
+Specific artifact types (product execution surface, tasks, ADRs, C4 JSONs) extend these base schemas with their own required fields. See the individual schemas in [`contracts/`](contracts/).
 
 ---
 
@@ -288,7 +306,7 @@ A repo is **software-conforming** if [`archeia:validate`](KERNEL.md#6-inherent-s
 1. `.archeia/business/`, `.archeia/product/`, `.archeia/codebase/`, `.archeia/growth/`, `.archeia/execution/` MUST all exist (even if empty).
 2. No domain directory outside the canonical five MAY exist under `.archeia/`.
 3. Every artifact MUST conform to its shape's base schema and any applicable specific schema.
-4. All three cross-domain contracts MUST be enforced on the artifacts they apply to.
+4. Both cross-domain contracts MUST be enforced on the artifacts they apply to.
 5. `.archeia/codebase/` MUST contain only living artifacts (no accumulating, no transient). The `codebase/model/c4/` subtree is the canonical machine-readable contract surface; `analysis/`, `conventions/`, `guide/`, and `views/` are generated codebase intelligence.
 6. `docs/` is not part of the canonical `.archeia/` contract surface and MUST NOT be required for software conformance.
 7. Ownership SHOULD be respected — writes to each domain (and to its colocated files) SHOULD come from the declared owner per the distribution's `standard/domains.yaml`. This check is advisory — git blame does not always identify writer families.
@@ -305,9 +323,9 @@ Deliberately, this document does **not** specify:
 - **A fixed agent roster.** Which agents exist is a distribution concern. See [`distributions/solo-builder.md`](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md) and the [`agents/`](https://github.com/Hugopeck/archeia/tree/main/agents/) folder.
 - **Retention windows.** How long transient artifacts stay on disk before pruning is a distribution concern. Archeia Solo's defaults are in [`distributions/solo-builder.md`](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md).
 - **An ethos.** Philosophical commitments (ship fast, user sovereignty, boil the lake, etc.) are distribution concerns.
-- **Approval workflows.** Who can advance a draft to locked, who can supersede a decision, who authorizes a prune — all of this is policy, layered on top by distributions or by the adopting organization.
+- **Approval workflows.** Who can accept a proposal, who can supersede a decision, who authorizes a prune — all of this is policy, layered on top by distributions or by the adopting organization.
 
-The five canonical domains, their shapes, their ownership, and their three contracts are the distribution-agnostic software skeleton. Everything else is layered on top.
+The five canonical domains, their shapes, their ownership, and their two contracts are the distribution-agnostic software skeleton. Everything else is layered on top.
 
 ---
 

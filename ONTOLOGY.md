@@ -97,9 +97,9 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 |---|---|---|
 | **Working memory** (Baddeley 1974) | (not in `.archeia/`; lives in the harness context window) | active session, current context window |
 | **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/model/c4/*`, `codebase/analysis/*`, `business/vision/vision.md` |
-| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/*.md` |
+| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/{competition,industry,market}/*.md` |
 | **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:consolidate`, `archeia:clarify-idea` |
-| **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, `business/drafts/*.md` |
+| **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, running experiments, distribution-defined proposals |
 
 This mapping is why Archeia's three lifecycle shapes aren't arbitrary: they correspond to cognitive-science memory categories that have 50 years of empirical grounding, and CoALA already established the bridge from these categories to LLM agent systems. Archeia applies the same taxonomy one layer outward.
 
@@ -333,7 +333,7 @@ Archeia should adopt this refinement explicitly in the skill format spec. Curren
 
 ```yaml
 ---
-name: review-draft
+name: review-product
 description: ...
 ---
 ```
@@ -342,10 +342,10 @@ The refinement adds:
 
 ```yaml
 ---
-name: review-draft
+name: review-product
 description: ...
 parameters:
-  - name: draft_path
+  - name: product_path
     type: file
     required: true
   - name: codebase_context

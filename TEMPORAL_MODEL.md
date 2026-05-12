@@ -16,7 +16,7 @@ Every artifact in every Archeia domain belongs to exactly one of three shapes. T
 | **Accumulating** | Append-only records that never leave disk | The disk itself (all records stay) |
 | **Transient** | Flows through states during its lifetime, then pruned | Disk during retention, git after |
 
-Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it's concentrated in `execution/` and a few corners of `business/` and `growth/`.
+Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in `execution/` plus running growth experiments.
 
 The rest of this document specifies each shape in detail and maps the kernel operations onto them.
 
@@ -73,9 +73,9 @@ An accumulating record is an append-only artifact. Each record has its own file 
 
 - **`product/decisions/`** — ADRs. The canonical example. Each decision is its own file, written once, referenced forever. Supersession writes a new ADR that links to the old one; both stay.
 - **`execution/retros/`** — retrospectives. Each retro is a record of a past event. They never get deleted because later work references them.
-- **`business/landscape/`** — dated market research snapshots. Each snapshot is its own record. Old snapshots inform later strategy and stay on disk.
-- **`growth/experiments/`** — concluded experiments *with their learnings*. Once an experiment ends, its file stays forever as a learning record. The raw running state of the experiment is different — that's shape 3 — but the concluded form with outcomes is shape 2.
-- **`growth/channels/`** (retired channels) — retired channels with their performance history.
+- **`business/landscape/{competition,industry,market}/`** — dated external landscape snapshots. Each snapshot is its own record. Old snapshots inform later product, growth, and strategy decisions and stay on disk.
+- **`growth/experiments/learnings/`** — concluded experiment learnings. Each learning record stays forever. The raw running state of the experiment is different — that's shape 3 under `growth/experiments/running/`.
+- **`growth/channels/history/`** — retired channel records with performance history.
 
 ### Rules
 
@@ -133,14 +133,14 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 
 - **`execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
 - **`execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
-- **`business/drafts/`** — draft proposals. Either advance into a living document (draft becomes part of `vision.md`, `product.md`, `roadmap.md`, a requirement, or a feature spec and the draft is deleted) or are discarded outright (retention window 0 — pruned on rejection).
-- **`growth/experiments/` (running only)** — an experiment's running state is transient. Once it concludes, it either gets promoted to an accumulating record (shape 2) with its outcome, or — if no learning is worth keeping — it's pruned entirely.
+- **Distribution-defined proposals** — temporary sketches or proposals may exist as transient artifacts in whichever domain owns them. The canonical software layout does not reserve a `drafts/` directory.
+- **`growth/experiments/running/`** — an experiment's running state is transient. Once it concludes, the running artifact is completed and pruned after its retention window. Durable outcomes, when worth keeping, are written as separate accumulating records under `growth/experiments/learnings/`.
 
 ### Rules
 
-1. **Has a `status` field.** Status values are distribution-defined per artifact type. Typical for tasks: `todo`, `active`, `done`, `cancelled`. Typical for drafts: `draft`, `review`, `advanced`, `discarded`.
+1. **Has a `status` field.** Status values are distribution-defined per artifact type. Typical for tasks: `todo`, `active`, `done`, `cancelled`. Typical for proposals: `proposed`, `review`, `accepted`, `rejected`.
 2. **Temporal state is derived from status.** There is no `temporal_state` field in the frontmatter. The distribution defines a mapping from each status value to a temporal category (future / present / past). Readers who care about temporal state look up the mapping, don't read a field.
-3. **Has a retention window.** The distribution defines how long a transient artifact stays on disk after reaching a terminal status. Archeia Solo defaults: tasks 14 days, plans 30 days, discarded drafts 0 days.
+3. **Has a retention window.** The distribution defines how long a transient artifact stays on disk after reaching a terminal status. Archeia Solo defaults: tasks 14 days and plans 30 days.
 4. **Has a terminal timestamp.** When an artifact reaches a terminal status (`done`, `cancelled`, `advanced`, `discarded`), a timestamp is recorded in frontmatter (e.g., `completed_at: 2026-04-12T16:45:00Z`). The retention window starts ticking from this timestamp.
 5. **Pruned when the window expires.** A maintenance operation (e.g., `archeia:prune`) walks transient artifacts, checks retention windows, and deletes expired ones. Git preserves the file forever.
 6. **Supersession is rare.** Transient artifacts usually don't supersede — they complete and get pruned. If supersession is genuinely needed, promote the artifact to shape 2 (accumulating) first.
@@ -185,8 +185,8 @@ Transient artifacts don't store temporal state; they store status, and temporal 
 | Plan | `proposed` | `future` |
 | Plan | `current` | `present` |
 | Plan | `superseded` | `past` |
-| Draft | `draft`, `review` | `future` |
-| Draft | `advanced` (merged into living doc), `discarded` | `past` |
+| Proposal | distribution-defined active statuses | `future` |
+| Proposal | distribution-defined terminal statuses | `past` |
 | Running experiment | `proposed` | `future` |
 | Running experiment | `running` | `present` |
 | Running experiment | `concluded` | `past` |
@@ -213,18 +213,18 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
-| **`business/`** | `vision/vision.md`, `strategy/strategy.md` | `landscape/*.md` | `drafts/*.md` |
+| **`business/`** | `vision/vision.md`, `strategy/strategy.md`, `legal/*.md`, `finance/*.md`, `culture/*.md`, `people/*.md`, `**/README.md` | `landscape/competition/*.md`, `landscape/industry/*.md`, `landscape/market/*.md` | distribution-defined purpose-named paths only |
 | **`product/`** | `product.md`, `roadmap.md`, `features/*.md`, `requirements/*.md`, `design/*.md` | `feedback/*.md`, `decisions/*.md` | (none) |
 | **`codebase/`** | `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd` | (none in the canonical layout) | (none) |
-| **`growth/`** | `metrics/current.md` | `experiments/*.md` (concluded, with learnings), `channels/*.md` (retired) | `experiments/*.md` (running), `channels/*.md` (active) |
+| **`growth/`** | `metrics/current.md`, `channels/current/*.md` | `experiments/learnings/*.md`, `channels/history/*.md` | `experiments/running/*.md` |
 | **`execution/`** | (none — execution is all action, no living summary doc) | `retros/*.md` | `tasks/*.md`, `plans/*.md`, `projects/*.md` |
 
 A few observations that fall out:
 
 - **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are regenerated in place, with history in git.
-- **`product/` has no transient state at all.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Rough opportunities live in `business/drafts/`; accepted product work becomes living product truth or an accumulating decision.
+- **`product/` has no canonical transient inbox.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Accepted product work becomes living product truth or an accumulating decision.
 - **`execution/` is the only domain with heavy transient presence.** Tasks, plans, projects — these are the things that flow.
-- **`growth/` has all three shapes.** Current metrics are living, channel and experiment records are accumulating, running experiments are transient.
+- **`growth/` has all three shapes without shape-switching paths.** Current metrics and active channels are living, retired channel records and experiment learnings are accumulating, and running experiments are transient.
 
 ---
 
@@ -232,7 +232,7 @@ A few observations that fall out:
 
 > **Named principle (upgraded).** The `codebase/` domain contains only living repo-intelligence artifacts. It has no accumulating records and no transient artifacts. Every file in `.archeia/codebase/` is edited in place, and every version of every file is preserved by git.
 
-The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The three-shapes model upgrades this to a stronger claim: codebase is purely shape 1. It doesn't plan, it doesn't accumulate decisions (those live in `product/decisions/`), and it doesn't have tasks or drafts (those live in `execution/` and `business/`). It is the current observed state of the code, always, and nothing more.
+The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The three-shapes model upgrades this to a stronger claim: codebase is purely shape 1. It doesn't plan, it doesn't accumulate decisions (those live in `product/decisions/`), and it doesn't have tasks or proposals (those are distribution-defined transient artifacts in their owning domains). It is the current observed state of the code, always, and nothing more.
 
 This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living repo intelligence, and commits it. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth.
 
@@ -421,7 +421,7 @@ No `repository-2026-04-01.md` sitting next to the current one. No archive direct
 ### A draft that advances (shape 3 → shape 1)
 
 ```markdown
-# business/drafts/20260412-1030-onboarding-rewrite.md (shape 3):
+# A distribution-defined proposal artifact (shape 3):
 ---
 id: onboarding-rewrite
 title: Rewrite onboarding to reduce first-week churn
@@ -435,13 +435,13 @@ status: draft
 
 # After review and decision to advance into business/vision/vision.md:
 # 1. archeia:create-vision (or similar) edits business/vision/vision.md
-#    in place to incorporate the draft's content — shape 1 edit.
-# 2. The draft's status becomes 'advanced', retention window starts.
-# 3. After 0 days (Solo's default for drafts), the draft file is pruned.
-# 4. git preserves the draft forever.
+#    in place to incorporate the proposal's content — shape 1 edit.
+# 2. The proposal's status becomes a terminal accepted status, retention window starts.
+# 3. After the distribution-defined retention window, the proposal file is pruned.
+# 4. git preserves the proposal forever.
 ```
 
-The living document (`vision.md`) grows. The draft disappears from disk immediately. Git holds the draft's history in case anyone wants to see it.
+The living document (`vision.md`) grows. The proposal eventually disappears from disk. Git holds the proposal's history in case anyone wants to see it.
 
 ---
 
@@ -451,6 +451,6 @@ The three-shapes model replaces the past/present/future framing from earlier dra
 
 The kernel recognizes three shapes. The kernel ships five operations (`advance`, `complete`, `prune`, `supersede`, `evolve`) and specifies which apply to which shape. Everything else — status vocabularies, retention windows, shape assignments for each artifact type — is a distribution concern.
 
-What falls out is a standard that gets out of git's way for the 80% of artifacts that are living documents, gives ADRs and retros the permanent home they need, and handles operational state (tasks, drafts) with bounded retention that matches how humans already think about those artifacts.
+What falls out is a standard that gets out of git's way for the 80% of artifacts that are living documents, gives ADRs and retros the permanent home they need, and handles operational state (tasks, plans, running experiments, proposals) with bounded retention that matches how humans already think about those artifacts.
 
 This is the temporal model. What's novel is not the categories themselves — accountants had ledgers, software had live docs, every to-do list is transient — but the recognition that an agentic workspace needs all three, each with different rules, and that trying to collapse them into a single model breaks at least two of them.
