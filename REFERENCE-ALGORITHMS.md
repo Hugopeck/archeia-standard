@@ -1,226 +1,34 @@
 # Archeia Reference Algorithms
 
-Language-agnostic pseudocode for the kernel operations. This document is normative for *behavior* — a conforming implementation MUST produce the same observable result — and informative for *implementation* — implementers MAY choose any code, language, or framework that achieves it.
+Language-agnostic pseudocode for the kernel operations. This document is normative for *behavior* and informative for *implementation*: a conforming implementation MUST produce the same observable result, but MAY use any language, storage wrapper, or agent framework.
 
 The key words **MUST**, **SHOULD**, and **MAY** are interpreted per [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 ---
 
-## 1. CRUD substrate
+## 1. Kernel Operations
 
-The five deterministic kernel operations (`advance`, `complete`, `prune`, `supersede`, `evolve`) are CRUD with shape-specific preconditions. The named operations are the teachable surface; CRUD is the implementation reality. `consolidate` is the only operation that is not CRUD — it is the kernel's only latent operation.
-
-The CRUD substrate operates on artifacts identified by path. Every operation has a precondition (which MUST hold or the operation aborts) and a postcondition (which MUST hold after the operation completes).
+Kernel operations are deterministic repo operations over `.archeia/`. They do not decide what product, business, codebase, growth, or execution content should say. They only scaffold, validate, write, transition, prune, and read history while enforcing the distribution's declared rules.
 
 ```
 type Artifact = {
-  path: string                # e.g., ".archeia/execution/tasks/2026-05-01-foo.md"
-  domain: string              # e.g., "execution"
+  path: string
+  domain: string
   shape: "living" | "accumulating" | "transient"
   frontmatter: map[string -> any]
   body: string
 }
-
-primitive Create(path, frontmatter, body) -> Artifact
-primitive Read(path) -> Artifact | NotFound
-primitive Update(path, frontmatter_patch, body_patch?) -> Artifact
-primitive Delete(path) -> void           # must be a git commit
-primitive ReadHistory(path, mode) -> list[Snapshot]   # mode ∈ {git_log, supersession_chain, on_disk_then_git}
 ```
 
-Every operation below resolves to one or more of these primitives.
+Every operation has a precondition and a postcondition. If the precondition fails, the operation MUST refuse rather than partially mutate the tree.
 
 ---
 
-## 2. `advance` — promote a transient artifact from future to present
-
-**Precondition.** The artifact's shape MUST be `transient`. Its current `status` MUST map to `future` per the distribution's `standard/domains.yaml`. The target status MUST map to `present`.
-
-**Postcondition.** The artifact's status is the target status. Its frontmatter has a `started` timestamp (or distribution-defined equivalent).
-
-```
-function advance(path, target_status):
-  artifact = Read(path)
-
-  assert artifact.shape == "transient"
-  current_status = artifact.frontmatter["status"]
-  mapping = distribution.status_temporal_mapping(artifact.domain, artifact.type)
-  assert mapping[current_status] == "future"
-  assert mapping[target_status] == "present"
-
-  patch = {
-    "status": target_status,
-    "started": now(),
-  }
-  Update(path, frontmatter_patch=patch)
-```
-
-`advance` is **deterministic**. It MUST NOT invoke a model.
-
----
-
-## 3. `complete` — promote a transient artifact from present to past
-
-**Precondition.** The artifact's shape MUST be `transient`. Its current `status` MUST map to `present`. The target status MUST map to `past`.
-
-**Postcondition.** The artifact's status is the target status. Its frontmatter has the distribution's terminal-timestamp field set to the current time. The retention clock starts now.
-
-```
-function complete(path, target_status):
-  artifact = Read(path)
-
-  assert artifact.shape == "transient"
-  current_status = artifact.frontmatter["status"]
-  mapping = distribution.status_temporal_mapping(artifact.domain, artifact.type)
-  assert mapping[current_status] == "present"
-  assert mapping[target_status] == "past"
-
-  terminal_field = distribution.terminal_timestamp_field(artifact.domain, artifact.type)
-  patch = {
-    "status": target_status,
-    terminal_field: now(),
-  }
-  Update(path, frontmatter_patch=patch)
-```
-
-`complete` is **deterministic**.
-
----
-
-## 4. `prune` — delete expired transient artifacts
-
-**Precondition (per artifact).** The artifact's shape MUST be `transient`. Its current `status` MUST map to `past`. The duration since its terminal timestamp MUST exceed the distribution's retention window for that artifact type.
-
-**Postcondition.** The artifact is deleted from disk. The deletion is a git commit; the file remains in history.
-
-```
-function prune(scope = "all transient"):
-  for artifact in walk(scope):
-    if artifact.shape != "transient":
-      continue
-
-    mapping = distribution.status_temporal_mapping(artifact.domain, artifact.type)
-    if mapping[artifact.frontmatter["status"]] != "past":
-      continue
-
-    terminal_field = distribution.terminal_timestamp_field(artifact.domain, artifact.type)
-    terminal_time = artifact.frontmatter[terminal_field]
-    retention_days = distribution.retention_window(artifact.domain, artifact.type)
-
-    if now() - terminal_time < retention_days * 86400:
-      continue
-
-    Delete(artifact.path)        # implementation MUST commit the deletion to git
-```
-
-`prune` is **deterministic**. The implementation MAY batch deletions into a single commit, but the commit message SHOULD enumerate every pruned path.
-
----
-
-## 5. `supersede` — replace one accumulating record with a newer one
-
-**Precondition.** Both records MUST have shape `accumulating`. The old record's `status` MUST be `active`. The new record MUST validate against the same schema as the old.
-
-**Postcondition.** A new record exists with `supersedes: <old_path>` in its frontmatter. The old record's frontmatter has `status: superseded` and `superseded_by: <new_path>`. Both records remain on disk.
-
-```
-function supersede(old_path, new_path, new_frontmatter, new_body):
-  old = Read(old_path)
-  assert old.shape == "accumulating"
-  assert old.frontmatter["status"] == "active"
-
-  new_frontmatter["supersedes"] = old_path
-  Create(new_path, new_frontmatter, new_body)
-
-  patch = {
-    "status": "superseded",
-    "superseded_by": new_path,
-  }
-  Update(old_path, frontmatter_patch=patch)
-```
-
-`supersede` is **deterministic**. The Create-then-Update sequence MUST be atomic per the distribution's transaction model: if Update fails, the implementation MUST either roll back the Create or surface the inconsistency for repair. Half-supersession is not a conforming state.
-
----
-
-## 6. `evolve` — read history of a named concept
-
-**Precondition.** The path MUST resolve to an existing artifact (or to a known-deleted path with git history).
-
-**Postcondition.** The implementation returns a structured history per the artifact's shape.
-
-```
-function evolve(path):
-  artifact = Read(path) | LastKnown(path)
-  shape = artifact.shape
-
-  if shape == "living":
-    return ReadHistory(path, mode = "git_log")
-
-  if shape == "accumulating":
-    chain = []
-    cursor = path
-    while cursor != null:
-      record = Read(cursor)
-      chain.append(record)
-      cursor = record.frontmatter.get("supersedes", null)
-    return chain                        # ordered newest-first; reverse for chronological
-
-  if shape == "transient":
-    on_disk = list_recent_past_state(artifact.domain, artifact.type)
-    git_history = ReadHistory(path, mode = "git_log")
-    return merge(on_disk, git_history)
-```
-
-The return shape (timeline, list, diff view) is distribution-defined. The contract is: "show me how this thing changed over time," using the right mechanism for the artifact's shape. `evolve` is **deterministic**.
-
----
-
-## 7. `consolidate` — the one latent operation
-
-**Precondition.** Inputs are a set of source artifacts (paths, git refs, or external data sources) and a target artifact path. The target's shape MUST be `living` or `accumulating` (transient artifacts MUST NOT be consolidation targets).
-
-**Postcondition.** The target artifact exists or has been updated. Every substantive claim in the target cites at least one source from the inputs. Claims that cannot be evidenced are flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->`. If the target is a living document, its `last_verified` frontmatter is now.
-
-```
-function consolidate(sources, target_path):
-  target = Read(target_path) | new()
-  assert target.shape in {"living", "accumulating"}
-
-  source_contents = [Read(s) for s in sources]
-
-  # Latent step: the model synthesizes the target from the sources.
-  # This is the only kernel operation that invokes a model.
-  draft = model_synthesize(
-    sources = source_contents,
-    target = target,
-    rules = {
-      "every_claim_must_cite_a_source": true,
-      "flag_unevidenced_claims_inline": true,
-      "preserve_idempotence_up_to_paraphrase": true,
-    }
-  )
-
-  if target.shape == "living":
-    draft.frontmatter["last_verified"] = now()
-
-  if target_exists(target_path):
-    Update(target_path, frontmatter_patch=draft.frontmatter, body_patch=draft.body)
-  else:
-    Create(target_path, draft.frontmatter, draft.body)
-```
-
-`consolidate` is **latent**. It is the ONLY kernel operation that MUST invoke a model. Distributions SHOULD implement consolidate as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`, `archeia:clarify-idea`, `archeia:review-draft`) rather than a single generic skill, because narrow consolidation scopes produce better output and cost less.
-
-The operation is semantically idempotent: two runs of the same consolidation over the same inputs MUST produce semantically equivalent outputs. Exact prose MAY differ (the operation is latent), but the set of claims and citations MUST be the same up to paraphrase.
-
----
-
-## 8. `archeia:init` — scaffold an `.archeia/` tree
+## 2. `init` — scaffold an `.archeia/` tree
 
 **Precondition.** The implementation operates on an existing project root. A pre-existing `.archeia/` is permitted.
 
-**Postcondition.** The five canonical domain directories exist (for software distributions); `standard/domains.yaml` exists; `standard/VERSION` exists; the kernel base schemas plus the distribution's contract schemas exist under `standard/contracts/`. Running on an already-initialized root is a no-op plus a validation pass.
+**Postcondition.** The distribution's declared domain directories, standard metadata, required schemas, and scaffolded directory READMEs exist. Running on an already initialized root is a no-op plus validation.
 
 ```
 function init(root, distribution):
@@ -229,36 +37,34 @@ function init(root, distribution):
   for domain in distribution.domains:
     ensure_directory(root + "/.archeia/" + domain.id + "/")
 
-  if not exists(root + "/.archeia/standard/domains.yaml"):
-    write(root + "/.archeia/standard/domains.yaml", distribution.domains_yaml)
-
-  if not exists(root + "/.archeia/standard/VERSION"):
-    write(root + "/.archeia/standard/VERSION", distribution.kernel_version_pin)
+  ensure_file_if_absent(root + "/.archeia/standard/domains.yaml", distribution.domains_yaml)
+  ensure_file_if_absent(root + "/.archeia/standard/VERSION", distribution.kernel_version_pin)
 
   for schema_path, schema_content in distribution.required_schemas:
-    if not exists(root + "/.archeia/standard/contracts/" + schema_path):
-      write(root + "/.archeia/standard/contracts/" + schema_path, schema_content)
+    ensure_file_if_absent(root + "/.archeia/standard/contracts/" + schema_path, schema_content)
+
+  for readme_path, readme_content in distribution.scaffold_readmes:
+    ensure_file_if_absent(root + "/.archeia/" + readme_path, readme_content)
 
   return validate(root)
 ```
 
-`init` is **deterministic** and **idempotent**.
+`init` is deterministic and idempotent.
 
 ---
 
-## 9. `archeia:validate` — check kernel and distribution conformance
+## 3. `validate` — check conformance
 
 **Precondition.** An `.archeia/` directory exists.
 
-**Postcondition.** A structured report of conformance issues, each with a file-path citation.
+**Postcondition.** The implementation returns a structured report of conformance issues, each with a file-path citation and severity.
 
 ```
 function validate(root):
   issues = []
 
   if not exists(root + "/.archeia/"):
-    issues.append({severity: "fatal", file: root, msg: "no .archeia/ at project root"})
-    return issues
+    return [{severity: "fatal", file: root, msg: "no .archeia/ at project root"}]
 
   domains_yaml = parse(root + "/.archeia/standard/domains.yaml")
   if domains_yaml == null or len(domains_yaml.domains) < 1:
@@ -268,13 +74,13 @@ function validate(root):
   if not is_valid_semver(version):
     issues.append({severity: "fatal", file: "standard/VERSION", msg: "not a valid semver"})
 
-  for artifact in walk(root + "/.archeia/"):
+  for artifact in walk_artifacts(root + "/.archeia/"):
     if not in_declared_domain(artifact, domains_yaml):
       issues.append({severity: "error", file: artifact.path, msg: "outside any declared domain"})
-
-    if artifact.shape == null:
-      issues.append({severity: "error", file: artifact.path, msg: "no shape declared"})
       continue
+
+    if not shape_is_permitted(artifact, domains_yaml):
+      issues.append({severity: "error", file: artifact.path, msg: "shape not permitted in domain"})
 
     if not validates_against_base_schema(artifact, artifact.shape):
       issues.append({severity: "error", file: artifact.path, msg: "fails base schema for " + artifact.shape})
@@ -295,7 +101,7 @@ function validate(root):
     if maps_to_past(artifact) and not has_terminal_timestamp(artifact):
       issues.append({severity: "error", file: artifact.path, msg: "past status without terminal timestamp"})
 
-  for artifact in walk(root + "/.archeia/"):
+  for artifact in walk_artifacts(root + "/.archeia/"):
     last_writer = git_blame_writer(artifact)
     declared_owner = lookup_owner(artifact.domain, domains_yaml)
     if not is_authorized(last_writer, declared_owner):
@@ -304,25 +110,152 @@ function validate(root):
   return issues
 ```
 
-`validate` is **deterministic**. Severity levels:
-
-- `fatal` — the repo is not even kernel-shaped; processing MUST stop.
-- `error` — a normative MUST is violated; the implementation MUST report it.
-- `advisory` — a normative SHOULD is violated, or git blame is ambiguous; the implementation SHOULD report it.
+`validate` is deterministic.
 
 ---
 
-## 10. Atomicity, ordering, and concurrency
+## 4. `write` — create, update, or delete safely
 
-**Atomicity.** Implementations SHOULD wrap each operation in a transaction whose unit is one git commit. The Create-then-Update inside `supersede` MUST be transactional.
+**Precondition.** The requested mutation targets a declared domain and is performed by that domain's owner or an authorized delegate.
 
-**Ordering.** Operations on the same artifact MUST be serialized. Operations on different artifacts MAY proceed concurrently.
+**Postcondition.** The artifact tree is changed only if owner, shape, schema, contract, and history-preservation rules pass.
+
+```
+function write(mutation):
+  assert target_domain_is_declared(mutation.path)
+  assert writer_is_authorized(mutation.writer, domain_owner(mutation.path))
+
+  proposed = apply_mutation_in_memory(mutation)
+  assert proposed.shape in permitted_shapes(proposed.domain)
+  assert validates_against_base_schema(proposed, proposed.shape)
+
+  artifact_schema = lookup_artifact_schema(proposed)
+  if artifact_schema:
+    assert validates_against(proposed, artifact_schema)
+
+  if proposed.shape == "living":
+    allow_create_or_update(proposed)
+
+  if proposed.shape == "accumulating":
+    if mutation.kind == "delete":
+      reject("accumulating records are never deleted")
+    if mutation.kind == "update_existing":
+      assert only_schema_declared_metadata_mutations(mutation)
+    allow_create_or_metadata_update(proposed)
+
+  if proposed.shape == "transient":
+    if mutation.kind == "delete":
+      reject("transient deletion goes through prune unless distribution allows direct delete")
+    assert status_is_valid(proposed)
+    allow_create_or_update(proposed)
+
+  commit(mutation)
+```
+
+`write` is deterministic. Latent skills decide *what* to write; `write` decides whether the mutation is allowed.
+
+---
+
+## 5. `transition` — change transient status
+
+**Precondition.** The artifact is transient. The current status and target status are connected by a distribution-declared transition.
+
+**Postcondition.** The artifact has the target status and any required timestamp fields.
+
+```
+function transition(path, target_status):
+  artifact = Read(path)
+  assert artifact.shape == "transient"
+
+  current_status = artifact.frontmatter["status"]
+  lifecycle = distribution.lifecycle(artifact.domain, artifact.type)
+  assert lifecycle.allows(current_status, target_status)
+
+  patch = {"status": target_status}
+
+  if lifecycle.maps_to_present(target_status) and lifecycle.start_field:
+    patch[lifecycle.start_field] = now()
+
+  if lifecycle.maps_to_past(target_status):
+    patch[lifecycle.terminal_timestamp_field] = now()
+
+  write(Update(path, frontmatter_patch=patch))
+```
+
+`transition` is deterministic. Distribution vocabularies decide whether statuses are called `active`, `running`, `accepted`, `rejected`, `done`, or something else.
+
+---
+
+## 6. `prune` — delete expired transient artifacts
+
+**Precondition (per artifact).** The artifact is transient, maps to past, has a terminal timestamp, and its retention window has elapsed.
+
+**Postcondition.** Eligible artifacts are deleted from disk through a git commit; their history remains in git.
+
+```
+function prune(scope = "all transient"):
+  for artifact in walk(scope):
+    if artifact.shape != "transient":
+      continue
+
+    if not maps_to_past(artifact):
+      continue
+
+    terminal_time = artifact.frontmatter[terminal_timestamp_field(artifact)]
+    retention_days = distribution.retention_window(artifact.domain, artifact.type)
+
+    if now() - terminal_time < retention_days * 86400:
+      continue
+
+    Delete(artifact.path)
+    commit("prune " + artifact.path)
+```
+
+`prune` is deterministic. Implementations MAY batch deletions into one commit if the commit message enumerates every pruned path.
+
+---
+
+## 7. `history` — show artifact history
+
+**Precondition.** The path resolves to an existing artifact or to a known-deleted path with git history.
+
+**Postcondition.** The implementation returns a structured history appropriate to the artifact's shape.
+
+```
+function history(path):
+  artifact = Read(path) | LastKnown(path)
+
+  if artifact.shape == "living":
+    return ReadHistory(path, mode = "git_log")
+
+  if artifact.shape == "accumulating":
+    return related_records(
+      path,
+      relationships = ["supersedes", "superseded_by", "related_to"]
+    )
+
+  if artifact.shape == "transient":
+    return merge(
+      recent_on_disk_records(artifact.domain, artifact.type),
+      ReadHistory(path, mode = "git_log")
+    )
+```
+
+`history` is deterministic. The return shape (timeline, list, diff view) is distribution-defined.
+
+---
+
+## 8. Atomicity, Ordering, and Concurrency
+
+**Atomicity.** Implementations SHOULD make each mutating operation one git commit. Multi-file mutations performed through `write` SHOULD be transactional: either all intended files are changed or none are.
+
+**Ordering.** Operations on the same artifact MUST be serialized. Operations on different artifacts MAY proceed concurrently when ownership rules allow it.
 
 **Concurrency.** Per [Truth #4 of `PRINCIPLES.md`](PRINCIPLES.md), the kernel does not require a multi-writer concurrency model; ownership rules guarantee one writer per domain. Implementations MAY assume single-writer-per-domain and skip locking, OR MAY implement file-level locking for defense in depth.
 
 ---
 
-## 11. References
+## 9. References
 
 - [`KERNEL.md`](KERNEL.md) §5 — the operation contracts these algorithms implement
 - [`CONFORMANCE.md`](CONFORMANCE.md) — the audit checklist

@@ -1,6 +1,6 @@
 # Archeia Distributions
 
-A **distribution** is an opinionated bundle that extends [the Archeia Kernel](../KERNEL.md) for a specific audience. The kernel defines the abstract substrate — primitives, invariants, the three lifecycle shapes, the five kernel operations. A distribution makes the specific choices the kernel deliberately refuses to make.
+A **distribution** is an opinionated bundle that extends [the Archeia Kernel](../KERNEL.md) for a specific audience. The kernel defines the abstract substrate — primitives, invariants, the three lifecycle shapes, and the six deterministic kernel operations. A distribution makes the specific choices the kernel deliberately refuses to make.
 
 This folder is where distributions live. Each distribution is one Markdown file declaring:
 
@@ -71,12 +71,12 @@ Either embedded in `standard/domains.yaml` or in a separate `standard/lifecycles
 Enforceable schemas for every artifact type the distribution uses. At minimum:
 
 - The kernel's three base schemas (`living-doc.schema.json`, `accumulating-record.schema.json`, `transient-artifact.schema.json`) — these can be inherited or re-exported
-- The distribution's cross-domain contract schemas (for software distributions: `draft.schema.json`, `product.schema.json`, `c4.schema.json`)
+- The distribution's cross-domain contract schemas (for software distributions: `product.schema.json`, `c4.schema.json`)
 - Any per-artifact-type schemas the distribution wants to enforce (e.g., `task.schema.json`, `adr.schema.json`)
 
-### 4. The inherent skills plus whatever else the distribution ships
+### 4. Kernel operations, skills, and whatever else the distribution ships
 
-Every distribution MUST ship working implementations of the five inherent kernel skills (`archeia:init`, `archeia:validate`, `archeia:advance`, `archeia:complete`, `archeia:prune`) and the one inherent kernel agent (`archivist`). See [`KERNEL.md`](../KERNEL.md#6-inherent-skills) for the operation contracts.
+Every distribution MUST ship working implementations of the six kernel operations (`archeia:init`, `archeia:validate`, `archeia:write`, `archeia:transition`, `archeia:prune`, `archeia:history`) and the one inherent kernel agent (`archivist`). See [`KERNEL.md`](../KERNEL.md#6-required-tooling) for the operation contracts.
 
 A distribution MAY (and typically will) ship additional skills and agents that encode its opinionated workflow. Archeia Solo ships 16 skills and a growing agent roster.
 
@@ -122,6 +122,6 @@ Distributions are not exclusive — a single organization can use multiple distr
 ## See also
 
 - **[`../KERNEL.md`](../KERNEL.md)** — the abstract substrate distributions extend
-- **[`../SCHEMA.md`](../SCHEMA.md)** — the canonical software application of the kernel (five domains, three contracts)
+- **[`../SCHEMA.md`](../SCHEMA.md)** — the canonical software application of the kernel (five domains, two contracts)
 - **[`../PRINCIPLES.md`](../PRINCIPLES.md)** — the six fundamental truths that predate any specific distribution
 - **[`../TEMPORAL_MODEL.md`](../TEMPORAL_MODEL.md)** — the three lifecycle shapes and their operations

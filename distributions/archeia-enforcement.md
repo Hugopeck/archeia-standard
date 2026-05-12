@@ -40,11 +40,11 @@ Every adopter of `archeia-enforcement` SHOULD ship checks across all seven track
 **Failure message format:**
 
 ```
-[archeia:schema] FAIL .archeia/business/drafts/2026-05-01-foo.md
-  → does not satisfy contracts/draft.schema.json
+[archeia:schema] FAIL .archeia/product/features/onboarding.md
+  → does not satisfy contracts/product.schema.json
   → missing required field: status
-  → expected one of: draft, review, advanced, discarded
-  Remediation: add `status: draft` to the frontmatter, then re-run.
+  → expected a valid product feature status
+  Remediation: add a valid `status` to the frontmatter, then re-run.
 ```
 
 The "Remediation:" line is the load-bearing piece — agents that re-read the CI output use it as a prompt.
@@ -63,7 +63,7 @@ The "Remediation:" line is the load-bearing piece — agents that re-read the CI
 [archeia:lifecycle] FAIL .archeia/execution/tasks/abc-123.md
   → status `done` maps to `past`, but no terminal timestamp present
   → expected `completed` field per execution domain's terminal_timestamp_field
-  Remediation: run `archeia:complete` again, or add `completed: <ISO 8601>` to frontmatter.
+  Remediation: run `archeia:transition` to a terminal status again, or add `completed: <ISO 8601>` to frontmatter.
 ```
 
 ### 2.3 Cross-domain contract enforcer
@@ -77,10 +77,10 @@ The "Remediation:" line is the load-bearing piece — agents that re-read the CI
 **Failure message format:**
 
 ```
-[archeia:contract] FAIL business → product
-  → .archeia/business/drafts/2026-05-01-foo.md does not satisfy draft.schema.json
-  → blocking: product writers cannot consume this draft until it conforms
-  Remediation: fix the draft frontmatter, OR move this draft out of the review queue (status: discarded).
+[archeia:contract] FAIL product → execution
+  → .archeia/product/features/onboarding.md does not satisfy product.schema.json
+  → blocking: execution writers cannot generate tasks from this feature until it conforms
+  Remediation: fix the feature frontmatter and required sections before generating execution work.
 ```
 
 ### 2.4 Ownership checker (advisory)
@@ -102,7 +102,7 @@ The "Remediation:" line is the load-bearing piece — agents that re-read the CI
 
 ### 2.5 Evidence linter
 
-**What:** for every descriptive artifact (codebase domain, ADRs, drafts), checks that substantive claims cite a source and that unevidenced claims are flagged with the `<!-- INSUFFICIENT EVIDENCE: ... -->` marker.
+**What:** for every descriptive artifact (codebase domain, ADRs, distribution-defined proposals), checks that substantive claims cite a source and that unevidenced claims are flagged with the `<!-- INSUFFICIENT EVIDENCE: ... -->` marker.
 
 **When:** on every PR that modifies a descriptive artifact; on a weekly schedule for full-tree audit.
 
@@ -135,7 +135,7 @@ The "Remediation:" line is the load-bearing piece — agents that re-read the CI
 
 ### 2.7 Operation pre/postcondition checker
 
-**What:** runs the operation tests Op1–Op11 from [`TEST-MATRIX.md`](../TEST-MATRIX.md) §8 against the distribution's actual implementations of the kernel operations. This is a regression test, not a per-push check.
+**What:** runs the operation tests Op1–Op10 from [`TEST-MATRIX.md`](../TEST-MATRIX.md) §8 against the distribution's actual implementations of the kernel operations. This is a regression test, not a per-push check.
 
 **When:** on every change to any inherent skill; on every release of the distribution.
 

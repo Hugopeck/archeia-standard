@@ -99,13 +99,13 @@ This is what the subagent primitive is for in Claude Code and every serious agen
 
 ## 5. Project knowledge comes in three lifecycle shapes: living, accumulating, transient
 
-Not every artifact has the same lifecycle. Most project knowledge is living documents — one file per concept, edited in place, with history in git. A smaller but essential subset is accumulating records — ADRs, retros, concluded experiments — append-only artifacts that stay on disk forever because the record itself is the point. A minority is transient artifacts — tasks, drafts, running experiments — that flow through states during their lifetime and get pruned from disk after a bounded retention window, with git preserving the long tail.
+Not every artifact has the same lifecycle. Most project knowledge is living documents — one file per concept, edited in place, with history in git. A smaller but essential subset is accumulating records — ADRs, retros, concluded experiments — append-only artifacts that stay on disk forever because the record itself is the point. A minority is transient artifacts — tasks, plans, running experiments, proposals — that flow through states during their lifetime and get pruned from disk after a bounded retention window, with git preserving the long tail.
 
 This is the principle most in-repo knowledge systems miss, and the one we spent the most time getting wrong. Earlier drafts of the standard tried to treat every artifact as flowing through a uniform past/present/future lifecycle. That framing was elegant but false: it duplicated what git already does for living documents, it forced ADRs into a lifecycle they don't actually have, and it caused filesystem bloat as operational artifacts accumulated with no pruning story.
 
-The three-shapes model is what falls out when you walk through the real artifacts honestly. Living documents (product.md, roadmap.md, feature specs, vision.md — the bulk of `.archeia/`) are implicit-present — you edit them, git holds history, there's no state machine and no supersession files cluttering the directory. Accumulating records (product/feedback/, product/decisions/, execution/retros/, business/landscape/) are append-only, with a `status` field tracking relevance (active/superseded/archived), and they are *never deleted*. Transient artifacts (execution/tasks/, execution/plans/, business/drafts/) have a real lifecycle with a retention window — they flow through status values that map to temporal categories, and once they reach a terminal state they sit on disk for a short retention period (Archeia Solo defaults: 14 days for tasks, 30 days for plans, 0 days for discarded drafts) before being pruned.
+The three-shapes model is what falls out when you walk through the real artifacts honestly. Living documents (product.md, roadmap.md, feature specs, vision.md — the bulk of `.archeia/`) are implicit-present — you edit them, git holds history, there's no state machine and no supersession files cluttering the directory. Accumulating records (product/feedback/, product/decisions/, execution/retros/, business/landscape/{competition,industry,market}/) are append-only, with a `status` field tracking relevance (active/superseded/archived), and they are *never deleted*. Transient artifacts (execution/tasks/, execution/plans/, running experiments, distribution-defined proposals) have a real lifecycle with a retention window — they flow through status values that map to temporal categories, and once they reach a terminal state they sit on disk for a short retention period (Archeia Solo defaults: 14 days for tasks and 30 days for plans) before being pruned.
 
-The kernel operations split cleanly by shape: `advance` and `complete` and `prune` apply only to transient artifacts; `supersede` applies only to accumulating records; `evolve` maps to `git log` for living documents and to on-disk traversal for the other shapes. Three shapes, five operations, one rule: match the machinery to the lifecycle the artifact actually has, and stop fighting git.
+The kernel operations stay mechanical: `write` enforces ownership, shape, schema, and history rules; `transition` applies distribution-defined transient status changes; `prune` removes expired transient artifacts; `history` reads the right history mechanism for each shape. Skills decide what content should change. Kernel operations only keep the tree valid.
 
 **Consequence:** most of `.archeia/` is living documents backed by git, which means the standard doesn't need a universal temporal state field, doesn't need supersession chains for most artifacts, and doesn't bloat over time. The minority of artifacts that genuinely need lifecycle tracking get it, with retention windows that match how humans actually work with operational state.
 
@@ -123,7 +123,7 @@ Archeia's answer: **the filesystem is the message bus, and frontmatter is the sc
 
 Agent A writes a file with documented frontmatter fields. Agent B's trigger is "when a file matching this path pattern and this frontmatter signature lands, do this work." There is no wire protocol. There is no RPC layer. There is no shared type library. The integration surface is the file convention.
 
-This is what makes Archeia a genuinely open standard rather than a framework. An agent written in Python using a custom loop can produce `.archeia/business/drafts/foo.md`, and an agent written in TypeScript using Claude Code's SDK can consume it, and they never share a line of code. The only thing they share is the standard.
+This is what makes Archeia a genuinely open standard rather than a framework. An agent written in Python using a custom loop can produce a contract-conforming `.archeia/product/features/foo.md`, and an agent written in TypeScript using Claude Code's SDK can consume it, and they never share a line of code. The only thing they share is the standard.
 
 It also makes every integration transparent. Humans can read the handoff by opening the file. The state of the system is always inspectable with `ls` and `cat`. There is no "black box" in the agent pipeline because every intermediate step is a file sitting on disk with a timestamp.
 
@@ -139,20 +139,20 @@ Some work in an agent system requires judgment, synthesis, or pattern recognitio
 
 The classic illustration: a model can seat eight people at a dinner table, accounting for personalities and social dynamics. Ask it to seat eight hundred and it will hallucinate a seating chart that looks plausible but violates most of the constraints. Seating eight is judgment work (latent); seating eight hundred is combinatorial optimization (deterministic). Forcing the second into the first is where systems fail.
 
-This principle has two practical consequences for Archeia. First, **every kernel operation is either latent or deterministic**, and the kernel says which:
+This principle has two practical consequences for Archeia. First, **kernel operations are deterministic**:
 
-| Operation | Latent or deterministic | Why |
-|---|---|---|
-| `advance` | Deterministic | Status transition, frontmatter update |
-| `complete` | Deterministic | Status transition, timestamp recording |
-| `prune` | Deterministic | Retention-window check, file deletion |
-| `supersede` | Deterministic | Write new record, update old record's status field |
-| `evolve` | Deterministic | Git log / on-disk graph traversal |
-| `consolidate` | Latent | Read multiple sources, produce structured synthesis with cited evidence |
+| Operation | Deterministic responsibility |
+|---|---|
+| `init` | Scaffold declared repo structure |
+| `validate` | Check structure, schemas, contracts, lifecycle state, and ownership |
+| `write` | Gate filesystem mutations through owner, shape, schema, and history rules |
+| `transition` | Apply declared transient status transitions and timestamps |
+| `prune` | Check retention windows and delete expired transient artifacts |
+| `history` | Read git history, on-disk records, and frontmatter relationships |
 
-Only `consolidate` is latent. The other five are mechanical and MUST NOT burn LLM tokens. A distribution that implements them as model calls is non-conforming with the kernel's deterministic-operation contract — and is wasting budget.
+Latent work belongs in skills layered above the kernel: `review-product`, `clarify-idea`, `write-codebase-model`, `scan-git`, and similar authoring workflows. A distribution that implements kernel operations as model calls is non-conforming with the deterministic-operation contract — and is wasting budget.
 
-Second, distributions MUST declare which of their custom artifacts and operations are latent and which are deterministic. A skill that "validates" schema conformance by asking the model is doing the wrong work — it MUST use a JSON Schema validator. A skill that "reviews" a draft is doing the right work — it SHOULD use the model. Getting this boundary right is the difference between an agent system that ships and one that hallucinates.
+Second, distributions MUST declare which of their custom skills are latent and which helper scripts are deterministic. A skill that "validates" schema conformance by asking the model is doing the wrong work — it MUST use a JSON Schema validator. A skill that reviews product context or synthesizes codebase evidence is doing judgment work — it SHOULD use the model. Getting this boundary right is the difference between an agent system that ships and one that hallucinates.
 
 **Consequence:** when designing any part of a distribution, ask "is this judgment or is this computation?" If it is computation, write code. If it is judgment, write a skill. The cheapest LLM budget is the budget you never spent because a validator handled the work.
 

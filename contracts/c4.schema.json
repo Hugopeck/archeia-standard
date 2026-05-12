@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/c4.schema.json",
   "title": "C4 Model Structured Data",
-  "description": "Contract for codebase/model/c4/{system,containers,components,dataflow,entities,statemachine}.json — the codebase → product contract. These files carry C4 model data in a structured form that product skills can read for feasibility review during draft review. Each file describes one level of the C4 zoom.",
+  "description": "Contract for codebase/model/c4/{system,containers,components,dataflow,entities,statemachine}.json — the codebase → product contract. These files carry C4 model data in a structured form that product skills can read for feasibility review during product review. Each file describes one level of the C4 zoom.",
   "type": "object",
   "properties": {
     "level": {

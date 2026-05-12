@@ -46,7 +46,7 @@
   "archeia": {
     "shape": "accumulating",
     "cognitive_role": "episodic memory (Tulving 1972; CoALA, arXiv:2309.02427, 2023)",
-    "operations": ["supersede", "evolve", "consolidate"],
+    "operations": ["write", "history"],
     "history": "on-disk forever; also in git",
     "pruning": "never",
     "permitted_mutations": [
