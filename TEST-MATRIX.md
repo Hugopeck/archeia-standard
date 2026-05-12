@@ -142,17 +142,16 @@ For each kernel operation, run the reference algorithm from [`REFERENCE-ALGORITH
 
 | ID | Operation | Test |
 |---|---|---|
-| Op1 | `advance` | Start with a transient artifact at `status: todo` (future). Run `advance` to `status: active`. Assert: status changed; `started` is set to a recent timestamp. Re-running on a non-future status fails the precondition. |
-| Op2 | `complete` | Start with `status: active` (present). Run `complete` to `status: done`. Assert: status changed; `completed` is set; retention clock has begun. |
-| Op3 | `prune` | Create a fixture with one transient artifact whose terminal timestamp is older than retention and one whose terminal timestamp is younger. Run `prune`. Assert: only the older one is deleted; deletion is a git commit; the younger one is untouched. |
-| Op4 | `supersede` | Start with an accumulating record at `status: active`. Run `supersede` to a new path. Assert: new record exists with `supersedes:` set; old record is `status: superseded` with `superseded_by:` set; both files are on disk. |
-| Op5 | `evolve` (living) | Modify a living document twice. Run `evolve`. Assert: returns the git log for the path. |
-| Op6 | `evolve` (accumulating) | Build a chain of three superseded records. Run `evolve` on the newest. Assert: returns all three in order. |
-| Op7 | `evolve` (transient) | Create a transient artifact, complete it, prune it. Run `evolve`. Assert: returns the on-disk past-state (if still in retention) plus the post-pruning git history. |
-| Op8 | `consolidate` | Provide three source files. Run `consolidate` to a new living document. Assert: every claim cites at least one source; `last_verified` is set; running again with the same inputs produces a semantically equivalent output. |
-| Op9 | `consolidate` (idempotence) | Run `consolidate` twice on identical inputs. Assert: claim set and citation set are equal; prose may differ. |
-| Op10 | `init` | Run `init` on an empty repo. Assert: `.archeia/`, `standard/domains.yaml`, `standard/VERSION`, `standard/contracts/` all exist. Re-run. Assert: idempotent (no errors, no overwrites). |
-| Op11 | `validate` | Run `validate` on a repo with three injected violations (one fatal, one error, one advisory). Assert: report contains all three at correct severity. |
+| Op1 | `init` | Run `init` on an empty repo. Assert: `.archeia/`, `standard/domains.yaml`, `standard/VERSION`, `standard/contracts/`, and declared README scaffolds exist. Re-run. Assert: idempotent. |
+| Op2 | `validate` | Run `validate` on a repo with three injected violations (one fatal, one error, one advisory). Assert: report contains all three at correct severity. |
+| Op3 | `write` (living) | Update a living document as its owner. Assert: schema passes and git records the update. Repeat as a non-owner. Assert: mutation is refused or reported. |
+| Op4 | `write` (accumulating) | Create a new accumulating record. Assert: schema passes. Attempt deletion. Assert: refused. Attempt a non-schema metadata mutation on an existing record. Assert: refused or reported. |
+| Op5 | `transition` | Start with a transient artifact at a future-mapped status. Run `transition` to a declared present status. Assert: status changed and start timestamp is set when required. Run an undeclared transition. Assert: refused. |
+| Op6 | `transition` (terminal) | Start with a transient artifact at a present-mapped status. Run `transition` to a declared past status. Assert: terminal timestamp is set and retention clock has begun. |
+| Op7 | `prune` | Create a fixture with one transient artifact whose terminal timestamp is older than retention and one whose terminal timestamp is younger. Run `prune`. Assert: only the older one is deleted; deletion is preserved in git; the younger one is untouched. |
+| Op8 | `history` (living) | Modify a living document twice. Run `history`. Assert: returns git history for the path. |
+| Op9 | `history` (accumulating) | Build related accumulating records with `supersedes:` links. Run `history`. Assert: returns the related on-disk records. |
+| Op10 | `history` (transient) | Create a transient artifact, transition it to terminal, prune it. Run `history`. Assert: returns recent on-disk state when present plus git history after pruning. |
 
 ---
 
@@ -168,9 +167,9 @@ Conformance also requires that *non-conforming* repos fail validation. Implement
 | N4 | An accumulating record manually deleted. | `validate` reports a missing supersession target if any record references it; OR a history-preservation violation if no supersession exists. |
 | N5 | A contract file referenced in `domains.yaml` that doesn't exist in `standard/contracts/`. | `validate` reports C1 failure as fatal. |
 | N6 | A `prune` invocation that would delete a non-transient artifact. | The implementation refuses with a precondition error. |
-| N7 | A `supersede` invocation against a non-accumulating artifact. | The implementation refuses with a precondition error. |
-| N8 | A `consolidate` invocation with a transient target. | The implementation refuses with a target-shape error. |
-| N9 | Frontmatter mutation on an accumulating record other than the supersede mutation. | `validate` reports a history-preservation violation. |
+| N7 | A `transition` invocation against a non-transient artifact. | The implementation refuses with a precondition error. |
+| N8 | A `write` invocation that deletes an accumulating record. | The implementation refuses with a history-preservation error. |
+| N9 | Frontmatter mutation on an accumulating record outside schema-declared metadata mutations. | `validate` reports a history-preservation violation. |
 | N10 | Binary artifact without a sidecar. | `validate` reports Sc5 failure. |
 
 ---

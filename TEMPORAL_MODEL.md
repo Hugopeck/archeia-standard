@@ -8,7 +8,7 @@ This document replaces the earlier past/present/future framing. That framing was
 
 ## 1. Three shapes of project knowledge
 
-Every artifact in every Archeia domain belongs to exactly one of three shapes. The shape determines everything: whether it has a temporal state, whether it gets pruned, whether it supports supersession, how its history is stored, and which kernel operations apply to it.
+Every artifact in every Archeia domain belongs to exactly one of three shapes. The shape determines everything: whether it has a temporal state, whether it gets pruned, whether it supports supersession, how its history is stored, and which kernel rules apply to it.
 
 | Shape | One-line definition | History lives in |
 |---|---|---|
@@ -18,7 +18,7 @@ Every artifact in every Archeia domain belongs to exactly one of three shapes. T
 
 Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in `execution/` plus running growth experiments.
 
-The rest of this document specifies each shape in detail and maps the kernel operations onto them.
+The rest of this document specifies each shape in detail and maps kernel behavior onto them.
 
 ---
 
@@ -141,7 +141,7 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 1. **Has a `status` field.** Status values are distribution-defined per artifact type. Typical for tasks: `todo`, `active`, `done`, `cancelled`. Typical for proposals: `proposed`, `review`, `accepted`, `rejected`.
 2. **Temporal state is derived from status.** There is no `temporal_state` field in the frontmatter. The distribution defines a mapping from each status value to a temporal category (future / present / past). Readers who care about temporal state look up the mapping, don't read a field.
 3. **Has a retention window.** The distribution defines how long a transient artifact stays on disk after reaching a terminal status. Archeia Solo defaults: tasks 14 days and plans 30 days.
-4. **Has a terminal timestamp.** When an artifact reaches a terminal status (`done`, `cancelled`, `advanced`, `discarded`), a timestamp is recorded in frontmatter (e.g., `completed_at: 2026-04-12T16:45:00Z`). The retention window starts ticking from this timestamp.
+4. **Has a terminal timestamp.** When an artifact reaches a terminal status (`done`, `cancelled`, `accepted`, `rejected`), a timestamp is recorded in frontmatter (e.g., `completed_at: 2026-04-12T16:45:00Z`). The retention window starts ticking from this timestamp.
 5. **Pruned when the window expires.** A maintenance operation (e.g., `archeia:prune`) walks transient artifacts, checks retention windows, and deletes expired ones. Git preserves the file forever.
 6. **Supersession is rare.** Transient artifacts usually don't supersede — they complete and get pruned. If supersession is genuinely needed, promote the artifact to shape 2 (accumulating) first.
 
@@ -195,15 +195,14 @@ A distribution is free to change the status vocabulary or the mapping. The stand
 
 ---
 
-## 6. The five kernel operations (mapped to shapes)
+## 6. Kernel Behavior Mapped To Shapes
 
-| Operation | Shape 1 (living) | Shape 2 (accumulating) | Shape 3 (transient) |
+| Behavior | Shape 1 (living) | Shape 2 (accumulating) | Shape 3 (transient) |
 |---|---|---|---|
-| **`advance`** | N/A | N/A | Promote status from a `future` value to a `present` value. E.g., task `todo` → `active`. |
-| **`complete`** | N/A | N/A | Promote status from a `present` value to a `past` value. Record a terminal timestamp. Start retention clock. |
+| **`write`** | Create or edit in place; git preserves history. | Create new records; only schema-declared metadata mutations are allowed on existing records. | Create or update lifecycle artifacts according to the distribution's status vocabulary. |
+| **`transition`** | N/A | N/A | Apply a declared status transition. Present transitions record start timestamps when required; past transitions record terminal timestamps and start retention. |
 | **`prune`** | Never | Never | Delete an artifact whose retention window has expired. Git preserves. |
-| **`supersede`** | N/A (edit in place) | Write new record with `supersedes:`, update old record's `status` to `superseded` | Rare; if genuinely needed, promote to shape 2 first |
-| **`evolve`** | `git log <path>` — walk commit history | Walk `supersedes:` / `superseded_by:` chain on disk | Walk recent past-state artifacts on disk, then fall back to git log |
+| **`history`** | `git log <path>` — walk commit history. | Walk on-disk records and frontmatter relationships such as `supersedes:` / `superseded_by:`. | Walk recent past-state artifacts on disk, then fall back to git log. |
 
 The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPLES.md#4-ownership-plus-delegation-is-the-concurrency-model). Subagents may compute which transitions to make, but the owner always commits the frontmatter change, the git commit, or the file deletion.
 
@@ -272,7 +271,7 @@ status: todo
 scope: [server/auth/**]
 ---
 
-# Work starts (archeia:work runs `advance`):
+# Work starts (archeia:work runs `transition`):
 ---
 id: 2.3
 title: Rewrite auth middleware
@@ -282,7 +281,7 @@ status: active
 scope: [server/auth/**]
 ---
 
-# Work completes (archeia:work runs `complete`):
+# Work completes (archeia:work runs `transition`):
 ---
 id: 2.3
 title: Rewrite auth middleware
@@ -418,7 +417,7 @@ skill: archeia:scan-repo
 
 No `repository-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated analysis, regenerated in place, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:.archeia/codebase/analysis/repository.md`.
 
-### A draft that advances (shape 3 → shape 1)
+### A proposal that becomes durable product or business truth
 
 ```markdown
 # A distribution-defined proposal artifact (shape 3):
@@ -433,7 +432,7 @@ status: draft
 # Onboarding rewrite proposal
 ...
 
-# After review and decision to advance into business/vision/vision.md:
+# After review and decision to incorporate it into business/vision/vision.md:
 # 1. archeia:create-vision (or similar) edits business/vision/vision.md
 #    in place to incorporate the proposal's content — shape 1 edit.
 # 2. The proposal's status becomes a terminal accepted status, retention window starts.
@@ -449,7 +448,7 @@ The living document (`vision.md`) grows. The proposal eventually disappears from
 
 The three-shapes model replaces the past/present/future framing from earlier drafts. It is more truthful, because it describes how Archeia artifacts actually work instead of imposing a uniform lifecycle on things that don't have one. It is more useful, because it keeps `.archeia/` scannable by pruning transient artifacts and storing living-doc history in git where it belongs. It is more opinionated, because it forces each artifact to declare its shape, which prevents drift into "everything accumulates forever."
 
-The kernel recognizes three shapes. The kernel ships five operations (`advance`, `complete`, `prune`, `supersede`, `evolve`) and specifies which apply to which shape. Everything else — status vocabularies, retention windows, shape assignments for each artifact type — is a distribution concern.
+The kernel recognizes three shapes and ships mechanical operations (`init`, `validate`, `write`, `transition`, `prune`, `history`) that enforce those shapes. Everything else — status vocabularies, retention windows, shape assignments for each artifact type, and latent authoring skills — is a distribution concern.
 
 What falls out is a standard that gets out of git's way for the 80% of artifacts that are living documents, gives ADRs and retros the permanent home they need, and handles operational state (tasks, plans, running experiments, proposals) with bounded retention that matches how humans already think about those artifacts.
 

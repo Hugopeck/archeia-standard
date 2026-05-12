@@ -86,7 +86,7 @@ The cross-domain contracts in Archeia are **static schemas** (this frontmatter f
 
 **This is where graph-based memory systems (Zep/Graphiti, Supermemory, Mem0) genuinely do more than Archeia.** They build explicit edges between entities and support traversal queries. Archeia currently supports such queries only if a human or an agent reads many files and synthesizes manually — which is expensive.
 
-**A future extension**: the planned `evolve` operation currently only walks history for a single artifact (git log for living docs, supersession chain for accumulating records). A future version could walk cross-artifact relationships via frontmatter links. This is tracked as a Phase-D improvement, not shipped in 0.2.0.
+**A future extension**: the `history` operation currently walks history for a single artifact (git log for living docs, frontmatter relationships for accumulating records). A future version could walk broader cross-artifact relationships via frontmatter links. This is tracked as a Phase-D improvement, not shipped in 0.2.0.
 
 **Supporting literature**: Rasmussen et al., "Zep: A Temporal Knowledge Graph Architecture for Agent Memory" (arXiv:2501.13956, 2025) is the current state of the art in graph-based long-range understanding. Archeia is explicitly simpler and gives up some of Zep's capabilities in exchange for filesystem-native simplicity.
 

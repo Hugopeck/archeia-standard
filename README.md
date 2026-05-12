@@ -14,7 +14,7 @@ Archeia defines the durable source-of-truth layer for agent systems. If a distri
 
 - **[`MANIFESTO.md`](MANIFESTO.md)** — the one-page pitch. Read this first.
 - **[`PRINCIPLES.md`](PRINCIPLES.md)** — the seven fundamental truths the standard rests on.
-- **[`KERNEL.md`](KERNEL.md)** — the formal substrate: primitives, invariants, operations, inherent skills, extension mechanism.
+- **[`KERNEL.md`](KERNEL.md)** — the formal substrate: primitives, invariants, operations, required tooling, extension mechanism.
 - **[`SCHEMA.md`](SCHEMA.md)** — the canonical software application of the kernel. Five domains, ownership, cross-domain contracts.
 - **[`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md)** — the three lifecycle shapes: living, accumulating, transient.
 - **[`ONTOLOGY.md`](ONTOLOGY.md)** — canonical vocabulary grounded in cognitive science, multi-agent systems research, and recent (2023–2026) AI literature.
@@ -23,7 +23,7 @@ Archeia defines the durable source-of-truth layer for agent systems. If a distri
 
 - **[`POSITIONING.md`](POSITIONING.md)** — what Archeia adds beyond the SOTA harness corpus from Anthropic, OpenAI, and Cursor. The deliberate departures and the agreements.
 - **[`CONFORMANCE.md`](CONFORMANCE.md)** — the Implementation Checklist / Definition of Done. Every kernel MUST in audit form.
-- **[`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md)** — language-agnostic pseudocode for the six kernel operations, including the CRUD-with-preconditions framing.
+- **[`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md)** — language-agnostic pseudocode for the six deterministic kernel operations.
 - **[`TEST-MATRIX.md`](TEST-MATRIX.md)** — the per-schema and per-operation tests every conformant repo passes.
 
 ## Contracts
@@ -40,7 +40,7 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 
 A **distribution** is an opinionated bundle that extends the kernel for a specific audience. See [`distributions/README.md`](distributions/README.md) for the "how to write a distribution" guide and the current roster.
 
-The reference distribution is **Archeia Solo**, at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia). It targets solo builders running AI-agent-maximalist bootstrapped software businesses, ships 16 skills and a growing agent roster, and implements all six kernel operations.
+The reference distribution is **Archeia Solo**, at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia). It targets solo builders running AI-agent-maximalist bootstrapped software businesses, ships 16 skills and a growing agent roster, and implements the kernel operations.
 
 A **companion distribution-flavor** also lives in this repo: [`distributions/archeia-enforcement.md`](distributions/archeia-enforcement.md) — the spec for the linters, CI checks, and pre-commit hooks that turn the kernel's normative requirements into mechanical guardrails. Any distribution can layer it on top of itself; it operationalizes OpenAI's harness-engineering "mechanical enforcement" principle.
 
@@ -64,7 +64,7 @@ This means the standard will version more aggressively in its pre-1.0 life than 
 
 The standard uses semantic versioning. `VERSION` at the repo root contains the current kernel version. Tools that consume `.archeia/` trees should read this version and either process the repo (if they support it) or refuse with a clear error.
 
-- **Major** — breaking changes to primitives, invariants, operations, or inherent skills
+- **Major** — breaking changes to primitives, invariants, operations, or required distribution tooling
 - **Minor** — additive changes: new optional fields, new operations, new validation checks that don't break existing conforming repos
 - **Patch** — clarifications, documentation fixes, attribution corrections
 

@@ -64,7 +64,7 @@ The corpus uniformly says: persistent state lives outside the context window. No
 - ACE uses an evolving "playbook" (one shape, structurally undefined).
 - Symphony uses a `WORKFLOW.md` plus state in the tracker (split, but not theorized).
 
-Archeia ships a closed taxonomy: every artifact is **living**, **accumulating**, or **transient** (`KERNEL.md` §2.4, `TEMPORAL_MODEL.md`). Each shape has different rules for editing, history, retention, and pruning. The kernel's five operations (`advance`, `complete`, `prune`, `supersede`, `evolve`) are defined per-shape, not generically.
+Archeia ships a closed taxonomy: every artifact is **living**, **accumulating**, or **transient** (`KERNEL.md` §2.4, `TEMPORAL_MODEL.md`). Each shape has different rules for editing, history, retention, and pruning. The kernel's mechanical operations (`write`, `transition`, `prune`, `history`) enforce those rules; skills decide what content should change.
 
 This is a *grammar*. It tells you, for any new artifact, which rules apply. The corpus stops at "store state durably." Archeia tells you which durable state behaves like a wiki page, which behaves like a captain's log, and which behaves like a sticky note that should be thrown away after two weeks.
 
@@ -90,7 +90,7 @@ Archeia's `ONTOLOGY.md` grounds the vocabulary in cognitive science. The three l
 
 The bridge from Tulving to LLM agents was established by Sumers et al.'s *Cognitive Architectures for Language Agents* (CoALA, arXiv:2309.02427, 2023) at the in-context layer. Archeia extends the same bridge to the in-repo persistent layer (`PRINCIPLES.md` Truth #5).
 
-This is not academic theater. It is the source of the closed taxonomy in §4.1 — three shapes is not arbitrary, it is what Tulving's three memory systems demand once you stop conflating them. It is also why the kernel's `consolidate` operation has an explicit academic name (Müller & Pilzecker 1900; Squire & Alvarez 1995) rather than the misapplied "diarize" the project briefly used and corrected.
+This is not academic theater. It is the source of the closed taxonomy in §4.1 — three shapes is not arbitrary, it is what Tulving's three memory systems demand once you stop conflating them. It is also why the consolidation skill pattern has an explicit academic name (Müller & Pilzecker 1900; Squire & Alvarez 1995) rather than the misapplied "diarize" the project briefly used and corrected.
 
 The corpus does not provide a vocabulary anchored this way. Archeia does, and that anchoring is what keeps the spec internally consistent as it grows.
 

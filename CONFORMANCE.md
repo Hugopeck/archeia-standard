@@ -56,31 +56,31 @@ A conforming implementation MUST follow [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md)
 
 ## 4. The six kernel operations
 
-A conforming distribution MUST provide all six operations, either as named skills or as internal functions. Each operation MUST honor its contract from [`KERNEL.md`](KERNEL.md) §5 and the pseudocode in [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md).
+A conforming distribution MUST provide all six operations as deterministic scripts, library functions, named tools, or equivalent internal functions. Each operation MUST honor its contract from [`KERNEL.md`](KERNEL.md) §5 and the pseudocode in [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md).
 
 | Op | MUST | SHOULD | MAY |
 |---|---|---|---|
-| `advance` | Promote a transient artifact from a `future`-mapped status to a `present`-mapped status; record a `started` timestamp. | Be exposed as a named skill `archeia:advance`. | Be inlined into specialized skills. |
-| `complete` | Promote a transient artifact from a `present`-mapped status to a `past`-mapped status; record a terminal timestamp; start the retention clock. | Be exposed as a named skill `archeia:complete`. | Be inlined into specialized skills. |
-| `prune` | Delete transient artifacts whose retention window has elapsed since their terminal timestamp. Each deletion MUST be a git commit. | Be exposed as a named skill `archeia:prune` and runnable on a schedule. | Be wrapped as a maintenance skill (e.g., `archeia:tidy`). |
-| `supersede` | Write a new accumulating record with `supersedes: <old-path>`; mutate the old record's `status` from `active` to `superseded` and add `superseded_by: <new-path>`. Both records MUST remain on disk. | Be exposed as a named skill. | Be inlined into other skills (e.g., `review-product` superseding a prior decision). |
-| `evolve` | Return the history of a named concept: `git log` for living, supersession chain for accumulating, on-disk + git for transient. | Be exposed as a named skill. | Return any structured form (timeline, diff, list) the distribution chooses. |
-| `consolidate` | Read source artifacts and produce a target artifact that integrates their content with cited evidence. Target MUST be living or accumulating. Every substantive claim MUST cite at least one source. Operation MUST be semantically idempotent. When the target is a living document, `last_verified` MUST be updated. | Be implemented as multiple specialized skills (e.g., `archeia:write-codebase-model`, `archeia:scan-git`) rather than one generic skill. | Track consolidation cost in distribution telemetry. |
+| `init` | Scaffold the distribution's declared `.archeia/` structure and required schemas idempotently. | Scaffold directory READMEs for declared folders. | Run `validate` after scaffolding. |
+| `validate` | Report conformance issues for structure, schemas, contracts, lifecycle state, and ownership. | Use file-path citations and severities. | Include advisory checks for ownership and README scaffolding. |
+| `write` | Create, update, or delete artifacts only when owner, shape, schema, contract, and history rules permit the mutation. | Make mutating writes one git commit. | Support transactional multi-file writes. |
+| `transition` | Apply only distribution-declared transient status transitions and record required timestamps. | Refuse undeclared transitions with actionable errors. | Be wrapped by workflow-specific skills. |
+| `prune` | Delete transient artifacts whose retention window has elapsed since their terminal timestamp. Each deletion MUST be preserved in git history. | Be runnable on a schedule. | Batch deletions if the commit message lists every pruned path. |
+| `history` | Return artifact history using git, on-disk records, and frontmatter relationships appropriate to the artifact's shape. | Return a structured timeline. | Include related frontmatter links beyond supersession. |
 
 ---
 
-## 5. Inherent skills
+## 5. Required Tooling
 
-A conforming distribution MUST provide all six inherent skills under its own namespace ([`KERNEL.md`](KERNEL.md) §6). Each SHOULD be invocable by name.
+A conforming distribution MUST provide all six kernel operations under its own namespace or as equivalent scripts/library functions ([`KERNEL.md`](KERNEL.md) §6). Each SHOULD be invocable by tools and CI.
 
 - [ ] `<distribution>:init` — scaffold `.archeia/`. MUST be idempotent.
 - [ ] `<distribution>:validate` — walk `.archeia/`, check shape and schema conformance, verify cross-domain contracts, check transient status validity, verify ownership.
-- [ ] `<distribution>:advance` — implements the `advance` operation.
-- [ ] `<distribution>:complete` — implements the `complete` operation.
+- [ ] `<distribution>:write` — enforce owner, shape, schema, contract, and history rules before mutating artifacts.
+- [ ] `<distribution>:transition` — apply declared transient status transitions and required timestamps.
 - [ ] `<distribution>:prune` — implements the `prune` operation. Each deletion MUST be a git commit.
-- [ ] `<distribution>:consolidate` — implements the `consolidate` operation, OR the distribution provides specialized consolidation skills that collectively cover the operation contract.
+- [ ] `<distribution>:history` — return artifact history using the correct mechanism for the artifact's shape.
 
-`supersede` and `evolve` skills are RECOMMENDED but OPTIONAL — they MAY be inlined into other skills.
+Latent authoring skills such as product review, idea clarification, codebase modeling, and feedback synthesis are distribution concerns. They SHOULD use kernel operations for final writes.
 
 ---
 
@@ -88,7 +88,7 @@ A conforming distribution MUST provide all six inherent skills under its own nam
 
 A conforming distribution MUST provide one agent role ([`KERNEL.md`](KERNEL.md) §7):
 
-- [ ] `archivist` — manages past-state transitions, supersession decisions, and retention policy. Reads the full `.archeia/` tree; writes frontmatter mutations on accumulating records and invocations of `complete` / `prune` on transient artifacts.
+- [ ] `archivist` — manages past-state transitions, supersession decisions, and retention policy. Reads the full `.archeia/` tree; invokes `transition`, `write`, and `prune` for mechanical changes.
 
 A distribution MAY provide additional agent roles. Only `archivist` is REQUIRED by the kernel.
 
@@ -101,7 +101,7 @@ A conforming distribution MUST provide all four extension artifacts ([`KERNEL.md
 - [ ] **`standard/domains.yaml`** declaring domains, owners, permitted shapes, and cross-domain reads.
 - [ ] **Status vocabularies and temporal mappings** for every transient artifact type (status values, status → temporal mapping, retention window in days, terminal timestamp field name). MAY live in `standard/domains.yaml` or `standard/lifecycles.yaml`.
 - [ ] **JSON Schemas** under `standard/contracts/` covering the kernel's three base shapes plus every distribution-specific contract.
-- [ ] **Working implementations** of the six inherent skills and the `archivist` agent.
+- [ ] **Working implementations** of the six kernel operations and the `archivist` agent.
 
 ---
 
@@ -190,7 +190,7 @@ A tool MUST NOT claim "Archeia-conforming" without satisfying every MUST in §1�
 
 - [`KERNEL.md`](KERNEL.md) — the abstract substrate this checklist audits against
 - [`SCHEMA.md`](SCHEMA.md) — the canonical software application
-- [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md) — pseudocode for the six operations
+- [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md) — pseudocode for the six kernel operations
 - [`TEST-MATRIX.md`](TEST-MATRIX.md) — the per-schema test plan a conforming repo passes
 - [`POSITIONING.md`](POSITIONING.md) — what Archeia adds beyond the SOTA harness corpus
 - [`PRINCIPLES.md`](PRINCIPLES.md) — the seven fundamental truths

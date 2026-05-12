@@ -29,7 +29,7 @@
     "started": {
       "type": ["string", "null"],
       "format": "date-time",
-      "description": "ISO 8601 timestamp when the artifact advanced from a future-mapped status to a present-mapped status."
+      "description": "ISO 8601 timestamp when the artifact transitioned from a future-mapped status to a present-mapped status."
     },
     "terminal_timestamp": {
       "type": ["string", "null"],
@@ -41,7 +41,7 @@
   "additionalProperties": true,
   "archeia": {
     "shape": "transient",
-    "operations": ["advance", "complete", "prune", "evolve"],
+    "operations": ["write", "transition", "prune", "history"],
     "history": "on-disk during retention, git after",
     "pruning": "retention-window, distribution-defined",
     "temporal_derivation": "status -> temporal via distribution lifecycles.yaml"

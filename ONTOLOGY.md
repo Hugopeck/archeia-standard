@@ -98,7 +98,7 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 | **Working memory** (Baddeley 1974) | (not in `.archeia/`; lives in the harness context window) | active session, current context window |
 | **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/model/c4/*`, `codebase/analysis/*`, `business/vision/vision.md` |
 | **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/{competition,industry,market}/*.md` |
-| **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:consolidate`, `archeia:clarify-idea` |
+| **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:review-product`, `archeia:clarify-idea` |
 | **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, running experiments, distribution-defined proposals |
 
 This mapping is why Archeia's three lifecycle shapes aren't arbitrary: they correspond to cognitive-science memory categories that have 50 years of empirical grounding, and CoALA already established the bridge from these categories to LLM agent systems. Archeia applies the same taxonomy one layer outward.
@@ -112,7 +112,7 @@ This mapping is why Archeia's three lifecycle shapes aren't arbitrary: they corr
 
 **Definition:** The process by which labile, detail-rich memories (episodic) are transformed into stable, structured, generalized knowledge (semantic) through re-examination, pattern extraction, and integration with prior knowledge.
 
-**Archeia role:** The Archeia kernel operation `consolidate` (see §4.6) names this process in the agent context. When an agent reads multiple source artifacts and produces a structured target artifact with citations, it is performing consolidation. This replaces Garry Tan's informal "diarize" term from "Thin Harness, Fat Skills" (which was a misapplied metaphor from speech processing) with the cognitive-science term for exactly this operation.
+**Archeia role:** Consolidation is a common latent skill pattern in Archeia. When an agent reads multiple source artifacts and produces a structured target artifact with citations, it is performing consolidation. This replaces Garry Tan's informal "diarize" term from "Thin Harness, Fat Skills" (which was a misapplied metaphor from speech processing) with the cognitive-science term for exactly this pattern.
 
 ### 3.4 Temporal modeling (bi-temporal)
 
@@ -153,7 +153,7 @@ A future Archeia extension may adopt fuller bi-temporal support — `valid_from`
 
 ---
 
-## 4. The three shapes and the six kernel operations
+## 4. The three shapes and kernel behavior
 
 The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This section maps each concept to its canonical source and notes what Archeia adopts vs refines.
 
@@ -185,15 +185,11 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 
 **Retention as a mechanism** is consistent with the biological forgetting literature (Hardt, Nader & Nadel, "Decay happens: the role of active forgetting in memory," *Trends in Cognitive Sciences* 17(3):111–120, 2013). Active forgetting is not a defect — it is a necessary cognitive mechanism for maintaining signal-to-noise ratio. Archeia's pruning is the computational analogue: a ceremony that prevents working-memory space from filling with yesterday's completed work.
 
-### 4.4 `advance` operation
+### 4.4 `transition` operation
 
-**Archeia's term.** The operation name is idiomatic software-engineering vocabulary ("advance a task from todo to active"). No canonical academic origin. The underlying concept is **state transition** in a finite state machine, which is standard computer science.
+**Archeia's term.** The operation name is plain finite-state-machine vocabulary. It applies a distribution-declared status transition to a transient artifact and records required timestamps.
 
-### 4.5 `complete` operation
-
-**Archeia's term.** Same as `advance` — idiomatic software vocabulary. The transition from "in progress" to "done" with a recorded timestamp.
-
-### 4.6 `consolidate` operation (formerly "diarize")
+### 4.5 Consolidation skill pattern (formerly "diarize")
 
 **Canonical source:** memory consolidation (Müller & Pilzecker 1900; Squire & Alvarez 1995). Modern LLM-agent adoption as "knowledge consolidation" in MemoryAgentBench (Hu et al. 2025) and the Agent-Memory Survey.
 
@@ -206,25 +202,25 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 - Already in use in the agent-memory literature (MemoryAgentBench, Agent-Memory Survey) for this purpose
 - Non-invented and uncontroversial
 
-**Contract (formally specified):**
-- **Inputs:** a set of source artifacts (files, git history, external data, prior `.archeia/` artifacts) and a target artifact path.
-- **Effect:** produce or update the target. The target must be either a living document or an accumulating record (consolidation produces durable, structured knowledge — never transient).
-- **Evidence rule:** every claim in the target must cite a source from the inputs. Claims that cannot be evidenced must be flagged in the target with `<!-- INSUFFICIENT EVIDENCE -->` rather than fabricated.
-- **Idempotence:** semantically idempotent. Two runs over the same inputs produce semantically equivalent outputs; exact text may differ.
+**Pattern:**
+- **Inputs:** a set of source artifacts (files, git history, external data, prior `.archeia/` artifacts) and an intended target artifact.
+- **Effect:** propose or perform an owner-authorized update through kernel `write` or `transition`.
+- **Evidence rule:** every claim in the target should cite a source from the inputs. Claims that cannot be evidenced should be flagged in the target with `<!-- INSUFFICIENT EVIDENCE -->` rather than fabricated.
+- **Idempotence:** consolidation skills should be semantically idempotent over the same inputs.
 
-Most of what `archeia:write-codebase-model` actually does is consolidation (read source files, update `.archeia/codebase/model/c4/*.json`, and optionally render `.archeia/codebase/views/architecture/*.mmd`). Most of what `archeia:scan-git` does is consolidation (read git history and produce `.archeia/codebase/analysis/history.md`). We have been hand-waving this operation. Naming it makes the kernel honest.
+Most of what `archeia:write-codebase-model` actually does is consolidation (read source files, update `.archeia/codebase/model/c4/*.json`, and optionally render `.archeia/codebase/views/architecture/*.mmd`). Most of what `archeia:scan-git` does is consolidation (read git history and produce `.archeia/codebase/analysis/history.md`). Naming it makes the skill layer honest without making it a kernel primitive.
 
-### 4.7 `prune` operation
+### 4.6 `prune` operation
 
 **Archeia's term.** The operation name is idiomatic (pruning a tree, pruning dead branches). The underlying concept is **retention-based active forgetting** (Hardt et al. 2013). Git preserves the pruned content.
 
-### 4.8 `supersede` operation
+### 4.7 Supersession relation
 
-**Archeia's term.** The operation name is standard ADR vocabulary (Nygard 2011). The operation implements the append-only-with-status-update pattern canonical to accumulating records.
+**Archeia's term.** Supersession is standard ADR vocabulary (Nygard 2011). In Archeia it is a frontmatter relationship and schema-declared metadata mutation on accumulating records, performed through `write`, not a standalone kernel operation.
 
-### 4.9 `evolve` operation
+### 4.8 `history` operation
 
-**Archeia's term.** The operation is the generic "show me how this thing changed" query, implemented differently per shape (git log for living, `supersedes` chain for accumulating, on-disk + git for transient). No academic equivalent — this is Archeia's naming of a workflow pattern.
+**Archeia's term.** The operation is the generic "show me how this thing changed" query, implemented differently per shape (git log for living, frontmatter relationships for accumulating records, on-disk + git for transient artifacts). No academic equivalent — this is Archeia's naming of a repo-inspection pattern.
 
 ---
 
@@ -366,7 +362,7 @@ This refinement is a planned Phase-C update to [`KERNEL.md`](KERNEL.md), not yet
 
 **Definition:** Work that requires judgment, synthesis, or pattern recognition belongs in **latent space** (the model does it). Work that requires exact reproducibility belongs in **deterministic code** (compiled programs, SQL queries, scripts, validators). Putting deterministic work in latent space is the most common failure mode in agent design.
 
-**Archeia role:** This is a foundational principle that Archeia adopts as **Truth #7** in [`PRINCIPLES.md`](PRINCIPLES.md). Archeia's `consolidate` operation is latent (a model reads and synthesizes); Archeia's `validate` operation is deterministic (a schema validator checks conformance). Distributions must declare which of their artifacts and operations are latent and which are deterministic.
+**Archeia role:** This is a foundational principle that Archeia adopts as **Truth #7** in [`PRINCIPLES.md`](PRINCIPLES.md). Archeia's kernel operations are deterministic; latent authoring work lives in skills such as product review, idea clarification, and codebase modeling. Distributions must declare which of their skills are latent and which helper scripts are deterministic.
 
 The principle is load-bearing because it tells you where to spend LLM budget. Consolidating architecture docs is worth the tokens. Validating frontmatter against a schema is not — run the deterministic validator.
 
@@ -385,8 +381,8 @@ The authoritative mapping of Archeia terms to their academic or industry canonic
 | Episodic memory | Tulving 1972 | 1972 | Classical | Accumulating records |
 | Procedural memory | Squire 1982 | 1982 | Classical | Skills (in `skills/`, not in `.archeia/`) |
 | Prospective memory | McDaniel & Einstein 2007 | 2007 | Classical | Transient artifacts in `future` status |
-| Memory consolidation | Müller & Pilzecker 1900; Squire & Alvarez 1995 | 1900, 1995 | Classical | The biological process the `consolidate` operation implements |
-| Knowledge consolidation | MemoryAgentBench (arXiv:2507.05257); Agent-Memory Survey | 2025 | Recent AI | Modern agent-literature term for the consolidate operation |
+| Memory consolidation | Müller & Pilzecker 1900; Squire & Alvarez 1995 | 1900, 1995 | Classical | The biological process behind Archeia's consolidation skill pattern |
+| Knowledge consolidation | MemoryAgentBench (arXiv:2507.05257); Agent-Memory Survey | 2025 | Recent AI | Modern agent-literature term for the consolidation skill pattern |
 | Active forgetting | Hardt, Nader & Nadel, *Trends in Cognitive Sciences* 17(3):111–120 | 2013 | Classical | The cognitive basis for the `prune` operation and retention windows |
 | Bi-temporal data | Snodgrass & Ahn, *IEEE Computer* 19(9):35–42 | 1986 | Classical | Transaction time (when recorded) vs valid time (when true) |
 | Temporal database glossary | Jensen et al., *ACM SIGMOD Record* 21(3) | 1992 | Classical | Consensus vocabulary |
@@ -441,7 +437,7 @@ Claims we have not been able to verify against primary sources, even with web se
 
 2. **McDaniel & Einstein "canonical year"** for prospective memory. No single founding paper; the 2007 Sage book *Prospective Memory: An Overview and Synthesis of an Emerging Field* is the most-cited synthesis and what Archeia cites.
 
-3. **"Consolidation"** in cognitive science vs **"knowledge consolidation"** in agent literature. Both are in use. Archeia uses the verb `consolidate` for the operation (shorter, stands alone) but glosses it as "knowledge consolidation" in formal definitions to match the MemoryAgentBench vocabulary.
+3. **"Consolidation"** in cognitive science vs **"knowledge consolidation"** in agent literature. Both are in use. Archeia uses consolidation for the skill pattern but glosses it as "knowledge consolidation" in formal definitions to match the MemoryAgentBench vocabulary.
 
 4. **Anthropic-internal vocabulary** (skills, subagents, compaction, MEMORY.md). These are documented in `code.claude.com/docs/` but the formal specification evolves continuously. Archeia pins to specific doc URLs and cites them as industry references.
 
@@ -539,7 +535,7 @@ The research underlying this ontology draws on four specific pieces of prior wor
 
 - **Michael Chomsky, analysis essay** (X, [April 11, 2026](https://x.com/michael_chomsky/status/2043369126631207096)). Chomsky analyzed both Garry Tan and Harrison Chase and argued that *both* oversimplify memory — Garry by trusting markdown files alone, Harrison by making memory sound tractable. His essay introduced the four memory competencies as the audit framework (sourced from MemoryAgentBench, Hu et al. 2025). Archeia's [`docs/memory-vs-knowledge.md`](docs/memory-vs-knowledge.md) audit is a direct response to Chomsky's critique. Chomsky also points out that Garry Tan's own `gbrain` project uses Postgres + pgvector underneath the markdown interface — evidence that even the strongest file-based-memory advocate needed a real database to make it work.
 
-The error of using "diarize" for the knowledge-consolidation operation (inherited from Garry Tan's "Thin Harness, Fat Skills") is acknowledged as Archeia's own false start in earlier drafts. The correction to `consolidate` is documented in this file as the canonical term.
+The error of using "diarize" for the knowledge-consolidation pattern (inherited from Garry Tan's "Thin Harness, Fat Skills") is acknowledged as Archeia's own false start in earlier drafts. The correction to consolidation is documented in this file as the canonical term.
 
 ### Earlier attribution error (now corrected)
 
