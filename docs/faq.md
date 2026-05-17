@@ -45,7 +45,7 @@ Ticket systems are transient-artifact stores for operational work. They do one s
 - Having no model for living documents (product specs) or accumulating records (decisions)
 - Imposing a workflow vocabulary that may not match the team's
 
-Archeia Solo's `execution/` domain replaces the ticket-system-for-yourself use case — tasks, projects, plans, and retros all live in the repo as markdown files. The operator reads them in their editor; agents read them via tools; git preserves history.
+Archeia Solo's `operations/execution/` surface replaces the ticket-system-for-yourself use case — tasks, projects, plans, and retros all live in the repo as markdown files. The operator reads them in their editor; agents read them via tools; git preserves history.
 
 **When a ticket system is still right:** customer-facing issue tracking, multi-team coordination across repos, or any case where non-developer stakeholders need a GUI to interact with the work.
 
@@ -53,7 +53,7 @@ Archeia Solo's `execution/` domain replaces the ticket-system-for-yourself use c
 
 Vector DBs and memory services are the default answer to "give AI agents memory." They work. Archeia's claim is narrower: they are usually the wrong *starting point* for durable project knowledge.
 
-Agents don't usually need semantic search over their memory — they need to find the exact canonical product index, roadmap, feature spec, decision, or current task. Paths and frontmatter beat embeddings for this. The product entry point is always `.archeia/product/product.md`; executable feature specs live under `.archeia/product/features/`. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
+Agents don't usually need semantic search over their memory — they need to find the exact canonical roadmap, spec, PRD, decision, or current task. Paths and frontmatter beat embeddings for this. The product execution surfaces live under `.archeia/product/strategy/roadmap/`, `.archeia/product/technical/specs/`, and `.archeia/product/execution/prds/`. No retrieval query, no ranking, no relevance threshold, no hallucinated near-match.
 
 If the product truth depends on an external tool, the local artifact cites that tool through `external_sources` and records how recently it was read. The external tool remains a working surface; `.archeia/product/` remains the durable contract agents plan from.
 
@@ -73,7 +73,7 @@ Archeia is compatible with RAG — you can build a vector index over `.archeia/`
 
 Knowledge graphs model typed relationships between entities. They're powerful for queries like "which components depend on which databases" or "which features require which permissions."
 
-Archeia's `.archeia/codebase/model/c4/*.json` files encode a lightweight knowledge graph (the C4 model with typed relationships). You can load them into a formal graph database if you want to run Cypher queries. But most of the time, the agent reading them needs to answer one specific question ("is this architecture feasible for that draft feature?") and a structured JSON file with `evidence:` citations is enough.
+Archeia's `.archeia/product/technical/architecture/c4/*.json` files encode a lightweight knowledge graph (the C4 model with typed relationships). You can load them into a formal graph database if you want to run Cypher queries. But most of the time, the agent reading them needs to answer one specific question ("is this architecture feasible for that draft feature?") and a structured JSON file with `evidence:` citations is enough.
 
 Archeia is compatible with knowledge graph tooling but doesn't require it.
 
@@ -82,9 +82,9 @@ Archeia is compatible with knowledge graph tooling but doesn't require it.
 Docs-as-code tools render static sites from markdown. Archeia uses markdown where the artifact is meant for prose, but the canonical software codebase domain also uses JSON for machine-readable repo intelligence. The split is about audience and ownership, not file type:
 
 - `docs/` optimizes for human-reader rendering, onboarding, publication, and conventional documentation workflows.
-- `.archeia/codebase/` optimizes for AI-maintained, evidence-cited repo understanding that other domains can consume by contract.
+- `.archeia/product/technical/architecture/` plus `.archeia/product/technical/devs/` optimize for AI-maintained, evidence-cited repo understanding that other domains can consume by contract.
 
-They're compatible. You can publish `docs/` with MkDocs or Docusaurus. Archeia does not require or write that tree for canonical conformance; generated codebase intelligence lives in `.archeia/codebase/`.
+They're compatible. You can publish `docs/` with MkDocs or Docusaurus. Archeia does not require or write that tree for canonical conformance; generated repo intelligence lives in `.archeia/product/technical/architecture/` and `.archeia/product/technical/devs/`.
 
 ### ...ADR repositories (adr-tools, MADR)?
 
@@ -106,31 +106,31 @@ The kernel is framework-neutral by design. It's what makes Archeia an open stand
 
 "Archeia" comes from the Greek word for archives — a place where authoritative records are kept. The name signals intent: this is the canonical knowledge store, not a generic docs folder. The dot prefix keeps it out of the way in file explorers while remaining visible to agents.
 
-The most important boundary is `docs/` versus `.archeia/codebase/`. `docs/` is where human-facing documentation and publication live. `.archeia/codebase/` is where AI-maintained, evidence-cited repo intelligence lives. Canonical Archeia does not write `docs/`.
+The most important boundary is `docs/` versus `.archeia/product/technical/architecture/` and `.archeia/product/technical/devs/`. `docs/` is where human-facing documentation and publication live. The product technical surfaces are where AI-maintained, evidence-cited repo intelligence lives. Canonical Archeia does not write `docs/`.
 
 ### Can I use only some domains?
 
-Yes. The five domains are the canonical software answer, but not every project uses all of them. A weekend side project might only have `product/` and `execution/` populated, with `business/`, `growth/`, and `codebase/` sitting mostly empty. The kernel requires all five to exist (conformance rule) but allows any of them to be nearly empty in practice.
+Yes. The four top-level domains are the canonical software answer, but not every project uses all of them equally. A small side project might keep `growth/` sparse while using mostly `product/` and `operations/`. The canonical software layout still requires all four to exist.
 
-**Why not make the five optional?** Because the habit of "just add a domain when you need it later" leads to drift and per-project variation, and that defeats the point of a standard. Committing to the five means a tool written against Archeia knows exactly where to look in any conforming project.
+**Why not make the four optional?** Because the habit of "just add a domain when you need it later" leads to drift and per-project variation, and that defeats the point of a standard. Committing to the four means a tool written against Archeia knows exactly where to look in any conforming project.
 
 ### What if I use a different project management tool (Jira, Linear)?
 
 You have three options:
 
-1. **Skip `execution/` entirely.** The other four domains still work. You lose the ability for agents to see task state, but you keep your existing tooling.
-2. **Sync both ways.** Run a bridge that syncs between `.archeia/execution/` and your external tool. The agents read the markdown; the humans use the GUI.
-3. **Use Archeia execution as the source of truth.** Write tasks in `.archeia/execution/tasks/` and let agents and the operator both work against the markdown. This is what Archeia Solo recommends.
+1. **Keep external tooling authoritative.** Use the rest of the canonical domains and leave `operations/execution/` sparse.
+2. **Sync both ways.** Run a bridge that syncs between `.archeia/operations/execution/` and your external tool. The agents read the markdown; the humans use the GUI.
+3. **Use Archeia operations execution as the source of truth.** Write tasks in `.archeia/operations/execution/tasks/` and let agents and the operator both work against the markdown.
 
 ### Is `.archeia/` committed to git?
 
-Yes. The entire point is that project knowledge is versioned with the code. Generated codebase intelligence under `.archeia/codebase/` is committed by default. `docs/` remains normal project documentation and is outside canonical conformance.
+Yes. The entire point is that project knowledge is versioned with the code. Generated technical intelligence under `.archeia/product/technical/architecture/` and `.archeia/product/technical/devs/` is committed by default. `docs/` remains normal project documentation and is outside canonical conformance.
 
 ### Can I use Archeia on a non-software project?
 
-Technically yes — the kernel is domain-agnostic. Practically, the canonical software layout in `SCHEMA.md` won't fit. You'd want to write a new distribution with your own domains. Research labs, game studios, and consulting practices are all plausible targets for future distributions.
+Not in the current standard. The kernel is now explicitly software-only. If you want to apply Archeia-like ideas outside software, that would be a future separate effort rather than a conforming use of the current kernel.
 
-If you want to prototype a non-software distribution, use [`solo-builder.md`](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md) as a template: pick your audience, pick your domains, pick your lifecycle shapes, pick your retention windows, ship your skills.
+If you want to take Archeia concepts outside software, treat that as a separate future design exercise rather than a conforming use of the current kernel.
 
 ---
 
@@ -164,7 +164,7 @@ The kernel requires "persistent storage with history" and git is the reference i
 
 ### Does it work with monorepos?
 
-Yes. Put `.archeia/` at the monorepo root. If individual packages within the monorepo need their own scoped knowledge, that's a future extension — the kernel permits nested Archeia roots via cross-root contracts, but the current software application in `SCHEMA.md` assumes one root per repo.
+Yes. Put `.archeia/` at the monorepo root. If individual packages within the monorepo need their own scoped knowledge, that's a future extension — the kernel permits nested Archeia roots via cross-root contracts, but the current thick software kernel assumes one root per repo.
 
 ### Does it work with polyrepo setups?
 
