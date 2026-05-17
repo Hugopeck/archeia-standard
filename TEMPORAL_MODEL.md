@@ -33,7 +33,7 @@ A living document is a single file that represents one concept. It is edited in 
 - **`strategy/`** — `vision/*.md`, `values/*.md`, `roadmap/*.md`, and local `conventions/*.md`
 - **`operations/`** — `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, and local `conventions/*.md`
 - **`product/`** — `product/strategy/roadmap/*.md`, `product/technical/specs/*.md`, `product/execution/prds/*.md`, `product/technical/architecture/{c4,analysis,views}/*`, and local `conventions/*.md`
-- **`growth/`** — `metrics/*.md`, `channels/current/*.md`, and any ongoing dashboard-style summaries
+- **`growth/`** — `strategy/*.md`, `marketing/*.md`, `sales/*.md`, `success/*.md`, and ongoing execution dashboards
 
 ### Rules
 
@@ -75,8 +75,8 @@ An accumulating record is an append-only artifact. Each record has its own file 
 - **`*/learnings/`** — domain-local learnings. Each learning record captures a lesson worth preserving without rewriting current truth.
 - **`operations/execution/retros/`** — retrospectives. Each retro is a record of a past event. They never get deleted because later work references them.
 - **`strategy/landscape/{competition,industry,market}/`** — dated external landscape snapshots. Each snapshot is its own record. Old snapshots inform later product, growth, and strategy decisions and stay on disk.
-- **`growth/experiments/learnings/`** — concluded experiment learnings. Each learning record stays forever. The raw running state of the experiment is different — that's shape 3 under `growth/experiments/running/`.
-- **`growth/channels/history/`** — retired channel records with performance history.
+- **`growth/execution/experiments/learnings/`** — concluded experiment learnings. Each learning record stays forever. The raw running state of the experiment is different — that's shape 3 under `growth/execution/experiments/running/`.
+- **`growth/sales/win-loss/`** — concluded sales outcomes worth preserving as durable go-to-market evidence.
 
 ### Rules
 
@@ -135,7 +135,7 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 - **`operations/execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
 - **`operations/execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
 - **Distribution-defined proposals** — temporary sketches or proposals may exist as transient artifacts in whichever domain owns them. The canonical software layout does not reserve a `drafts/` directory.
-- **`growth/experiments/running/`** — an experiment's running state is transient. Once it concludes, the running artifact is completed and pruned after its retention window. Durable outcomes, when worth keeping, are written as separate accumulating records under `growth/experiments/learnings/`.
+- **`growth/execution/experiments/running/`** — an experiment's running state is transient. Once it concludes, the running artifact is completed and pruned after its retention window. Durable outcomes, when worth keeping, are written as separate accumulating records under `growth/execution/experiments/learnings/`.
 
 ### Rules
 
@@ -216,14 +216,14 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 | **`strategy/`** | `vision/*.md`, `values/*.md`, `roadmap/*.md`, `conventions/*.md` | `landscape/{competition,industry,market}/*.md`, `decisions/*.md`, `learnings/*.md` | distribution-defined purpose-named paths only |
 | **`operations/`** | `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
 | **`product/`** | `strategy/roadmap/*.md`, `technical/specs/*.md`, `execution/prds/*.md`, `technical/architecture/{c4,analysis,views}/*`, `technical/devs/*.md`, `*/conventions/*.md` | `design/feedback/*.md`, `*/decisions/*.md`, `*/learnings/*.md`, `execution/logs/*.md`, `execution/archive/*.md` | `execution/plans/*.md` |
-| **`growth/`** | `metrics/*.md`, `channels/current/*.md`, `conventions/*.md` | `channels/history/*.md`, `experiments/learnings/*.md`, `decisions/*.md`, `learnings/*.md` | `experiments/running/*.md` |
+| **`growth/`** | `strategy/{roadmap,segments,positioning,metrics,channel-mix,pricing}/*.md`, `marketing/{brand,messaging,assets,style,campaigns,content,web,inbound,outbound,community,events}/*.md`, `sales/{outbound,pipeline,accounts,enablement,objections,pricing}/*.md`, `success/{onboarding,activation,adoption,retention,expansion,enablement,support}/*.md`, `execution/dashboards/*.md`, `*/conventions/*.md` | `sales/win-loss/*.md`, `execution/experiments/learnings/*.md`, `execution/logs/*.md`, `execution/retros/*.md`, `*/decisions/*.md`, `*/learnings/*.md` | `execution/plans/*.md`, `execution/programs/*.md`, `execution/experiments/running/*.md` |
 
 A few observations that fall out:
 
 - **`product/technical/` is primarily living repo-intelligence artifacts.** Machine-readable architecture evidence, analysis, views, and dev-facing technical surfaces are regenerated or edited in place, with history in git.
 - **`product/` has a light transient presence.** Most product surfaces evolve in place or accumulate as records, while `product/execution/plans/` is the main canonical transient path inside the domain.
 - **`operations/execution/` is the main transient concentration.** Tasks, plans, projects — these are the things that flow.
-- **`growth/` has all three shapes without shape-switching paths.** Current metrics and active channels are living, retired channel records and experiment learnings are accumulating, and running experiments are transient.
+- **`growth/` has a full domain grammar without strategy lock-in.** Strategy, marketing, sales, and success evolve mostly in place; execution carries the transient operating layer; learnings and decisions accumulate locally.
 
 ---
 

@@ -15,7 +15,7 @@ A single directory, `.archeia/`, at the root of your software project. Four cano
 - `**strategy/**` — vision, values, landscape, roadmap, decisions
 - `**operations/**` — execution, optimization, people, finance, compliance
 - `**product/**` — product strategy, design, technical, and product execution
-- `**growth/**` — acquisition, retention, monetization
+- `**growth/**` — growth strategy, marketing, sales, success, and execution
 
 Inside `product/`, the canonical subareas are:
 

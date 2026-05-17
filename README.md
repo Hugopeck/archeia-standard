@@ -39,7 +39,7 @@ The software kernel uses four canonical domains:
 - `strategy/` — vision, values, landscape, roadmap, decisions, conventions, learnings
 - `operations/` — execution, guides, optimization, people, finance, compliance, decisions, conventions, learnings
 - `product/` — product strategy, design, technical, and product execution
-- `growth/` — acquisition, retention, monetization, plus domain-local decisions, conventions, and learnings
+- `growth/` — growth strategy, marketing, sales, success, and growth execution
 
 Within `product/`, the canonical validated subareas are:
 
@@ -47,6 +47,14 @@ Within `product/`, the canonical validated subareas are:
 - `product/design/`
 - `product/technical/`
 - `product/execution/`
+
+Within `growth/`, the canonical subareas are:
+
+- `growth/strategy/`
+- `growth/marketing/`
+- `growth/sales/`
+- `growth/success/`
+- `growth/execution/`
 
 The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
 
