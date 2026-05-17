@@ -1,6 +1,6 @@
 # Positioning — what Archeia adds beyond the SOTA harness corpus
 
-The Archeia Standard does not compete with harness engineering. It depends on it. This document pins where Archeia stops being downstream of that corpus and starts contributing its own answer as a **software business OS**.
+The Archeia Standard does not compete with harness engineering. It depends on it. This document pins where Archeia stops being downstream of that corpus and starts contributing its own answer as a **software business OS**, or **AOS** (**Agentic Operating System**).
 
 ## 1. Shared ground
 
@@ -19,7 +19,7 @@ Archeia gives durable artifacts a closed taxonomy: **living**, **accumulating**,
 
 ### 2.2 A repository-level information architecture
 
-Archeia answers the repository-level question the harness corpus leaves open: where does each artifact go in a software business or software project operating system?
+Archeia answers the repository-level question the harness corpus leaves open: where does each artifact go in a software business or software project AOS?
 
 The kernel uses four domains:
 

@@ -9,7 +9,7 @@
 | **Test matrix** | See [`TEST-MATRIX.md`](TEST-MATRIX.md) |
 | **Normative language** | The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** in this document are interpreted per RFC 2119. |
 
-Archeia is the open kernel for a **software business OS**: structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
+Archeia is the open kernel for a **software business OS**, or **AOS** (**Agentic Operating System**): structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
 
 ---
 
@@ -134,11 +134,13 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 **Canonical meaning.** The operating and delivery surface: how work gets executed and constrained.
 
-**Broader semantic envelope.** `operations/` covers delivery work, operating improvements, people/capacity constraints, financial constraints, and compliance constraints. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
+**Broader semantic envelope.** `operations/` covers execution systems design and analysis, day-to-day delivery workflows, operating improvements and optimization, operational metrics, SOPs and process definitions, people/capacity constraints, financial constraints, and compliance constraints. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
 
 **What belongs here.**
 
 - execution work units and retros
+- workflow design, operating playbooks, and SOPs
+- execution analysis, service metrics, and optimization loops
 - staffing/capacity/ownership boundaries
 - budgets and financial constraints
 - compliance and legal constraints
@@ -618,4 +620,4 @@ The current kernel version is **0.5.0**.
 
 ## 22. Summary
 
-The Archeia Kernel is the thick software contract for a software business OS: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.
+The Archeia Kernel is the thick software contract for a software business OS, or AOS: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.

@@ -1,10 +1,10 @@
 # The Archeia Standard
 
-**An open software business OS: a structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
+**An open software business OS, or AOS (Agentic Operating System): a structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
 
 Version: [`0.5.0`](VERSION) · License: MIT
 
-Archeia is a standard and a kernel for a **software business OS**: a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
+Archeia is a standard and a kernel for a **software business OS**, or **AOS** (**Agentic Operating System**): a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
 
 ## Start here
 
