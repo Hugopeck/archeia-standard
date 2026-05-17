@@ -1,10 +1,10 @@
 # The Archeia Standard
 
-**An open software business OS: a structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
+**Archeia is an Agentic Operating System for software businesses: an open, structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
 
 Version: [`0.5.0`](VERSION) · License: MIT
 
-Archeia is a standard and a kernel for a **software business OS**: a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
+Archeia is an **Agentic Operating System** (**AOS**) for software businesses. More specifically, Archeia is the **in-repo knowledge-layer AOS** for software businesses: a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
 
 ## Start here
 
@@ -36,10 +36,10 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 
 The software kernel uses four canonical domains:
 
-- `strategy/` — vision, values, landscape, roadmap, decisions
-- `operations/` — execution, optimization, people, finance, compliance
+- `strategy/` — vision, values, landscape, roadmap, decisions, conventions, learnings
+- `operations/` — execution, guides, optimization, people, finance, compliance, decisions, conventions, learnings
 - `product/` — product strategy, design, technical, and product execution
-- `growth/` — acquisition, retention, monetization
+- `growth/` — acquisition, retention, monetization, plus domain-local decisions, conventions, and learnings
 
 Within `product/`, the canonical validated subareas are:
 
@@ -50,19 +50,7 @@ Within `product/`, the canonical validated subareas are:
 
 The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
 
-## Migration
-
-The `0.4.0` revision was the breaking canonical-layout migration:
-
-- `business/` is replaced by `strategy/` plus parts of `operations/`
-- top-level `execution/` moves to `operations/execution/`
-- top-level `codebase/` moves under `product/technical/architecture/` and `product/technical/devs/`
-- the old executable product surface is replaced by:
-  - `product/strategy/roadmap/`
-  - `product/technical/specs/`
-  - `product/execution/prds/`
-
-See [`SCHEMA.md`](SCHEMA.md) for the explicit mapping summary and [`MIGRATION-0.4.0.md`](MIGRATION-0.4.0.md) for the historical migration note.
+Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural how-to material lives canonically under `operations/guides/`, with the strongest guides often graduating into skills.
 
 ## Distributions
 

@@ -6,7 +6,7 @@ Quick answers to questions someone reading Archeia for the first time will have.
 
 ## What is Archeia, in one sentence?
 
-Archeia is an open standard and a minimal substrate for giving AI agents a shared, structured, in-repo memory so they can coordinate with each other and with humans without a server, a schema registry, or a message broker.
+Archeia is an open standard and a minimal substrate for giving AI agents a shared, structured, in-repo knowledge layer so they can coordinate with each other and with humans without a server, a schema registry, or a message broker.
 
 ## Why does it exist?
 
@@ -88,9 +88,9 @@ They're compatible. You can publish `docs/` with MkDocs or Docusaurus. Archeia d
 
 ### ...ADR repositories (adr-tools, MADR)?
 
-ADRs are exactly what `product/decisions/` is. Archeia subsumes ADR tooling rather than replacing it — you can use any ADR convention (MADR, Nygard, Y-statements) inside `product/decisions/*.md`, and the kernel's accumulating-record shape handles the append-only, supersession, and never-delete rules ADRs need.
+ADRs are exactly what domain-local `decisions/` surfaces are for, especially `product/technical/decisions/`. Archeia subsumes ADR tooling rather than replacing it — you can use any ADR convention (MADR, Nygard, Y-statements) inside `*/decisions/*.md`, and the kernel's accumulating-record shape handles the append-only, supersession, and never-delete rules ADRs need.
 
-If you're already using adr-tools, migrating to Archeia means moving your ADR directory to `product/decisions/` and adding the four frontmatter fields the accumulating-record schema requires (`title`, `created`, `status`, `supersedes`/`superseded_by`). That's the whole migration.
+If you're already using adr-tools, migrating to Archeia usually means moving your ADR directory to the owning decision surface — most often `product/technical/decisions/` — and adding the four frontmatter fields the accumulating-record schema requires (`title`, `created`, `status`, `supersedes`/`superseded_by`). That's the whole migration.
 
 ### ...Claude Code skills or Cursor rules or GitHub Copilot instructions?
 

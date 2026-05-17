@@ -8,7 +8,7 @@ The key words **MUST**, **SHOULD**, and **MAY** are interpreted per [RFC 2119](h
 
 ## 1. Kernel Operations
 
-Kernel operations are deterministic repo operations over `.archeia/`. They do not decide what product, business, codebase, growth, or execution content should say. They only scaffold, validate, write, transition, prune, and read history while enforcing the distribution's declared rules.
+Kernel operations are deterministic repo operations over `.archeia/`. They do not decide what strategy, operations, product, or growth content should say. They only scaffold, validate, write, transition, prune, and read history while enforcing the distribution's declared rules.
 
 ```
 type Artifact = {

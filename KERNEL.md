@@ -9,7 +9,7 @@
 | **Test matrix** | See [`TEST-MATRIX.md`](TEST-MATRIX.md) |
 | **Normative language** | The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** in this document are interpreted per RFC 2119. |
 
-Archeia is the open kernel for a **software business OS**: structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
+Archeia is an **Agentic Operating System** (**AOS**) for software businesses. More specifically, Archeia is the **in-repo knowledge-layer AOS** for software businesses: structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
 
 ---
 
@@ -81,6 +81,18 @@ A **contract surface** is a declared software read relationship between domains.
 
 A **writer** is anything that produces artifacts. A **reader** is anything that consumes them.
 
+### 2.9 Domain-local knowledge surfaces
+
+A **domain-local knowledge surface** is a conventional subtree used to capture reusable local knowledge inside a domain or subdomain. The kernel defines three universal domain-local knowledge surfaces:
+
+- `decisions/` — accumulating records of choices, tradeoffs, and rulings
+- `conventions/` — living documents describing current defaults, preferences, and standard ways of doing things
+- `learnings/` — accumulating records of discoveries, mistakes, and lessons worth preserving
+
+The kernel also defines one operations-owned procedural surface:
+
+- `operations/guides/` — living or accumulating procedural guides for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
+
 ---
 
 ## 3. Invariants
@@ -134,11 +146,13 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 **Canonical meaning.** The operating and delivery surface: how work gets executed and constrained.
 
-**Broader semantic envelope.** `operations/` covers delivery work, operating improvements, people/capacity constraints, financial constraints, and compliance constraints. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
+**Broader semantic envelope.** `operations/` covers execution systems design and analysis, day-to-day delivery workflows, operating improvements and optimization, operational metrics, SOPs and process definitions, people/capacity constraints, financial constraints, and compliance constraints. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
 
 **What belongs here.**
 
 - execution work units and retros
+- workflow design, operating playbooks, and SOPs
+- execution analysis, service metrics, and optimization loops
 - staffing/capacity/ownership boundaries
 - budgets and financial constraints
 - compliance and legal constraints
@@ -193,6 +207,8 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 The rich canonical software tree is part of the kernel contract. Omission is allowed where irrelevant; meanings are not.
 
+**Universal naming rule.** Any canonical domain or subdomain MAY contain direct `decisions/`, `conventions/`, and `learnings/` subfolders when needed. These surfaces are first-class and MUST NOT be hidden under wrapper folders such as `meta/` or `memory/`. `guides/` is not universal; it is canonically owned by `operations/`.
+
 ```text
 .archeia/
 ├── strategy/
@@ -203,17 +219,26 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── industry/
 │   │   └── market/
 │   ├── roadmap/
-│   └── decisions/
+│   ├── decisions/
+│   ├── conventions/
+│   └── learnings/
 ├── operations/
 │   ├── execution/
 │   │   ├── tasks/
 │   │   ├── projects/
 │   │   ├── plans/
-│   │   └── retros/
+│   │   ├── retros/
+│   │   ├── decisions/
+│   │   ├── conventions/
+│   │   └── learnings/
 │   ├── optimization/
+│   ├── guides/
 │   ├── people/
 │   ├── finance/
-│   └── compliance/
+│   ├── compliance/
+│   ├── decisions/
+│   ├── conventions/
+│   └── learnings/
 ├── product/
 │   ├── strategy/
 │   │   ├── market/
@@ -221,6 +246,7 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── roadmap/
 │   │   ├── metrics/
 │   │   ├── decisions/
+│   │   ├── conventions/
 │   │   └── learnings/
 │   ├── design/
 │   │   ├── flows/
@@ -228,6 +254,7 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── feedback/
 │   │   ├── assets/
 │   │   ├── decisions/
+│   │   ├── conventions/
 │   │   └── learnings/
 │   ├── technical/
 │   │   ├── specs/
@@ -238,6 +265,7 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   │   └── views/
 │   │   ├── devs/
 │   │   ├── decisions/
+│   │   ├── conventions/
 │   │   └── learnings/
 │   └── execution/
 │       ├── prds/
@@ -247,14 +275,20 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │       ├── roles/
 │       ├── archive/
 │       ├── decisions/
+│       ├── conventions/
 │       └── learnings/
 └── growth/
     ├── metrics/
     ├── channels/
     │   ├── current/
     │   └── history/
+    ├── decisions/
+    ├── conventions/
+    ├── learnings/
     └── experiments/
         ├── running/
+        ├── decisions/
+        ├── conventions/
         └── learnings/
 ```
 
@@ -316,6 +350,30 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 
 **Broad interpretation.** Can mean monetization growth, user growth, internal adoption, rollout, enablement, ecosystem pull, or usage expansion.
 
+### 6.10 Universal `decisions/`
+
+**Canonical meaning.** The accumulating record of local choices, tradeoffs, and rulings within a domain or subdomain.
+
+**Broad interpretation.** May capture ADR-style technical decisions, strategic decisions, design rulings, operating policy choices, or growth-program decisions as long as the decision remains local to the owning path.
+
+### 6.11 Universal `conventions/`
+
+**Canonical meaning.** The living statement of local defaults, preferences, and standard ways of doing things within a domain or subdomain.
+
+**Broad interpretation.** May capture naming conventions, authoring defaults, expected review patterns, default sequencing, recurring heuristics, and house style. `conventions/` is softer than formal external standards and stronger than individual preference.
+
+### 6.12 Universal `learnings/`
+
+**Canonical meaning.** The accumulating record of lessons, mistakes, discoveries, and reusable insights within a domain or subdomain.
+
+**Broad interpretation.** May capture postmortem lessons, user-research takeaways, execution lessons, architectural lessons, or go-to-market findings, provided they are preserved as local learning rather than rewritten into current canonical truth.
+
+### 6.13 `operations/guides/`
+
+**Canonical meaning.** The procedural operating surface for repeatable work.
+
+**Broad interpretation.** `operations/guides/` may contain how-tos, playbooks, runbooks, and workflow guides for one domain, multiple domains, or the whole Archeia tree. A guide may explain how to carry out repeatable work involving `strategy/`, `product/`, `growth/`, or cross-domain coordination, but the guide itself remains an `operations/` artifact because it governs execution behavior rather than domain truth.
+
 ---
 
 ## 7. Lifecycle Expectations
@@ -326,13 +384,16 @@ The kernel defines default lifecycle expectations for the canonical software tre
 
 - `vision/`, `values/`, `roadmap/` → living
 - `landscape/*/` → accumulating
-- `decisions/` → accumulating
+- `conventions/` → living
+- `decisions/`, `learnings/` → accumulating
 
 ### 7.2 `operations/`
 
 - `execution/tasks/`, `execution/projects/`, `execution/plans/` → transient
 - `execution/retros/` → accumulating
-- `optimization/`, `people/`, `finance/`, `compliance/` → living by default unless a distribution adds accumulating record types
+- `guides/`, `optimization/`, `people/`, `finance/`, `compliance/` → living by default unless a distribution adds accumulating record types
+- `conventions/` → living
+- `decisions/`, `learnings/` → accumulating
 
 ### 7.3 `product/`
 
@@ -347,12 +408,14 @@ The kernel defines default lifecycle expectations for the canonical software tre
 - `product/execution/prds/`, `roles/` → living
 - `product/execution/plans/` → transient
 - `product/execution/retros/`, `logs/`, `archive/` → accumulating
+- all `conventions/` subtrees → living
 - all `decisions/` and `learnings/` subtrees → accumulating
 
 ### 7.4 `growth/`
 
 - `metrics/`, `channels/current/` → living
-- `channels/history/`, `experiments/learnings/` → accumulating
+- all `conventions/` subtrees → living
+- `channels/history/`, all `decisions/` subtrees, all `learnings/` subtrees → accumulating
 - `experiments/running/` → transient
 
 See [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md) for the shape rules themselves.
@@ -618,4 +681,4 @@ The current kernel version is **0.5.0**.
 
 ## 22. Summary
 
-The Archeia Kernel is the thick software contract for a software business OS: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.
+The Archeia Kernel is the thick software contract for an AOS for software businesses: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.

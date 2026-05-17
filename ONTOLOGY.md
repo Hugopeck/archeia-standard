@@ -71,7 +71,7 @@ This three-layer framing is consistent with the architectural surveys in OpenDev
 
 **Definition:** A cognitive architecture is a theoretical framework specifying the fixed structures and processes that implement cognition — memory systems, control processes, learning mechanisms — into which variable content (knowledge, skills, goals) is loaded.
 
-**Archeia role:** Archeia **is a cognitive architecture for a software business OS**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations, and a rich canonical software tree) into which a specific software project's variable content is loaded.
+**Archeia role:** Archeia **is a cognitive architecture for the in-repo knowledge-layer AOS for software businesses**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations, and a rich canonical software tree) into which a specific software project's variable content is loaded.
 
 CoALA is the paper that first applied the cognitive-architecture frame to LLM agents at the in-context execution layer. Archeia extends the same frame to the in-repo persistent knowledge layer. The relationship is direct: CoALA specifies the memory structures inside the agent's context window; Archeia specifies the memory structures outside the agent's context window, on disk, accessible to many agents and humans over time.
 
@@ -102,6 +102,16 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 | **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `operations/execution/tasks/` with `status: todo`, running experiments, distribution-defined proposals |
 
 This mapping is why Archeia's three lifecycle shapes aren't arbitrary: they correspond to cognitive-science memory categories that have 50 years of empirical grounding, and CoALA already established the bridge from these categories to LLM agent systems. Archeia applies the same taxonomy one layer outward.
+
+### 3.2.1 Domain-local knowledge surfaces
+
+The kernel's `decisions/`, `conventions/`, and `learnings/` subtrees are best understood as **domain-local memory surfaces with different cognitive roles**, not as one generic `memory/` bucket.
+
+- **`decisions/`** are episodic/accumulating records: concrete local rulings, tradeoffs, and commitments made at specific times. Their closest software precedent is the ADR tradition.
+- **`conventions/`** are semantic/living records: the currently valid defaults, preferences, and standard ways of doing things within a domain or subdomain.
+- **`learnings/`** are episodic/accumulating records: lessons, mistakes, discoveries, and insights that should be preserved without being flattened into current canonical truth.
+
+This is why Archeia should not hide these surfaces under a wrapper such as `memory/` or `meta/`. The ontology is cleaner when domain semantics and cognitive role remain orthogonal: `product/design/conventions/` says both **what area this knowledge belongs to** and **what kind of knowledge it is**.
 
 ### 3.3 Memory consolidation
 
@@ -321,6 +331,29 @@ The third point is Archeia's one hard requirement on harnesses: **compaction mus
 
 **Archeia role:** Skills live outside `.archeia/` — they are writers, not artifacts. The `skills/` folder at the repo root is where the reference implementation keeps them. A conforming distribution may organize skills differently; what matters is that skills produce and consume artifacts conforming to the schemas.
 
+### 8.1 Guides as the precursor to skills
+
+There is a real formalization ladder in Archeia:
+
+- **`conventions/`** — declarative local defaults and expected patterns
+- **`operations/guides/`** — weakly structured procedural knowledge for repeatable work
+- **`skills/`** — strongly structured, parameterizable procedural methods for agent execution
+
+This is not three unrelated surfaces. It is a progression from weaker to stronger procedural formalization.
+
+`operations/guides/` sits at the boundary between declarative repo knowledge and procedural memory. A guide explains how to carry out repeatable work and may cover one domain, multiple domains, or the whole Archeia tree. It remains an `operations/` artifact because it governs execution behavior rather than source-of-truth domain content.
+
+Skills are the subset of procedural knowledge that has become stable, reusable, and formal enough to justify explicit invocation structure and parameterization. In this sense, guides are often the precursor to skills.
+
+The progression is important but not mandatory. Many guides should remain guides:
+
+- rare procedures
+- judgment-heavy workflows
+- onboarding material
+- social or cross-functional rituals that are too contextual to automate cleanly
+
+Archeia therefore treats `operations/guides/` as the procedural staging ground and `skills/` as the formalized execution layer.
+
 ### The parameterized-skill refinement
 
 Garry Tan's sharpest contribution on skills is that **they are method calls with parameters, not undifferentiated prompts**. The same `/investigate` skill with `(TARGET=<medical>, QUESTION=<safety>, DATASET=<discovery-emails>)` produces a medical research analyst; with different parameters it produces a forensic investigator. The procedure is the same; the parameters are the world.
@@ -374,12 +407,16 @@ The authoritative mapping of Archeia terms to their academic or industry canonic
 
 | Archeia term | Canonical source | Year | Type | Archeia role |
 |---|---|---|---|---|
-| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for a software business OS |
+| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for the in-repo knowledge-layer AOS for software businesses |
 | CoALA framework | Sumers, Yao, Narasimhan & Griffiths (arXiv:2309.02427) | 2023 | Recent AI | Applies Tulving memory taxonomy to LLM agents; Archeia extends this to in-repo persistent knowledge |
 | Working memory | Baddeley & Hitch 1974 | 1974 | Classical | The LLM context window; harness-owned, not in `.archeia/` |
 | Semantic memory | Tulving 1972 | 1972 | Classical | Living documents |
 | Episodic memory | Tulving 1972 | 1972 | Classical | Accumulating records |
 | Procedural memory | Squire 1982 | 1982 | Classical | Skills (in `skills/`, not in `.archeia/`) |
+| Domain-local semantic conventions | Tulving 1972 | 1972 | Classical | `*/conventions/` as local living defaults and preferences |
+| Domain-local episodic decisions | Tulving 1972; Nygard 2011; Ford, Parsons & Kua 2017 | 1972, 2011, 2017 | Classical | `*/decisions/` as accumulating local rulings |
+| Domain-local episodic learnings | Tulving 1972 | 1972 | Classical | `*/learnings/` as accumulating local lessons |
+| Weak procedural memory surface | Squire 1982; Anthropic Skills docs; Tan 2026 | 1982, 2026 | Classical + Industry | `operations/guides/` as the precursor surface to skills |
 | Prospective memory | McDaniel & Einstein 2007 | 2007 | Classical | Transient artifacts in `future` status |
 | Memory consolidation | Müller & Pilzecker 1900; Squire & Alvarez 1995 | 1900, 1995 | Classical | The biological process behind Archeia's consolidation skill pattern |
 | Knowledge consolidation | MemoryAgentBench (arXiv:2507.05257); Agent-Memory Survey | 2025 | Recent AI | Modern agent-literature term for the consolidation skill pattern |
@@ -420,6 +457,8 @@ Terms Archeia uses that have no canonical academic precedent, and why they exist
 | **Living document** | Archeia coinage | Closest academic framing is "semantic memory as canonical evolving document." Full academic version is too long for a term used throughout the standard. |
 | **Accumulating record** | Archeia coinage | Closest academic framings are "episodic memory store" and "append-only record." Archeia uses a compact term that combines both. |
 | **Transient artifact** | Archeia coinage | Closest academic framings are "prospective memory" + "operational working memory," which don't compose naturally. "Transient" captures the bounded-retention property. |
+| **Convention** (kernel subtree) | Archeia narrowing | Closest academic framing is semantic memory expressed as current local defaults. Archeia uses `conventions/` for living domain-local norms that are softer than formal standards and stronger than personal preference. |
+| **Guide** (kernel subtree) | Archeia narrowing | Closest academic framing is weakly formalized procedural memory. Archeia uses `operations/guides/` for repeatable procedures that may later be formalized as skills. |
 | **Three lifecycle shapes** | Archeia coinage | Maps directly to Tulving taxonomy (see §3.2) but the specific triplet (living / accumulating / transient) is Archeia's organization. |
 | **Forward flow** (strategy → product → operations, with product/technical grounding execution) | Archeia coinage | The causal direction of work in software projects. No single academic source; the closest is the product-engineering handoff literature (Cagan, *Inspired*, 2008), which is non-academic. |
 | **Read flow** (everyone reads codebase and product) | Archeia coinage | Complement to forward flow. Context-fetching pattern. No academic source. |

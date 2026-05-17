@@ -6,7 +6,7 @@ This document is the **Definition of Done** for any tool, distribution, or harne
 
 A kernel-conforming implementation MUST:
 
-- recognize all eight primitives from [`KERNEL.md`](KERNEL.md)
+- recognize all nine primitives from [`KERNEL.md`](KERNEL.md)
 - uphold all seven invariants
 - implement the three lifecycle shapes
 - provide the six deterministic kernel operations
@@ -40,6 +40,9 @@ A repo claiming kernel conformance MUST additionally satisfy the thick software-
 - no top-level rename or replacement of those canonical domains occurs
 - canonical meanings are respected; arbitrary semantic repurposing is not
 - omission and sparse use are allowed where the kernel says they are allowed
+- direct `decisions/`, `conventions/`, and `learnings/` subfolders are permitted under canonical domains and subdomains when needed
+- wrapper folders do not satisfy the canonical direct-surface convention for `decisions/`, `conventions/`, and `learnings/`
+- `guides/` is canonically owned by `operations/`
 - `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, `execution/`
 - `product/technical/architecture/c4/` is the canonical machine-readable architecture surface and contains only living artifacts
 - both cross-domain contracts are enforced:
