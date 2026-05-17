@@ -9,7 +9,7 @@
 | **Test matrix** | See [`TEST-MATRIX.md`](TEST-MATRIX.md) |
 | **Normative language** | The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** in this document are interpreted per RFC 2119. |
 
-Archeia is the open kernel for a **software business OS**, or **AOS** (**Agentic Operating System**): structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
+Archeia is an **Agentic Operating System** (**AOS**) for software businesses. More specifically, Archeia is the **in-repo knowledge-layer AOS** for software businesses: structured, in-repo operating knowledge that software teams, operators, and agents read, write, and coordinate through. This document is the single normative software contract. It defines the software domains, the artifact shapes, the ownership model, the deterministic kernel operations, the canonical software tree, and the flex rules that let one shared kernel work across many kinds of software projects.
 
 ---
 
@@ -681,4 +681,4 @@ The current kernel version is **0.5.0**.
 
 ## 22. Summary
 
-The Archeia Kernel is the thick software contract for a software business OS, or AOS: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.
+The Archeia Kernel is the thick software contract for an AOS for software businesses: four canonical domains, a rich canonical tree, strict meanings, bounded flexibility, deterministic operations, and a distribution layer that strengthens usage without replacing the shared map.

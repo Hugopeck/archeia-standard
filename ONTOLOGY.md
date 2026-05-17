@@ -71,7 +71,7 @@ This three-layer framing is consistent with the architectural surveys in OpenDev
 
 **Definition:** A cognitive architecture is a theoretical framework specifying the fixed structures and processes that implement cognition — memory systems, control processes, learning mechanisms — into which variable content (knowledge, skills, goals) is loaded.
 
-**Archeia role:** Archeia **is a cognitive architecture for a software business OS**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations, and a rich canonical software tree) into which a specific software project's variable content is loaded.
+**Archeia role:** Archeia **is a cognitive architecture for the in-repo knowledge-layer AOS for software businesses**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations, and a rich canonical software tree) into which a specific software project's variable content is loaded.
 
 CoALA is the paper that first applied the cognitive-architecture frame to LLM agents at the in-context execution layer. Archeia extends the same frame to the in-repo persistent knowledge layer. The relationship is direct: CoALA specifies the memory structures inside the agent's context window; Archeia specifies the memory structures outside the agent's context window, on disk, accessible to many agents and humans over time.
 
@@ -407,7 +407,7 @@ The authoritative mapping of Archeia terms to their academic or industry canonic
 
 | Archeia term | Canonical source | Year | Type | Archeia role |
 |---|---|---|---|---|
-| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for a software business OS |
+| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for the in-repo knowledge-layer AOS for software businesses |
 | CoALA framework | Sumers, Yao, Narasimhan & Griffiths (arXiv:2309.02427) | 2023 | Recent AI | Applies Tulving memory taxonomy to LLM agents; Archeia extends this to in-repo persistent knowledge |
 | Working memory | Baddeley & Hitch 1974 | 1974 | Classical | The LLM context window; harness-owned, not in `.archeia/` |
 | Semantic memory | Tulving 1972 | 1972 | Classical | Living documents |

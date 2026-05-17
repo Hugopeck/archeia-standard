@@ -1,6 +1,6 @@
 # Archeia
 
-**Archeia is a software business OS, or AOS (Agentic Operating System): a standard and kernel for structured, in-repo operating knowledge that software teams, operators, and AI agents read, write, and coordinate through.**
+**Archeia is an Agentic Operating System for software businesses: a standard and kernel for structured, in-repo operating knowledge that software teams, operators, and AI agents read, write, and coordinate through.**
 
 ## The problem
 
