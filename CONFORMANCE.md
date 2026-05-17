@@ -44,6 +44,7 @@ A repo claiming kernel conformance MUST additionally satisfy the thick software-
 - wrapper folders do not satisfy the canonical direct-surface convention for `decisions/`, `conventions/`, and `learnings/`
 - `guides/` is canonically owned by `operations/`
 - `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, `execution/`
+- `growth/` contains the canonical kernel subareas `strategy/`, `marketing/`, `sales/`, `success/`, `execution/`
 - `product/technical/architecture/c4/` is the canonical machine-readable architecture surface and contains only living artifacts
 - both cross-domain contracts are enforced:
   - product execution surface → `operations/execution/`

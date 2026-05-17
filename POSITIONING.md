@@ -30,6 +30,8 @@ The kernel uses four domains:
 
 Inside `product/`, the canonical subareas are `strategy/`, `design/`, `technical/`, and `execution/`. Cross-domain reads are declared contract surfaces. Writes are owner-only. The kernel is intentionally thick: path-level distinctions are part of the value, not accidental detail.
 
+Inside `growth/`, the canonical subareas are `strategy/`, `marketing/`, `sales/`, `success/`, and `execution/`.
+
 ### 2.3 A vocabulary grounded in cognitive science
 
 Archeia's ontology grounds artifact shapes in long-running cognitive-science categories rather than ad-hoc vendor terminology.

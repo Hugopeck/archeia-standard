@@ -185,21 +185,23 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 ### 4.4 `growth/`
 
-**Canonical meaning.** The adoption and expansion surface: how the software is discovered, adopted, retained, distributed, expanded, and monetized.
+**Canonical meaning.** The go-to-market and adoption domain: how software is positioned, marketed, sold, adopted, supported, retained, expanded, and operationalized in the world.
 
-**Broader semantic envelope.** `growth/` is not only revenue growth. It can include internal adoption, rollout, enablement, stakeholder pull, community uptake, distribution, retention, and monetization depending on the software context.
+**Broader semantic envelope.** `growth/` is not only revenue growth. It includes brand, messaging, campaigns, inbound and outbound motions, sales execution, customer success, support, internal rollout, enablement, retention, expansion, and monetization depending on the software context.
 
 **What belongs here.**
 
-- metrics and funnels
-- channels
-- experiments and learnings
+- growth strategy and metrics
+- marketing systems, brand assets, and campaigns
+- sales motions, pipeline intelligence, and enablement
+- customer-success, support, adoption, retention, and expansion surfaces
+- growth execution programs, dashboards, logs, retros, and experiments
 
 **What does not belong here.**
 
 - canonical product specs
 - technical architecture
-- active execution task state
+- active operations execution task state
 
 ---
 
@@ -278,15 +280,62 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │       ├── conventions/
 │       └── learnings/
 └── growth/
-    ├── metrics/
-    ├── channels/
-    │   ├── current/
-    │   └── history/
-    ├── decisions/
-    ├── conventions/
-    ├── learnings/
-    └── experiments/
-        ├── running/
+    ├── strategy/
+    │   ├── roadmap/
+    │   ├── segments/
+    │   ├── positioning/
+    │   ├── metrics/
+    │   ├── channel-mix/
+    │   ├── pricing/
+    │   ├── decisions/
+    │   ├── conventions/
+    │   └── learnings/
+    ├── marketing/
+    │   ├── brand/
+    │   ├── messaging/
+    │   ├── assets/
+    │   ├── style/
+    │   ├── campaigns/
+    │   ├── content/
+    │   ├── web/
+    │   ├── inbound/
+    │   ├── outbound/
+    │   ├── community/
+    │   ├── events/
+    │   ├── decisions/
+    │   ├── conventions/
+    │   └── learnings/
+    ├── sales/
+    │   ├── outbound/
+    │   ├── pipeline/
+    │   ├── accounts/
+    │   ├── enablement/
+    │   ├── objections/
+    │   ├── pricing/
+    │   ├── win-loss/
+    │   ├── decisions/
+    │   ├── conventions/
+    │   └── learnings/
+    ├── success/
+    │   ├── onboarding/
+    │   ├── activation/
+    │   ├── adoption/
+    │   ├── retention/
+    │   ├── expansion/
+    │   ├── enablement/
+    │   ├── support/
+    │   ├── decisions/
+    │   ├── conventions/
+    │   └── learnings/
+    └── execution/
+        ├── plans/
+        ├── programs/
+        ├── experiments/
+        │   ├── running/
+        │   └── learnings/
+        ├── logs/
+        ├── retros/
+        ├── dashboards/
         ├── decisions/
         ├── conventions/
         └── learnings/
@@ -346,9 +395,9 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 
 ### 6.9 `growth/`
 
-**Canonical meaning.** Adoption and expansion.
+**Canonical meaning.** Go-to-market and adoption.
 
-**Broad interpretation.** Can mean monetization growth, user growth, internal adoption, rollout, enablement, ecosystem pull, or usage expansion.
+**Broad interpretation.** Can mean revenue growth, brand development, demand generation, sales motion, customer success, support, internal adoption, rollout, enablement, retention, or expansion depending on the software context.
 
 ### 6.10 Universal `decisions/`
 
@@ -413,10 +462,14 @@ The kernel defines default lifecycle expectations for the canonical software tre
 
 ### 7.4 `growth/`
 
-- `metrics/`, `channels/current/` → living
+- `strategy/roadmap/`, `strategy/metrics/`, `strategy/segments/`, `strategy/positioning/`, `strategy/channel-mix/`, `strategy/pricing/` → living
+- `marketing/brand/`, `messaging/`, `assets/`, `style/`, `campaigns/`, `content/`, `web/`, `inbound/`, `outbound/`, `community/`, `events/` → living
+- `sales/outbound/`, `pipeline/`, `accounts/`, `enablement/`, `objections/`, `pricing/` → living
+- `success/onboarding/`, `activation/`, `adoption/`, `retention/`, `expansion/`, `enablement/`, `support/` → living
+- `execution/dashboards/` → living
 - all `conventions/` subtrees → living
-- `channels/history/`, all `decisions/` subtrees, all `learnings/` subtrees → accumulating
-- `experiments/running/` → transient
+- `sales/win-loss/`, `execution/logs/`, `execution/retros/`, all `decisions/` subtrees, all `learnings/` subtrees → accumulating
+- `execution/plans/`, `execution/programs/`, `execution/experiments/running/` → transient
 
 See [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md) for the shape rules themselves.
 

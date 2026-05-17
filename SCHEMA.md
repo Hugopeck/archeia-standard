@@ -18,7 +18,7 @@ Within those domains, the kernel also defines the rich canonical subtree, includ
 - `strategy/{vision,values,landscape,roadmap,decisions,conventions,learnings}`
 - `operations/{execution,optimization,guides,people,finance,compliance,decisions,conventions,learnings}`
 - `product/{strategy,design,technical,execution}`
-- `growth/{metrics,channels,experiments,decisions,conventions,learnings}`
+- `growth/{strategy,marketing,sales,success,execution}`
 
 And across canonical domains and subdomains, the kernel permits direct domain-local knowledge surfaces when needed:
 
