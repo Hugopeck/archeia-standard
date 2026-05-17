@@ -15,10 +15,18 @@ Archeia's software kernel uses four top-level domains:
 
 Within those domains, the kernel also defines the rich canonical subtree, including:
 
-- `strategy/{vision,values,landscape,roadmap,decisions}`
-- `operations/{execution,optimization,people,finance,compliance}`
+- `strategy/{vision,values,landscape,roadmap,decisions,conventions,learnings}`
+- `operations/{execution,optimization,guides,people,finance,compliance,decisions,conventions,learnings}`
 - `product/{strategy,design,technical,execution}`
-- `growth/{metrics,channels,experiments}`
+- `growth/{metrics,channels,experiments,decisions,conventions,learnings}`
+
+And across canonical domains and subdomains, the kernel permits direct domain-local knowledge surfaces when needed:
+
+- `decisions/`
+- `conventions/`
+- `learnings/`
+
+These are first-class direct subfolders, not wrappers under `meta/` or `memory/`. `guides/` is not universal; it is canonically owned by `operations/`.
 
 The key idea is:
 

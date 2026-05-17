@@ -16,7 +16,7 @@ Every artifact in every Archeia domain belongs to exactly one of three shapes. T
 | **Accumulating** | Append-only records that never leave disk | The disk itself (all records stay) |
 | **Transient** | Flows through states during its lifetime, then pruned | Disk during retention, git after |
 
-Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in `execution/` plus running growth experiments.
+Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in `operations/execution/` plus running growth experiments.
 
 The rest of this document specifies each shape in detail and maps kernel behavior onto them.
 
@@ -30,10 +30,10 @@ A living document is a single file that represents one concept. It is edited in 
 
 ### Examples by domain
 
-- **`product/`** — `product.md`, `roadmap.md`, files under `features/`, `requirements/`, and `design/`
-- **`codebase/`** — `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd`
-- **`business/`** — `vision/vision.md`, `strategy/strategy.md`
-- **`growth/`** — `metrics/current.md` and any ongoing dashboard-style summaries
+- **`strategy/`** — `vision/*.md`, `values/*.md`, `roadmap/*.md`, and local `conventions/*.md`
+- **`operations/`** — `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, and local `conventions/*.md`
+- **`product/`** — `product/strategy/roadmap/*.md`, `product/technical/specs/*.md`, `product/execution/prds/*.md`, `product/technical/architecture/{c4,analysis,views}/*`, and local `conventions/*.md`
+- **`growth/`** — `metrics/*.md`, `channels/current/*.md`, and any ongoing dashboard-style summaries
 
 ### Rules
 
@@ -71,9 +71,10 @@ An accumulating record is an append-only artifact. Each record has its own file 
 
 ### Examples by domain
 
-- **`product/decisions/`** — ADRs. The canonical example. Each decision is its own file, written once, referenced forever. Supersession writes a new ADR that links to the old one; both stay.
-- **`execution/retros/`** — retrospectives. Each retro is a record of a past event. They never get deleted because later work references them.
-- **`business/landscape/{competition,industry,market}/`** — dated external landscape snapshots. Each snapshot is its own record. Old snapshots inform later product, growth, and strategy decisions and stay on disk.
+- **`*/decisions/`** — domain-local decisions. The canonical example. Each decision is its own file, written once, referenced forever. Supersession writes a new decision that links to the old one; both stay.
+- **`*/learnings/`** — domain-local learnings. Each learning record captures a lesson worth preserving without rewriting current truth.
+- **`operations/execution/retros/`** — retrospectives. Each retro is a record of a past event. They never get deleted because later work references them.
+- **`strategy/landscape/{competition,industry,market}/`** — dated external landscape snapshots. Each snapshot is its own record. Old snapshots inform later product, growth, and strategy decisions and stay on disk.
 - **`growth/experiments/learnings/`** — concluded experiment learnings. Each learning record stays forever. The raw running state of the experiment is different — that's shape 3 under `growth/experiments/running/`.
 - **`growth/channels/history/`** — retired channel records with performance history.
 
@@ -131,8 +132,8 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 
 ### Examples by domain
 
-- **`execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
-- **`execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
+- **`operations/execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
+- **`operations/execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
 - **Distribution-defined proposals** — temporary sketches or proposals may exist as transient artifacts in whichever domain owns them. The canonical software layout does not reserve a `drafts/` directory.
 - **`growth/experiments/running/`** — an experiment's running state is transient. Once it concludes, the running artifact is completed and pruned after its retention window. Durable outcomes, when worth keeping, are written as separate accumulating records under `growth/experiments/learnings/`.
 
@@ -212,28 +213,27 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
-| **`business/`** | `vision/vision.md`, `strategy/strategy.md`, `legal/*.md`, `finance/*.md`, `culture/*.md`, `people/*.md`, `**/README.md` | `landscape/competition/*.md`, `landscape/industry/*.md`, `landscape/market/*.md` | distribution-defined purpose-named paths only |
-| **`product/`** | `product.md`, `roadmap.md`, `features/*.md`, `requirements/*.md`, `design/*.md` | `feedback/*.md`, `decisions/*.md` | (none) |
-| **`codebase/`** | `model/c4/*.json`, `analysis/*.md`, `conventions/*.md`, `guide/*.md`, `views/architecture/*.mmd` | (none in the canonical layout) | (none) |
-| **`growth/`** | `metrics/current.md`, `channels/current/*.md` | `experiments/learnings/*.md`, `channels/history/*.md` | `experiments/running/*.md` |
-| **`execution/`** | (none — execution is all action, no living summary doc) | `retros/*.md` | `tasks/*.md`, `plans/*.md`, `projects/*.md` |
+| **`strategy/`** | `vision/*.md`, `values/*.md`, `roadmap/*.md`, `conventions/*.md` | `landscape/{competition,industry,market}/*.md`, `decisions/*.md`, `learnings/*.md` | distribution-defined purpose-named paths only |
+| **`operations/`** | `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
+| **`product/`** | `strategy/roadmap/*.md`, `technical/specs/*.md`, `execution/prds/*.md`, `technical/architecture/{c4,analysis,views}/*`, `technical/devs/*.md`, `*/conventions/*.md` | `design/feedback/*.md`, `*/decisions/*.md`, `*/learnings/*.md`, `execution/logs/*.md`, `execution/archive/*.md` | `execution/plans/*.md` |
+| **`growth/`** | `metrics/*.md`, `channels/current/*.md`, `conventions/*.md` | `channels/history/*.md`, `experiments/learnings/*.md`, `decisions/*.md`, `learnings/*.md` | `experiments/running/*.md` |
 
 A few observations that fall out:
 
-- **`codebase/` is purely living repo-intelligence artifacts.** No accumulation, no transience. All canonical `.archeia/codebase/` artifacts are regenerated in place, with history in git.
-- **`product/` has no canonical transient inbox.** Product surfaces evolve in place (product index, roadmap, features, requirements, design), and evidence/decisions accumulate (feedback, ADRs). Accepted product work becomes living product truth or an accumulating decision.
-- **`execution/` is the only domain with heavy transient presence.** Tasks, plans, projects — these are the things that flow.
+- **`product/technical/` is primarily living repo-intelligence artifacts.** Machine-readable architecture evidence, analysis, views, and dev-facing technical surfaces are regenerated or edited in place, with history in git.
+- **`product/` has a light transient presence.** Most product surfaces evolve in place or accumulate as records, while `product/execution/plans/` is the main canonical transient path inside the domain.
+- **`operations/execution/` is the main transient concentration.** Tasks, plans, projects — these are the things that flow.
 - **`growth/` has all three shapes without shape-switching paths.** Current metrics and active channels are living, retired channel records and experiment learnings are accumulating, and running experiments are transient.
 
 ---
 
-## 8. Codebase is purely living documents
+## 8. Product technical surfaces are primarily living documents
 
-> **Named principle (upgraded).** The `codebase/` domain contains only living repo-intelligence artifacts. It has no accumulating records and no transient artifacts. Every file in `.archeia/codebase/` is edited in place, and every version of every file is preserved by git.
+> **Named principle (updated).** The canonical product-technical intelligence surfaces are primarily living repo-intelligence artifacts. Machine-readable architecture evidence and adjacent generated views are edited or regenerated in place, and every version is preserved by git.
 
-The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The three-shapes model upgrades this to a stronger claim: codebase is purely shape 1. It doesn't plan, it doesn't accumulate decisions (those live in `product/decisions/`), and it doesn't have tasks or proposals (those are distribution-defined transient artifacts in their owning domains). It is the current observed state of the code, always, and nothing more.
+The earlier framing said "codebase is a witness, not a planner" and pointed out that codebase has no `future` state. The current kernel keeps the same idea but expresses it through `product/technical/architecture/` and adjacent technical surfaces. These paths are predominantly shape 1. They don't plan, and they don't own operational task flow. They are the current observed technical state of the code, expressed as durable living artifacts.
 
-This is the purest form of the "codebase is downstream" principle. Codebase reads its own source files, produces living repo intelligence, and commits it. Git provides all the history anyone needs. No accumulation, no transience, no lifecycle — just continuous regeneration of the current truth.
+This is the purest form of the "codebase is downstream" principle. Product-technical intelligence reads source files, produces living repo intelligence, and commits it. Git provides all the history anyone needs. The dominant pattern is continuous regeneration or maintenance of the current technical truth.
 
 ---
 
@@ -294,7 +294,7 @@ pr: https://github.com/Hugopeck/archeia/pull/42
 ---
 
 # 14 days later (archeia:prune deletes the file):
-# git rm execution/tasks/2.3-rewrite-auth.md
+# git rm operations/execution/tasks/2.3-rewrite-auth.md
 # git preserves the full history forever.
 ```
 
@@ -324,13 +324,13 @@ updated_at: 2026-04-12T17:00:00Z
 ...acceptance criteria refined, dependencies updated, evidence linked...
 ```
 
-Same file. Same path. Edited in place. `git log product/features/team-invites.md` shows every version. No superseded files cluttering the directory. The feature spec is a living document and the living document shape gets out of git's way.
+Same file. Same path. Edited in place. `git log .archeia/product/technical/specs/team-invites.md` shows every version. No superseded files cluttering the directory. The feature spec is a living document and the living document shape gets out of git's way.
 
 ### An ADR (shape 2)
 
 ```markdown
 # 2026-01-15: Decision written
-# File: product/decisions/20260115-0900-row-level-security.md
+# File: product/technical/decisions/20260115-0900-row-level-security.md
 ---
 title: Use PostgreSQL row-level security for multi-tenant isolation
 created: 2026-01-15T09:00:00Z
@@ -353,7 +353,7 @@ Adopt Postgres RLS for tenant isolation.
 ...
 
 # 2026-08-01: Decision is revisited and superseded
-# New file: product/decisions/20260801-0900-schema-per-tenant.md
+# New file: product/technical/decisions/20260801-0900-schema-per-tenant.md
 ---
 title: Use schema-per-tenant for multi-tenant isolation
 created: 2026-08-01T09:00:00Z
@@ -374,7 +374,7 @@ Migrate to schema-per-tenant.
 ...
 
 # And the OLD file gets its one permitted frontmatter mutation:
-# File: product/decisions/20260115-0900-row-level-security.md
+# File: product/technical/decisions/20260115-0900-row-level-security.md
 ---
 title: Use PostgreSQL row-level security for multi-tenant isolation
 created: 2026-01-15T09:00:00Z
@@ -391,7 +391,7 @@ Both files stay on disk forever. Future readers can follow the `supersedes` / `s
 ### A generated scan report view (shape 1)
 
 ```markdown
-# codebase/analysis/repository.md always has one generated analysis.
+# product/technical/architecture/analysis/repository.md always has one generated analysis.
 # Regeneration edits the view in place; git holds history if committed.
 
 # 2026-04-01 run:
@@ -415,9 +415,9 @@ skill: archeia:scan-repo
 ...LOC, deps, test coverage, README gaps... (updated numbers)
 ```
 
-No `repository-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated analysis, regenerated in place, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:.archeia/codebase/analysis/repository.md`.
+No `repository-2026-04-01.md` sitting next to the current one. No archive directory. Just one generated analysis, regenerated in place, with history in git. If someone wants to compare today's scan to last month's scan, they run `git show HEAD~30:.archeia/product/technical/architecture/analysis/repository.md`.
 
-### A proposal that becomes durable product or business truth
+### A proposal that becomes durable product or strategy truth
 
 ```markdown
 # A distribution-defined proposal artifact (shape 3):
@@ -432,8 +432,8 @@ status: draft
 # Onboarding rewrite proposal
 ...
 
-# After review and decision to incorporate it into business/vision/vision.md:
-# 1. archeia:create-vision (or similar) edits business/vision/vision.md
+# After review and decision to incorporate it into strategy/vision/vision.md:
+# 1. archeia:create-vision (or similar) edits strategy/vision/vision.md
 #    in place to incorporate the proposal's content — shape 1 edit.
 # 2. The proposal's status becomes a terminal accepted status, retention window starts.
 # 3. After the distribution-defined retention window, the proposal file is pruned.

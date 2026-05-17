@@ -36,10 +36,10 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 
 The software kernel uses four canonical domains:
 
-- `strategy/` — vision, values, landscape, roadmap, decisions
-- `operations/` — execution, optimization, people, finance, compliance
+- `strategy/` — vision, values, landscape, roadmap, decisions, conventions, learnings
+- `operations/` — execution, guides, optimization, people, finance, compliance, decisions, conventions, learnings
 - `product/` — product strategy, design, technical, and product execution
-- `growth/` — acquisition, retention, monetization
+- `growth/` — acquisition, retention, monetization, plus domain-local decisions, conventions, and learnings
 
 Within `product/`, the canonical validated subareas are:
 
@@ -49,6 +49,8 @@ Within `product/`, the canonical validated subareas are:
 - `product/execution/`
 
 The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
+
+Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural how-to material lives canonically under `operations/guides/`, with the strongest guides often graduating into skills.
 
 ## Migration
 
