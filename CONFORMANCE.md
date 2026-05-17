@@ -1,198 +1,76 @@
 # Archeia Conformance Checklist
 
-This document is the **Definition of Done** for any tool, distribution, or harness that claims to support the Archeia Standard. It restates the kernel's normative requirements in checklist form so that an implementer can audit their work line-by-line.
+This document is the **Definition of Done** for any tool, distribution, or harness that claims to support the Archeia Standard.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **REQUIRED** are interpreted per [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+## 1. Kernel conformance
 
-There are two levels of conformance:
+A kernel-conforming implementation MUST:
 
-- **Kernel-conforming** — implements every MUST in [`KERNEL.md`](KERNEL.md). Sufficient for a tool that wants to read or write `.archeia/` trees produced by any distribution.
-- **Distribution-conforming** — kernel-conforming plus every MUST in the distribution's own spec (e.g., the canonical software application in [`SCHEMA.md`](SCHEMA.md), or the rules of a specific distribution like `archeia-solo`).
+- recognize all eight primitives from [`KERNEL.md`](KERNEL.md)
+- uphold all seven invariants
+- implement the three lifecycle shapes
+- provide the six deterministic kernel operations
+- provide the `archivist` agent role
+- read domains, ownership, shapes, and contracts from `standard/domains.yaml`
+- validate artifacts against base schemas and any applicable contract schemas
+- enforce the four canonical top-level software domains
+- preserve canonical kernel names and meanings
+- permit omission and sparse use where the kernel allows it
 
-A tool MAY claim partial conformance by listing the specific levels and sections it implements, but MUST NOT claim "Archeia-conforming" without satisfying every kernel MUST.
+## 2. Validation
 
----
+A conforming `validate` implementation MUST check:
 
-## 1. Primitives
+- `.archeia/` exists at the project root
+- `standard/domains.yaml` exists and declares at least one domain
+- `standard/VERSION` exists and is valid semver
+- every artifact under `.archeia/` belongs to a declared domain
+- every artifact conforms to its base shape schema
+- every artifact conforms to any applicable artifact-type schema
+- every cross-domain read is backed by a contract schema
+- every transient artifact has a valid status
+- every terminal transient artifact has a terminal timestamp
+- ownership is respected as an advisory check
 
-A conforming implementation MUST recognize all eight primitives defined in [`KERNEL.md`](KERNEL.md) §2:
+## 3. Kernel software-tree conformance
 
-- [ ] **Root** — the implementation operates on a project root containing an `.archeia/` directory.
-- [ ] **Domain** — the implementation reads `standard/domains.yaml` to discover which domains exist; it does not hard-code a domain list.
-- [ ] **Artifact** — the implementation accepts text-native files by default and accepts binary files only with a `<file>.meta.yaml` sidecar.
-- [ ] **Shape** — the implementation recognizes the three lifecycle shapes (living, accumulating, transient) and applies their distinct rules.
-- [ ] **Owner** — the implementation reads ownership assignments from `standard/domains.yaml` and enforces write authority accordingly.
-- [ ] **Schema** — the implementation validates artifacts against the JSON Schemas in `standard/contracts/` at write time (for writers) or read time (for validators).
-- [ ] **Contract** — the implementation enforces declared cross-domain read contracts.
-- [ ] **Writer / Reader** — the implementation does not couple to a specific writer or reader; agents, skills, scripts, and humans are all permitted producers and consumers.
+A repo claiming kernel conformance MUST additionally satisfy the thick software-kernel contract from [`KERNEL.md`](KERNEL.md):
 
----
+- exactly the four canonical top-level domains exist under `.archeia/`: `strategy/`, `operations/`, `product/`, `growth/`
+- no top-level rename or replacement of those canonical domains occurs
+- canonical meanings are respected; arbitrary semantic repurposing is not
+- omission and sparse use are allowed where the kernel says they are allowed
+- `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, `execution/`
+- `product/technical/architecture/c4/` is the canonical machine-readable architecture surface and contains only living artifacts
+- both cross-domain contracts are enforced:
+  - product execution surface → `operations/execution/`
+  - `product/technical/architecture/c4/` → product feasibility review / operations scoping
+- product artifacts that depend on external product sources cite those sources with extraction and freshness metadata
+- `docs/` is not required for software conformance and is not inspected by the canonical validator
 
-## 2. Invariants
+## 4. Distribution conformance
 
-A conforming implementation MUST uphold all seven invariants from [`KERNEL.md`](KERNEL.md) §3. Violation of any one is non-conformance.
+A repo is distribution-conforming if it is kernel-conforming and also satisfies the stricter usage, workflow, approval, retention, and emphasis rules of its chosen distribution.
 
-- [ ] **I1.** Knowledge MUST live in `.archeia/` under the project root. The implementation MUST NOT depend on a server, schema registry, or message broker between agents.
-- [ ] **I2.** Every artifact MUST belong to exactly one owning domain. No shared ownership, no multi-domain artifacts.
-- [ ] **I3.** Every artifact MUST have exactly one lifecycle shape (living, accumulating, or transient).
-- [ ] **I4.** Reads MUST be free across domains; writes MUST be owner-only. The implementation MUST NOT permit cross-domain writes.
-- [ ] **I5.** Every factual claim in a descriptive artifact MUST cite a source (file path or commit). Every prescriptive artifact MUST cite its rationale and the prior artifacts it builds on. Claims that cannot be evidenced MUST be flagged in-line with `<!-- INSUFFICIENT EVIDENCE: [description] -->`.
-- [ ] **I6.** Cross-domain dependencies MUST be declared as JSON Schema contracts under `standard/contracts/`. The implementation MUST NOT infer cross-domain dependencies that are not declared.
-- [ ] **I7.** History MUST be preserved per shape: living → git, accumulating → on-disk forever, transient → on-disk during retention then git after pruning. The implementation MUST NOT destroy history.
+## 5. Harness compatibility
 
----
+A conforming harness MUST:
 
-## 3. The three lifecycle shapes
+- flush writes to `.archeia/` to disk before compaction may discard them from in-context state
+- retain enough context across compaction for the next turn to know which `.archeia/` paths to re-read
+- either complete an in-flight `.archeia/` write or abort it cleanly
 
-A conforming implementation MUST follow [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md) and:
-
-- [ ] Recognize all three shapes and apply each shape's rules.
-- [ ] Edit living documents in place; preserve history in git.
-- [ ] Append to accumulating records; never delete them; permit only the single frontmatter mutation defined for supersession.
-- [ ] Flow transient artifacts through status values mapped to `future` / `present` / `past`; prune them after the distribution's declared retention window.
-- [ ] Map each transient status to a temporal state per the distribution's `standard/domains.yaml` (or `standard/lifecycles.yaml`).
-
----
-
-## 4. The six kernel operations
-
-A conforming distribution MUST provide all six operations as deterministic scripts, library functions, named tools, or equivalent internal functions. Each operation MUST honor its contract from [`KERNEL.md`](KERNEL.md) §5 and the pseudocode in [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md).
-
-| Op | MUST | SHOULD | MAY |
-|---|---|---|---|
-| `init` | Scaffold the distribution's declared `.archeia/` structure and required schemas idempotently. | Scaffold directory READMEs for declared folders. | Run `validate` after scaffolding. |
-| `validate` | Report conformance issues for structure, schemas, contracts, lifecycle state, and ownership. | Use file-path citations and severities. | Include advisory checks for ownership and README scaffolding. |
-| `write` | Create, update, or delete artifacts only when owner, shape, schema, contract, and history rules permit the mutation. | Make mutating writes one git commit. | Support transactional multi-file writes. |
-| `transition` | Apply only distribution-declared transient status transitions and record required timestamps. | Refuse undeclared transitions with actionable errors. | Be wrapped by workflow-specific skills. |
-| `prune` | Delete transient artifacts whose retention window has elapsed since their terminal timestamp. Each deletion MUST be preserved in git history. | Be runnable on a schedule. | Batch deletions if the commit message lists every pruned path. |
-| `history` | Return artifact history using git, on-disk records, and frontmatter relationships appropriate to the artifact's shape. | Return a structured timeline. | Include related frontmatter links beyond supersession. |
-
----
-
-## 5. Required Tooling
-
-A conforming distribution MUST provide all six kernel operations under its own namespace or as equivalent scripts/library functions ([`KERNEL.md`](KERNEL.md) §6). Each SHOULD be invocable by tools and CI.
-
-- [ ] `<distribution>:init` — scaffold `.archeia/`. MUST be idempotent.
-- [ ] `<distribution>:validate` — walk `.archeia/`, check shape and schema conformance, verify cross-domain contracts, check transient status validity, verify ownership.
-- [ ] `<distribution>:write` — enforce owner, shape, schema, contract, and history rules before mutating artifacts.
-- [ ] `<distribution>:transition` — apply declared transient status transitions and required timestamps.
-- [ ] `<distribution>:prune` — implements the `prune` operation. Each deletion MUST be a git commit.
-- [ ] `<distribution>:history` — return artifact history using the correct mechanism for the artifact's shape.
-
-Latent authoring skills such as product review, idea clarification, codebase modeling, and feedback synthesis are distribution concerns. They SHOULD use kernel operations for final writes.
-
----
-
-## 6. Inherent agents
-
-A conforming distribution MUST provide one agent role ([`KERNEL.md`](KERNEL.md) §7):
-
-- [ ] `archivist` — manages past-state transitions, supersession decisions, and retention policy. Reads the full `.archeia/` tree; invokes `transition`, `write`, and `prune` for mechanical changes.
-
-A distribution MAY provide additional agent roles. Only `archivist` is REQUIRED by the kernel.
-
----
-
-## 7. The extension mechanism
-
-A conforming distribution MUST provide all four extension artifacts ([`KERNEL.md`](KERNEL.md) §8):
-
-- [ ] **`standard/domains.yaml`** declaring domains, owners, permitted shapes, and cross-domain reads.
-- [ ] **Status vocabularies and temporal mappings** for every transient artifact type (status values, status → temporal mapping, retention window in days, terminal timestamp field name). MAY live in `standard/domains.yaml` or `standard/lifecycles.yaml`.
-- [ ] **JSON Schemas** under `standard/contracts/` covering the kernel's three base shapes plus every distribution-specific contract.
-- [ ] **Working implementations** of the six kernel operations and the `archivist` agent.
-
----
-
-## 8. Validation
-
-A conforming `validate` implementation MUST check all of the following ([`KERNEL.md`](KERNEL.md) §11):
-
-- [ ] `.archeia/` exists at the project root.
-- [ ] `standard/domains.yaml` exists and declares at least one domain.
-- [ ] `standard/VERSION` exists and is a valid semver string.
-- [ ] Every artifact under `.archeia/` belongs to a declared domain.
-- [ ] Every artifact has a declared shape and conforms to that shape's base schema.
-- [ ] Every artifact conforms to any applicable artifact-type schema.
-- [ ] Every cross-domain read is backed by a contract schema, and the referenced artifacts satisfy it.
-- [ ] Every transient artifact has a valid status per the domain's status vocabulary.
-- [ ] Every transient artifact in a terminal status has a terminal timestamp.
-- [ ] Ownership is respected (advisory check via git history).
-
-The validator SHOULD report failures with file-path citations so that a conforming repair tool can act on them.
-
----
-
-## 9. Software-distribution conformance (canonical software application)
-
-A repo claiming to use the canonical software application from [`SCHEMA.md`](SCHEMA.md) MUST additionally satisfy:
-
-- [ ] Exactly the five canonical domains exist under `.archeia/`: `business/`, `product/`, `codebase/`, `growth/`, `execution/`.
-- [ ] No domain directory outside the canonical five exists under `.archeia/`.
-- [ ] `.archeia/codebase/` is the canonical AI-maintained repo-intelligence surface and contains only living artifacts: `model/c4/` for machine-readable contracts, plus generated `analysis/`, `conventions/`, `guide/`, and `views/` artifacts.
-- [ ] Both cross-domain contracts are enforced: `product → execution` (via `product.schema.json` over `product/product.md`, `product/roadmap.md`, and `product/features/*.md`) and `codebase → product/decisions` (via `c4.schema.json`).
-- [ ] Product artifacts that depend on external product sources cite those sources with extraction/freshness metadata; external tools are treated as evidence or working surfaces, not as replacements for local `.archeia/product/` contracts.
-- [ ] `docs/` is not required for software conformance and is not inspected by the canonical validator.
-
----
-
-## 10. Harness compatibility
-
-A conforming **harness** ([`KERNEL.md`](KERNEL.md) §9) MUST:
-
-- [ ] Flush writes to `.archeia/` to disk before compaction may discard them from in-context state.
-- [ ] Retain enough context across compaction for the next turn to know which `.archeia/` paths to re-read.
-- [ ] Either complete an in-flight `.archeia/` write or abort it cleanly. Half-states are non-conformant.
-
-A harness MAY manage anything else about its context window however it wants. The kernel does not constrain compaction policy beyond the durable-write boundary.
-
----
-
-## 11. Skill format
-
-A conforming skill ([`KERNEL.md`](KERNEL.md) §10) MUST have YAML frontmatter with at minimum:
-
-- [ ] `name` — unique within the distribution's namespace.
-- [ ] `description` — the trigger sentence used for automatic skill selection.
-
-A conforming skill SHOULD additionally populate:
-
-- [ ] `version`, `parameters`, `reads`, `writes`, `operation`.
-
-These will become MUST in kernel version 1.0.
-
----
-
-## 12. Versioning
+## 6. Versioning
 
 A conforming distribution MUST:
 
-- [ ] Pin a kernel version range in `standard/domains.yaml` (e.g., `kernel: ">=0.3.0, <1.0.0"`).
-- [ ] Declare its own distribution version separately from the kernel version.
-- [ ] Refuse to process a repo whose pinned kernel version is unsupported, with a clear error rather than corrupting the tree.
+- pin a kernel version range in `standard/domains.yaml`
+- declare its own distribution version separately from the kernel version
+- refuse to process a repo whose pinned kernel version is unsupported
 
----
+## References
 
-## 13. Conformance reporting
-
-A tool that wants to advertise its conformance level SHOULD report:
-
-- The kernel version it implements.
-- The distribution(s) it supports.
-- Which sections of this checklist it has audited (e.g., "kernel-conforming except §11.skills format extended frontmatter, which is OPTIONAL pre-1.0").
-
-A tool MUST NOT claim "Archeia-conforming" without satisfying every MUST in §1–§8 and §10–§12 of this document at the kernel version it pins.
-
----
-
-## 14. References
-
-- [`KERNEL.md`](KERNEL.md) — the abstract substrate this checklist audits against
-- [`SCHEMA.md`](SCHEMA.md) — the canonical software application
-- [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md) — pseudocode for the six kernel operations
-- [`TEST-MATRIX.md`](TEST-MATRIX.md) — the per-schema test plan a conforming repo passes
-- [`POSITIONING.md`](POSITIONING.md) — what Archeia adds beyond the SOTA harness corpus
-- [`PRINCIPLES.md`](PRINCIPLES.md) — the seven fundamental truths
-- [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md) — the three lifecycle shapes
-- [`ONTOLOGY.md`](ONTOLOGY.md) — vocabulary and academic citations
+- [`KERNEL.md`](KERNEL.md)
+- [`SCHEMA.md`](SCHEMA.md)
+- [`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md)
+- [`TEST-MATRIX.md`](TEST-MATRIX.md)

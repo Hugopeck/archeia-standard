@@ -20,7 +20,7 @@ Every claim in this document is anchored to one of three source types:
 
 ---
 
-## 2. The three layers of agentic development
+## 2. The three layers of software-agent systems
 
 Before defining terms, we need to say where Archeia sits in the stack. Every discussion of "AI productivity" is happening on one of three layers, and conflating them is the largest source of confusion in the current debate.
 
@@ -71,7 +71,7 @@ This three-layer framing is consistent with the architectural surveys in OpenDev
 
 **Definition:** A cognitive architecture is a theoretical framework specifying the fixed structures and processes that implement cognition — memory systems, control processes, learning mechanisms — into which variable content (knowledge, skills, goals) is loaded.
 
-**Archeia role:** Archeia **is a cognitive architecture for agentic development**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations) into which a specific project's variable content is loaded. This framing is load-bearing and should be used whenever Archeia is compared to other approaches.
+**Archeia role:** Archeia **is a cognitive architecture for a software business OS**. Not a wiki, not a database, not a memory service. It specifies fixed structures (domains, lifecycle shapes, ownership rules, operations, and a rich canonical software tree) into which a specific software project's variable content is loaded.
 
 CoALA is the paper that first applied the cognitive-architecture frame to LLM agents at the in-context execution layer. Archeia extends the same frame to the in-repo persistent knowledge layer. The relationship is direct: CoALA specifies the memory structures inside the agent's context window; Archeia specifies the memory structures outside the agent's context window, on disk, accessible to many agents and humans over time.
 
@@ -96,10 +96,10 @@ CoALA is the paper that first applied the cognitive-architecture frame to LLM ag
 | Tulving / Squire / Baddeley term | Archeia artifact shape | Examples |
 |---|---|---|
 | **Working memory** (Baddeley 1974) | (not in `.archeia/`; lives in the harness context window) | active session, current context window |
-| **Semantic memory** (Tulving 1972) | **Living documents** | `product/product.md`, `product/roadmap.md`, `product/features/*.md`, `codebase/model/c4/*`, `codebase/analysis/*`, `business/vision/vision.md` |
-| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/feedback/*.md`, `product/decisions/*.md`, `execution/retros/*.md`, `business/landscape/{competition,industry,market}/*.md` |
+| **Semantic memory** (Tulving 1972) | **Living documents** | `product/strategy/roadmap/*.md`, `product/technical/specs/*.md`, `product/execution/prds/*.md`, `product/technical/architecture/c4/*`, `strategy/vision/*.md` |
+| **Episodic memory** (Tulving 1972) | **Accumulating records** | `product/design/feedback/*.md`, `product/technical/decisions/*.md`, `operations/execution/retros/*.md`, `strategy/landscape/{competition,industry,market}/*.md` |
 | **Procedural memory** (Squire) | **Skills** (not in `.archeia/` but in `skills/`) | `archeia:work`, `archeia:review-product`, `archeia:clarify-idea` |
-| **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `execution/tasks/` with `status: todo`, running experiments, distribution-defined proposals |
+| **Prospective memory** (McDaniel & Einstein) | **Transient artifacts** in `future` status | `operations/execution/tasks/` with `status: todo`, running experiments, distribution-defined proposals |
 
 This mapping is why Archeia's three lifecycle shapes aren't arbitrary: they correspond to cognitive-science memory categories that have 50 years of empirical grounding, and CoALA already established the bridge from these categories to LLM agent systems. Archeia applies the same taxonomy one layer outward.
 
@@ -149,7 +149,7 @@ A future Archeia extension may adopt fuller bi-temporal support — `valid_from`
 
 **Exact quote (page 199):** "An ontology is an explicit specification of a conceptualization."
 
-**Archeia role:** This document (the Archeia Ontology) is such an explicit specification. It conceptualizes the entities and operations of agentic project knowledge so that conforming tools, writers, and readers share a common vocabulary. Gruber's definition is 30+ years old and remains the most-cited in computer science (21,000+ Google Scholar citations as of 2024).
+**Archeia role:** This document (the Archeia Ontology) is such an explicit specification. It conceptualizes the entities and operations of software operating knowledge so that conforming tools, writers, and readers share a common vocabulary. Gruber's definition is 30+ years old and remains the most-cited in computer science (21,000+ Google Scholar citations as of 2024).
 
 ---
 
@@ -193,7 +193,7 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 
 **Canonical source:** memory consolidation (Müller & Pilzecker 1900; Squire & Alvarez 1995). Modern LLM-agent adoption as "knowledge consolidation" in MemoryAgentBench (Hu et al. 2025) and the Agent-Memory Survey.
 
-**Definition:** Read a set of source artifacts and produce or update a target artifact that integrates their content with cited evidence. The target is typically a living document (e.g., `.archeia/codebase/analysis/repository.md` consolidating source files, dependency data, and git history) or an accumulating record (e.g., a retrospective consolidating session traces).
+**Definition:** Read a set of source artifacts and produce or update a target artifact that integrates their content with cited evidence. The target is typically a living document (e.g., `.archeia/product/technical/architecture/analysis/repository.md` consolidating source files, dependency data, and git history) or an accumulating record (e.g., a retrospective consolidating session traces).
 
 **Why this replaces "diarize":** The term "diarize" in Garry Tan's "Thin Harness, Fat Skills" (X post, April 10, 2026) is a metaphor stretched from **speaker diarization** (Tranter & Reynolds, "An overview of automatic speaker diarization systems," *IEEE TASLP* 14(5):1557–1565, 2006), which means "determining who spoke when" in an audio recording. This is a completely different operation — it's speaker identification, not synthesis from multiple sources. Using "diarize" to mean "synthesize structured judgment from many documents" is a category error that would fail peer review.
 
@@ -208,7 +208,7 @@ The full specification is in [`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md). This sect
 - **Evidence rule:** every claim in the target should cite a source from the inputs. Claims that cannot be evidenced should be flagged in the target with `<!-- INSUFFICIENT EVIDENCE -->` rather than fabricated.
 - **Idempotence:** consolidation skills should be semantically idempotent over the same inputs.
 
-Most of what `archeia:write-codebase-model` actually does is consolidation (read source files, update `.archeia/codebase/model/c4/*.json`, and optionally render `.archeia/codebase/views/architecture/*.mmd`). Most of what `archeia:scan-git` does is consolidation (read git history and produce `.archeia/codebase/analysis/history.md`). Naming it makes the skill layer honest without making it a kernel primitive.
+Most of what `archeia:write-codebase-model` actually does is consolidation (read source files, update `.archeia/product/technical/architecture/c4/*.json`, and optionally render `.archeia/product/technical/architecture/views/*.mmd`). Most of what `archeia:scan-git` does is consolidation (read git history and produce `.archeia/product/technical/architecture/analysis/history.md`). Naming it makes the skill layer honest without making it a kernel primitive.
 
 ### 4.6 `prune` operation
 
@@ -301,7 +301,7 @@ These four are the canonical framing of what a memory system must do to be usefu
 - Writes artifacts back to `.archeia/` according to the ownership rules in [`SCHEMA.md`](SCHEMA.md)
 - Guarantees that writes are flushed to disk before compaction may discard in-context state
 
-The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/features/team-invites.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
+The third point is Archeia's one hard requirement on harnesses: **compaction must not lose pending writes.** If a harness summarizes context and drops an in-flight write to `.archeia/product/technical/specs/team-invites.md`, that's a harness bug, not an Archeia problem. Compaction policy is harness business; persistence guarantees are contract business.
 
 ---
 
@@ -346,7 +346,7 @@ parameters:
     required: true
   - name: codebase_context
     type: directory
-    default: .archeia/codebase/model/c4/
+    default: .archeia/product/technical/architecture/c4/
 ---
 ```
 
@@ -374,7 +374,7 @@ The authoritative mapping of Archeia terms to their academic or industry canonic
 
 | Archeia term | Canonical source | Year | Type | Archeia role |
 |---|---|---|---|---|
-| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for agentic development |
+| Cognitive architecture | Newell 1990; Anderson 1993 | 1990, 1993 | Classical | Archeia is a cognitive architecture for a software business OS |
 | CoALA framework | Sumers, Yao, Narasimhan & Griffiths (arXiv:2309.02427) | 2023 | Recent AI | Applies Tulving memory taxonomy to LLM agents; Archeia extends this to in-repo persistent knowledge |
 | Working memory | Baddeley & Hitch 1974 | 1974 | Classical | The LLM context window; harness-owned, not in `.archeia/` |
 | Semantic memory | Tulving 1972 | 1972 | Classical | Living documents |
@@ -421,7 +421,7 @@ Terms Archeia uses that have no canonical academic precedent, and why they exist
 | **Accumulating record** | Archeia coinage | Closest academic framings are "episodic memory store" and "append-only record." Archeia uses a compact term that combines both. |
 | **Transient artifact** | Archeia coinage | Closest academic framings are "prospective memory" + "operational working memory," which don't compose naturally. "Transient" captures the bounded-retention property. |
 | **Three lifecycle shapes** | Archeia coinage | Maps directly to Tulving taxonomy (see §3.2) but the specific triplet (living / accumulating / transient) is Archeia's organization. |
-| **Forward flow** (business → product → execution → codebase) | Archeia coinage | The causal direction of work in software projects. No single academic source; the closest is the product-engineering handoff literature (Cagan, *Inspired*, 2008), which is non-academic. |
+| **Forward flow** (strategy → product → operations, with product/technical grounding execution) | Archeia coinage | The causal direction of work in software projects. No single academic source; the closest is the product-engineering handoff literature (Cagan, *Inspired*, 2008), which is non-academic. |
 | **Read flow** (everyone reads codebase and product) | Archeia coinage | Complement to forward flow. Context-fetching pattern. No academic source. |
 | **Codebase is a witness, not a planner** | Archeia coinage | Named principle unique to the standard. |
 

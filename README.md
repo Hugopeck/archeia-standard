@@ -1,28 +1,24 @@
 # The Archeia Standard
 
-**An open substrate for structured, in-repo knowledge that AI agents and humans share.**
+**An open software business OS: a structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
 
-Version: [`0.3.0`](VERSION) · License: MIT
+Version: [`0.5.0`](VERSION) · License: MIT
 
-Archeia is a standard and a kernel for agentic development: a minimal, in-repo substrate for structured project knowledge that AI agents read, write, and coordinate through — without a server, a schema registry, or a message broker between them.
-
-This repository contains the formal specification. The reference implementation — **Archeia Solo**, a distribution for solo builders shipping bootstrapped AI-first software — lives at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia).
-
-Archeia defines the durable source-of-truth layer for agent systems. If a distribution later needs vector search, graph traversal, or dynamic context management, those retrieval layers can sit on top of the Archeia tree without changing the canonical store underneath.
+Archeia is a standard and a kernel for a **software business OS**: a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
 
 ## Start here
 
-- **[`MANIFESTO.md`](MANIFESTO.md)** — the one-page pitch. Read this first.
-- **[`PRINCIPLES.md`](PRINCIPLES.md)** — the seven fundamental truths the standard rests on.
-- **[`KERNEL.md`](KERNEL.md)** — the formal substrate: primitives, invariants, operations, required tooling, extension mechanism.
-- **[`SCHEMA.md`](SCHEMA.md)** — the canonical software application of the kernel. Five domains, ownership, cross-domain contracts.
-- **[`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md)** — the three lifecycle shapes: living, accumulating, transient.
-- **[`ONTOLOGY.md`](ONTOLOGY.md)** — canonical vocabulary grounded in cognitive science, multi-agent systems research, and recent (2023–2026) AI literature.
+- **[`MANIFESTO.md`](MANIFESTO.md)** — the one-page pitch.
+- **[`PRINCIPLES.md`](PRINCIPLES.md)** — the seven fundamental truths.
+- **[`KERNEL.md`](KERNEL.md)** — the thick software kernel: domains, meanings, rich tree, invariants, operations, and extension mechanism.
+- **[`SCHEMA.md`](SCHEMA.md)** — a short companion explainer for the kernel's software tree and migration.
+- **[`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md)** — the three lifecycle shapes.
+- **[`ONTOLOGY.md`](ONTOLOGY.md)** — canonical vocabulary and academic grounding.
 
 ## Conformance and positioning
 
-- **[`POSITIONING.md`](POSITIONING.md)** — what Archeia adds beyond the SOTA harness corpus from Anthropic, OpenAI, and Cursor. The deliberate departures and the agreements.
-- **[`CONFORMANCE.md`](CONFORMANCE.md)** — the Implementation Checklist / Definition of Done. Every kernel MUST in audit form.
+- **[`POSITIONING.md`](POSITIONING.md)** — what Archeia adds beyond the SOTA harness corpus.
+- **[`CONFORMANCE.md`](CONFORMANCE.md)** — the implementation checklist / definition of done.
 - **[`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md)** — language-agnostic pseudocode for the six deterministic kernel operations.
 - **[`TEST-MATRIX.md`](TEST-MATRIX.md)** — the per-schema and per-operation tests every conformant repo passes.
 
@@ -30,54 +26,64 @@ Archeia defines the durable source-of-truth layer for agent systems. If a distri
 
 Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](contracts/):
 
-- [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for semantic-memory documents
-- [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for episodic-memory records
-- [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for lifecycle artifacts
-- [`product.schema.json`](contracts/product.schema.json) — product → execution contract over the product index, roadmap, and feature specs
-- [`c4.schema.json`](contracts/c4.schema.json) — codebase → product contract (C4 model data)
+- [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for living documents
+- [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for accumulating records
+- [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for transient artifacts
+- [`product.schema.json`](contracts/product.schema.json) — product execution surface → operations contract
+- [`c4.schema.json`](contracts/c4.schema.json) — `product/technical/architecture/c4/` contract
+
+## Canonical software kernel
+
+The software kernel uses four canonical domains:
+
+- `strategy/` — vision, values, landscape, roadmap, decisions
+- `operations/` — execution, optimization, people, finance, compliance
+- `product/` — product strategy, design, technical, and product execution
+- `growth/` — acquisition, retention, monetization
+
+Within `product/`, the canonical validated subareas are:
+
+- `product/strategy/`
+- `product/design/`
+- `product/technical/`
+- `product/execution/`
+
+The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
+
+## Migration
+
+The `0.4.0` revision was the breaking canonical-layout migration:
+
+- `business/` is replaced by `strategy/` plus parts of `operations/`
+- top-level `execution/` moves to `operations/execution/`
+- top-level `codebase/` moves under `product/technical/architecture/` and `product/technical/devs/`
+- the old executable product surface is replaced by:
+  - `product/strategy/roadmap/`
+  - `product/technical/specs/`
+  - `product/execution/prds/`
+
+See [`SCHEMA.md`](SCHEMA.md) for the explicit mapping summary and [`MIGRATION-0.4.0.md`](MIGRATION-0.4.0.md) for the historical migration note.
 
 ## Distributions
 
-A **distribution** is an opinionated bundle that extends the kernel for a specific audience. See [`distributions/README.md`](distributions/README.md) for the "how to write a distribution" guide and the current roster.
+A **distribution** is an opinionated bundle that extends the kernel for a specific software operating context. Distributions strengthen usage, policy, and workflow over the shared kernel tree. See [`distributions/README.md`](distributions/README.md) for the guide and current roster.
 
-The reference distribution is **Archeia Solo**, at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia). It targets solo builders running AI-agent-maximalist bootstrapped software businesses, ships 16 skills and a growing agent roster, and implements the kernel operations.
-
-A **companion distribution-flavor** also lives in this repo: [`distributions/archeia-enforcement.md`](distributions/archeia-enforcement.md) — the spec for the linters, CI checks, and pre-commit hooks that turn the kernel's normative requirements into mechanical guardrails. Any distribution can layer it on top of itself; it operationalizes OpenAI's harness-engineering "mechanical enforcement" principle.
-
-Future distributions expected: Archeia Research (research labs), Archeia Studio (game studios), Archeia Enterprise (compliance-heavy environments), Archeia OSS (open-source projects with monetization intent).
-
-## Supporting material
-
-- [`docs/faq.md`](docs/faq.md) — comparisons against wikis, vector DBs, RAG, knowledge graphs, docs-as-code tools, ADR repos, and current agent frameworks. Structural, implementation, and political questions.
-- [`docs/memory-vs-knowledge.md`](docs/memory-vs-knowledge.md) — the honest audit of what Archeia solves and what it doesn't, measured against the four canonical memory competencies from MemoryAgentBench (Hu, Wang & McAuley, 2025). Required reading before claiming Archeia "solves memory."
-- [`docs/references/`](docs/references/) — the field bibliography and the outward-facing leg of Archeia's OODA loop. Articles, papers, repos, and guides from Anthropic, OpenAI, Google DeepMind, Cursor, and academic research groups that ground each design decision in current practice.
+The reference distribution is **Archeia Solo**, at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia). A companion distribution-flavor also lives in this repo: [`distributions/archeia-enforcement.md`](distributions/archeia-enforcement.md).
 
 ## Living standard
 
-The agentic software field is moving fast. New harness patterns, multi-agent coordination techniques, context engineering approaches, and evaluation frameworks are being published continuously by leading AI labs and research groups. The Archeia Standard tracks this evolution deliberately: design decisions are not made in isolation, they are checked against what practitioners at Anthropic, OpenAI, Google DeepMind, Cursor, and open-source projects have found to work at scale.
-
-The [`docs/references/bibliography.md`](docs/references/bibliography.md) is the mechanism for this. It is updated as the field moves, and any spec change that touches the kernel or a domain's canonical shapes should cite — or consciously depart from — relevant prior work. When a new paper reframes how agents should manage context, or a leading lab publishes a harness pattern that invalidates an assumption in `KERNEL.md`, that is an input to the next spec revision, not background noise.
-
-This means the standard will version more aggressively in its pre-1.0 life than a stable protocol would. That is intentional: Archeia should reflect the best current understanding of how agent-human collaborative repositories work, not lock in patterns that the field has already moved past.
+The agentic software field is moving fast. Archeia tracks this evolution deliberately: design decisions are checked against current harness-engineering practice, then codified as repository contracts that humans and agents can both rely on.
 
 ## Versioning
 
-The standard uses semantic versioning. `VERSION` at the repo root contains the current kernel version. Tools that consume `.archeia/` trees should read this version and either process the repo (if they support it) or refuse with a clear error.
+The standard uses semantic versioning, with the usual pre-1.0 caveat that breaking revisions may still land as `0.x` minor bumps while the standard is stabilizing:
 
 - **Major** — breaking changes to primitives, invariants, operations, or required distribution tooling
-- **Minor** — additive changes: new optional fields, new operations, new validation checks that don't break existing conforming repos
-- **Patch** — clarifications, documentation fixes, attribution corrections
+- **Minor** — additive changes that do not break existing conforming repos
+- **Patch** — clarifications and documentation fixes
 
-The current version is **0.3.0**. The 0.2.1 → 0.3.0 bump reflects: (1) the new conformance surface (`CONFORMANCE.md`, `REFERENCE-ALGORITHMS.md`, `TEST-MATRIX.md`), (2) the explicit positioning vs. SOTA harness corpus (`POSITIONING.md`), (3) the codebase-domain split — generated codebase intelligence lives under `.archeia/codebase/`, while `docs/` remains a human-facing publication layer (see `SCHEMA.md` §2.3 and §5), (4) the SPEC-style header and RFC 2119 reference in `KERNEL.md`, (5) the new `archeia-enforcement` companion distribution. The kernel will reach **1.0.0** when the first external distribution (not Archeia Solo) ships and the kernel has survived that contact with a new audience.
+The current version is **0.5.0**. This release makes the kernel thick again: the rich software tree, broad semantic definitions, and flex rules now live in `KERNEL.md`, while `SCHEMA.md` is reduced to a companion explainer.
 
 ## Contributing
 
-This repository is the open spec. Corrections, clarifications, and additions are welcome via PR. Changes that affect terminology, operations, or shapes require a version bump per the rules in [`KERNEL.md`](KERNEL.md) §13. Changes that introduce new canonical citations require verification against primary sources (see [`ONTOLOGY.md`](ONTOLOGY.md) §12 for the standard's position on verified vs unverified claims).
-
-## Origin
-
-This repository was extracted from [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia) on 2026-04-13, commit `e037dc8`, to separate the open standard from its reference distribution. Prior history of the standard files lives in the archeia repository under `git log --follow standard/<file>`. The `archeia-standard` repo starts with a fresh initial commit citing the origin; the `archeia` repo continues as Archeia Solo, the reference distribution.
-
-## License
-
-The Archeia Standard is released under the MIT License. See `LICENSE` for details.
+This repository is the open spec. Corrections, clarifications, and additions are welcome via PR.

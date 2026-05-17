@@ -22,8 +22,8 @@ The product-domain implication is bidirectional:
 ```text
 Figma frame / FigJam / Make / variables
   → Figma MCP or REST extraction
-  → product/design/*.md, product/features/*.md, product/requirements/*.md
-  → execution/tasks/*.md
+  → product/design/*.md, product/technical/specs/*.md, product/execution/prds/*.md
+  → operations/execution/tasks/*.md
   → implementation + visual QA
   → optional code-to-canvas / write-to-canvas update back into Figma
 ```
@@ -34,7 +34,7 @@ Figma frame / FigJam / Make / variables
 
 Figma now provides a Figma MCP server. The remote server is hosted by Figma at `https://mcp.figma.com/mcp`; the desktop server runs locally through the Figma desktop app. Figma recommends the remote server for most users because it provides the broadest feature set and does not require the desktop app. The desktop server remains useful for selection-based workflows where a designer selects a frame or layer in Figma Desktop and asks an agent to act on it.
 
-The Figma MCP server exposes design context to agentic development tools. Official docs describe workflows for copying a Figma file, frame, or layer URL into an MCP client, or selecting an object in the desktop app, then asking the agent to implement or analyze the design.
+The Figma MCP server exposes design context to agentic software tools. Official docs describe workflows for copying a Figma file, frame, or layer URL into an MCP client, or selecting an object in the desktop app, then asking the agent to implement or analyze the design.
 
 ### Codex And Claude Code Both Support Figma MCP
 
@@ -96,7 +96,7 @@ The canonical product truth remains in `.archeia/product/`, but the artifact can
 
 ### 2. Treat `product/design/*.md` As Design Contracts
 
-`product/design/*.md` should not be a prose copy of a Figma file. It should be the durable contract between product/design and execution.
+`product/design/*.md` should not be a prose copy of a Figma file. It should be the durable contract between product/design and operations execution.
 
 Recommended sections:
 
@@ -108,7 +108,7 @@ Recommended sections:
 - **Copy And Content Rules** — product copy that engineering must preserve.
 - **Responsive Behavior** — breakpoints, resizing, auto-layout assumptions.
 - **Accessibility Requirements** — focus order, labels, contrast, keyboard behavior.
-- **Implementation Notes** — constraints for execution/codebase.
+- **Implementation Notes** — constraints for operations execution and product technical architecture.
 - **Visual QA Evidence** — screenshots, Playwright diffs, Figma reference nodes.
 
 Example:
@@ -149,9 +149,9 @@ code_connect:
 # Visual QA Evidence
 ```
 
-### 3. Link Feature Specs To Design Contracts
+### 3. Link Specs To Design Contracts
 
-`product/features/*.md` should cite design contracts, not raw Figma links alone:
+`product/technical/specs/*.md` should cite design contracts, not raw Figma links alone:
 
 ```yaml
 feature_id: FEAT-onboarding
@@ -161,7 +161,7 @@ figma_sources:
   - https://www.figma.com/design/abc123/Product?node-id=42-900
 ```
 
-Execution tasks should reference the feature and design contract:
+Operations execution tasks should reference the spec and design contract:
 
 ```yaml
 implements: FEAT-onboarding
@@ -177,7 +177,7 @@ Archeia should support both interactive and durable ingestion.
 
 | Path | Tooling | Best For | Writes To |
 |---|---|---|---|
-| Interactive MCP | Figma remote MCP, desktop MCP, Claude Code, Codex | Design-to-code, visual iteration, selected-frame analysis, code-to-canvas | `product/design/*.md`, `execution/tasks/*.md`, code, optionally Figma |
+| Interactive MCP | Figma remote MCP, desktop MCP, Claude Code, Codex | Design-to-code, visual iteration, selected-frame analysis, code-to-canvas | `product/design/*.md`, `product/technical/specs/*.md`, `operations/execution/tasks/*.md`, code, optionally Figma |
 | Durable API Sync | Figma REST API, Variables API, Dev Resources API, webhooks | Token sync, design index, traceability, audit, stale-link checks | `product/design/*.md`, generated reports, external-source metadata |
 
 Interactive MCP is for agent work. Durable API sync is for validation, indexing, and consistency checks.
@@ -207,15 +207,15 @@ The current product-domain overhaul should be extended with explicit external-so
 
 Clarify that design docs may be derived from Figma and should carry Figma source references, MCP extraction metadata, Code Connect coverage, and visual QA evidence.
 
-### `product/features/*.md`
+### `product/technical/specs/*.md`
 
 Require feature specs to link to design contracts when UI behavior is material.
 
-### `product/requirements/*.md`
+### `product/execution/prds/*.md`
 
 Allow requirements/PRDs to cite FigJam boards or Figma Make prototypes as source evidence.
 
-### `product/feedback/*.md`
+### `product/design/feedback/*.md`
 
 Allow feedback records to cite Figma comments, FigJam workshops, prototype tests, and usability-session frames.
 
@@ -227,7 +227,7 @@ This is optional. If external-source tracking becomes heavy, add:
 product/sources/figma.md
 ```
 
-as a living index of canonical Figma files, teams, libraries, design-system sources, and MCP setup requirements. For now, this can probably stay inside `product/product.md` or `product/design/*.md` frontmatter.
+as a living index of canonical Figma files, teams, libraries, design-system sources, and MCP setup requirements. For now, this can probably stay inside `product/design/*.md` or `product/execution/prds/*.md` frontmatter.
 
 ## Recommended Skill Workflows
 

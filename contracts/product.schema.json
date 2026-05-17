@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/product.schema.json",
   "title": "Product Execution Surface",
-  "description": "Frontmatter and section contract for the product → execution surface. product/product.md is the living product index and current-state summary; product/roadmap.md sequences work; product/features/*.md supplies executable feature specs. Product artifacts may cite external product sources, but the local artifact remains the durable contract.",
+  "description": "Frontmatter and section contract for the canonical product -> operations execution surface. product/strategy/roadmap/ sequences work, product/technical/specs/ supplies executable technical specs, and product/execution/prds/ carries the integrated buildable mission.",
   "allOf": [
     { "$ref": "living-doc.schema.json" }
   ],
@@ -15,7 +15,7 @@
     "status": {
       "type": "string",
       "enum": ["current", "planned", "active", "shipped", "paused", "deprecated"],
-      "description": "Status of this product artifact. product.md and roadmap.md are normally current; feature specs use planned, active, shipped, paused, or deprecated."
+      "description": "Status of this product artifact."
     },
     "owner": {
       "type": "string",
@@ -31,13 +31,13 @@
       "type": ["string", "null"],
       "description": "Relative path to the artifact that most recently changed this product surface, if any."
     },
-    "feature_id": {
+    "spec_id": {
       "type": "string",
-      "description": "Stable feature identifier. Required by convention for product/features/*.md so execution tasks can reference the feature they implement."
+      "description": "Stable identifier for specs and PRDs so operations artifacts can reference the implemented unit of work."
     },
     "external_sources": {
       "type": "array",
-      "description": "External product sources this artifact depends on. Use for design tools, prototypes, research repositories, feedback systems, analytics dashboards, support systems, planning tools, or other non-repo sources.",
+      "description": "External product sources this artifact depends on.",
       "items": {
         "type": "object",
         "properties": {
@@ -45,22 +45,14 @@
             "type": "string",
             "enum": ["design_tool", "prototype", "research_repo", "feedback_system", "analytics", "support", "planning", "other"]
           },
-          "name": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "object_id": {
-            "type": "string"
-          },
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "object_id": { "type": "string" },
           "extraction_method": {
             "type": "string",
             "enum": ["mcp", "api", "export", "manual", "other"]
           },
-          "source_version": {
-            "type": "string"
-          },
+          "source_version": { "type": "string" },
           "last_read": {
             "type": "string",
             "format": "date-time"
@@ -81,64 +73,26 @@
     "shape": "living",
     "domain": "product",
     "paths": [
-      "product/product.md",
-      "product/roadmap.md",
-      "product/features/*.md"
+      "product/strategy/roadmap/*.md",
+      "product/technical/specs/*.md",
+      "product/execution/prds/*.md"
     ],
-    "contract": "product -> execution",
-    "product_md_required_body_sections": [
-      {
-        "heading": "Product Summary",
-        "description": "Current product definition: target users, core value, active scope, and product boundaries."
-      },
-      {
-        "heading": "Active Scope",
-        "description": "What is currently in scope, out of scope, and intentionally deferred."
-      },
-      {
-        "heading": "Feature Index",
-        "description": "Links to product/features/*.md entries with stable feature IDs."
-      },
-      {
-        "heading": "Constraints",
-        "description": "Technical, product, business, legal/regulatory, and UX constraints that scope the work."
-      },
-      {
-        "heading": "Priority Model",
-        "description": "How product priorities are ordered and interpreted."
-      }
-    ],
+    "contract": "product -> operations",
     "roadmap_required_body_sections": [
-      {
-        "heading": "Now",
-        "description": "Committed or active product bets and milestones."
-      },
-      {
-        "heading": "Next",
-        "description": "Likely next bets, sequencing dependencies, and decision gates."
-      },
-      {
-        "heading": "Later",
-        "description": "Deferred opportunities that are known but not yet committed."
-      }
+      { "heading": "Now", "description": "Committed or active product bets and milestones." },
+      { "heading": "Next", "description": "Likely next bets, sequencing dependencies, and decision gates." },
+      { "heading": "Later", "description": "Deferred opportunities that are known but not yet committed." }
     ],
-    "feature_required_body_sections": [
-      {
-        "heading": "User Problem",
-        "description": "The concrete user problem or job this feature solves."
-      },
-      {
-        "heading": "Acceptance Criteria",
-        "description": "Observable criteria execution tasks must satisfy."
-      },
-      {
-        "heading": "Dependencies",
-        "description": "Product, design, codebase, or sequencing dependencies."
-      },
-      {
-        "heading": "Evidence",
-        "description": "Links to feedback, requirements, design contracts, external sources, decisions, business context, or codebase evidence supporting this feature."
-      }
+    "spec_required_body_sections": [
+      { "heading": "Problem", "description": "The user or system problem this spec resolves." },
+      { "heading": "Acceptance Criteria", "description": "Observable criteria operations work must satisfy." },
+      { "heading": "Dependencies", "description": "Sequencing, design, technical, or integration dependencies." },
+      { "heading": "Evidence", "description": "Links to supporting evidence, decisions, external sources, or codebase evidence." }
+    ],
+    "prd_required_body_sections": [
+      { "heading": "Mission", "description": "The integrated buildable mission." },
+      { "heading": "Scope", "description": "What is in and out of scope for delivery." },
+      { "heading": "Delivery Constraints", "description": "Constraints operations execution must respect." }
     ]
   }
 }

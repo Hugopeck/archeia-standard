@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archeia.dev/schemas/c4.schema.json",
   "title": "C4 Model Structured Data",
-  "description": "Contract for codebase/model/c4/{system,containers,components,dataflow,entities,statemachine}.json — the codebase → product contract. These files carry C4 model data in a structured form that product skills can read for feasibility review during product review. Each file describes one level of the C4 zoom.",
+  "description": "Contract for product/technical/architecture/c4/{system,containers,components,dataflow,entities,statemachine}.json — the machine-readable architecture surface used for product feasibility review and operations scoping.",
   "type": "object",
   "properties": {
     "level": {
@@ -17,7 +17,7 @@
     },
     "skill": {
       "type": "string",
-      "description": "The skill that produced this file (e.g., 'archeia:write-codebase-model')."
+      "description": "The skill that produced this file."
     },
     "skill_version": {
       "type": "string",
@@ -25,48 +25,25 @@
     },
     "elements": {
       "type": "array",
-      "description": "The set of elements at this C4 level. For system.json, these are external actors and the system boundary. For containers.json, services/databases/queues. For components.json, internal modules. For dataflow.json, flows. For entities.json, ORM/schema entities. For statemachine.json, state machines.",
       "items": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Stable identifier for this element, referenced by other elements' relationships."
-          },
-          "name": {
-            "type": "string",
-            "description": "Human-readable name."
-          },
-          "description": {
-            "type": "string",
-            "description": "One-sentence description grounded in the codebase."
-          },
-          "technology": {
-            "type": ["string", "null"],
-            "description": "Technology or framework this element uses (e.g., 'PostgreSQL', 'Redis', 'React')."
-          },
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "technology": { "type": ["string", "null"] },
           "evidence": {
             "type": "array",
-            "items": { "type": "string" },
-            "description": "File paths in the source tree that were cited as evidence for this element's existence and description."
+            "items": { "type": "string" }
           },
           "relationships": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "target": {
-                  "type": "string",
-                  "description": "ID of the target element."
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Nature of the relationship (e.g., 'reads from', 'publishes to', 'invokes')."
-                },
-                "technology": {
-                  "type": ["string", "null"],
-                  "description": "Transport or protocol (e.g., 'HTTP/JSON', 'gRPC', 'SQL')."
-                }
+                "target": { "type": "string" },
+                "description": { "type": "string" },
+                "technology": { "type": ["string", "null"] }
               },
               "required": ["target", "description"]
             }
@@ -80,9 +57,9 @@
   "additionalProperties": true,
   "archeia": {
     "shape": "living",
-    "domain": "codebase",
-    "subdir": "architecture",
-    "contract": "codebase -> product",
-    "evidence_principle": "Every element's 'evidence' array must cite at least one file path in the source tree. Elements without evidence must be flagged or omitted — no fabrication."
+    "domain": "product",
+    "subdir": "technical/architecture/c4",
+    "contract": "technical architecture -> product/operations",
+    "evidence_principle": "Every element's evidence array must cite at least one file path in the source tree. Elements without evidence must be flagged or omitted."
   }
 }
