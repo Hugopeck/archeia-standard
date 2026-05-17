@@ -16,7 +16,9 @@ The set of automatable tests every conformant Archeia repo MUST pass and every c
 | S8 (software) | Canonical top-level domains are not renamed or replaced. | walk + path check |
 | S9 (software) | `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, and `execution/`, though omitted nested folders are allowed where unused. | walk + path check |
 | S10 (software) | `product/technical/architecture/c4/` contains only living machine-readable architecture artifacts. | walk + glob filter |
-| S11 (software) | `docs/` is not required for software conformance. | skip / ignore |
+| S11 (software) | If a repo claims canonical `decisions/`, `conventions/`, or `learnings/` surfaces, they appear as direct children of their owning canonical domains or subdomains. | walk + path pattern check |
+| S12 (software) | If a repo claims a canonical `guides/` surface, that surface is `operations/guides/`. | walk + path pattern check |
+| S13 (software) | `docs/` is not required for software conformance. | skip / ignore |
 
 ## 2. Schema tests
 
