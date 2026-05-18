@@ -42,7 +42,7 @@ A repo claiming kernel conformance MUST additionally satisfy the thick software-
 - omission and sparse use are allowed where the kernel says they are allowed
 - direct `decisions/`, `conventions/`, and `learnings/` subfolders are permitted under canonical domains and subdomains when needed
 - wrapper folders do not satisfy the canonical direct-surface convention for `decisions/`, `conventions/`, and `learnings/`
-- `guides/` is canonically owned by `operations/`
+- `optimization/guides/` is canonically owned by `operations/`
 - `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, `execution/`
 - `growth/` contains the canonical kernel subareas `strategy/`, `marketing/`, `sales/`, `success/`, `execution/`
 - `product/technical/architecture/c4/` is the canonical machine-readable architecture surface and contains only living artifacts

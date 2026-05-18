@@ -91,7 +91,7 @@ A **domain-local knowledge surface** is a conventional subtree used to capture r
 
 The kernel also defines one operations-owned procedural surface:
 
-- `operations/guides/` — living or accumulating procedural guides for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
+- `operations/optimization/guides/` — living or accumulating procedural guides for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
 
 ---
 
@@ -144,25 +144,28 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 ### 4.2 `operations/`
 
-**Canonical meaning.** The operating and delivery surface: how work gets executed and constrained.
+**Canonical meaning.** The operating and delivery surface: how software work is coordinated, constrained, measured, and improved.
 
-**Broader semantic envelope.** `operations/` covers execution systems design and analysis, day-to-day delivery workflows, operating improvements and optimization, operational metrics, SOPs and process definitions, people/capacity constraints, financial constraints, and compliance constraints. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
+**Broader semantic envelope.** `operations/` is not only task execution. It includes active delivery coordination under `execution/`, operating-system observation and improvement under `optimization/`, procedural operating knowledge under `optimization/guides/`, and the people, financial, and compliance constraints that shape what execution can actually do. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
 
 **What belongs here.**
 
-- execution work units and retros
-- workflow design, operating playbooks, and SOPs
-- execution analysis, service metrics, and optimization loops
+- active delivery coordination, execution state, and retros
+- blocker handling, operating cadences, and delivery workflows
+- operating metrics, bottleneck analysis, and process improvement
+- SOPs, playbooks, runbooks, and workflow guides
 - staffing/capacity/ownership boundaries
 - budgets and financial constraints
-- compliance and legal constraints
-- process and optimization work
+- compliance, governance, legal, and procurement constraints
+- process, framework, rollout, adoption, and continuous-improvement work
 
 **What does not belong here.**
 
 - market or user discovery
+- customer adoption, revenue, and channel programs
 - detailed product design artifacts
-- technical architecture models
+- executable product specs and PRDs
+- technical architecture models and codebase truth
 
 ### 4.3 `product/`
 
@@ -209,7 +212,7 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 The rich canonical software tree is part of the kernel contract. Omission is allowed where irrelevant; meanings are not.
 
-**Universal naming rule.** Any canonical domain or subdomain MAY contain direct `decisions/`, `conventions/`, and `learnings/` subfolders when needed. These surfaces are first-class and MUST NOT be hidden under wrapper folders such as `meta/` or `memory/`. `guides/` is not universal; it is canonically owned by `operations/`.
+**Universal naming rule.** Any canonical domain or subdomain MAY contain direct `decisions/`, `conventions/`, and `learnings/` subfolders when needed. These surfaces are first-class and MUST NOT be hidden under wrapper folders such as `meta/` or `memory/`. `optimization/guides/` is not universal; it is canonically owned by `operations/`.
 
 ```text
 .archeia/
@@ -234,7 +237,7 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── conventions/
 │   │   └── learnings/
 │   ├── optimization/
-│   ├── guides/
+│   │   └── guides/
 │   ├── people/
 │   ├── finance/
 │   ├── compliance/
@@ -367,61 +370,73 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 
 **Canonical meaning.** People and capability constraints that shape execution.
 
-**Broad interpretation.** Can include org maps, ownership boundaries, support capacity, hiring gaps, collaborator maps, or solo-operator capacity limits.
+**Broad interpretation.** Can include org maps, ownership boundaries, support capacity, hiring gaps, collaborator maps, or solo-operator capacity limits. This path records capability and capacity as operating constraints on delivery; it does not replace product truth or growth hiring/adoption programs.
 
-### 6.5 `operations/compliance/`
+### 6.5 `operations/finance/`
+
+**Canonical meaning.** Financial constraints and operating finance context that shape execution.
+
+**Broad interpretation.** Can include budgets, runway constraints, procurement constraints, vendor cost context, approval thresholds, or funding limits that change what execution is possible. This path governs budget reality for delivery; it does not replace `growth/` revenue operations or `strategy/` directional planning.
+
+### 6.6 `operations/compliance/`
 
 **Canonical meaning.** Constraints imposed by legal, privacy, compliance, procurement, or internal governance regimes.
 
-**Broad interpretation.** Can be light in low-risk projects and heavy in regulated or internal-enterprise contexts.
+**Broad interpretation.** Can be light in low-risk projects and heavy in regulated or internal-enterprise contexts. This path captures governance and risk constraints on how work is carried out; it does not replace product technical architecture or growth trust/adoption programs.
 
-### 6.6 `product/strategy/market/`
+### 6.7 `operations/optimization/`
+
+**Canonical meaning.** The operating-system improvement surface for execution.
+
+**Broad interpretation.** Can include operating metrics, adherence monitoring, bottleneck detection, workflow diagnostics, process redesign, service-level review, rollout and adoption material, framework-setting, and continuous-improvement loops. `operations/optimization/` turns evidence from execution into better ways of executing and houses the procedural operating knowledge that makes those improvements repeatable.
+
+### 6.8 `product/strategy/market/`
 
 **Canonical meaning.** Product-relevant external or deployment landscape.
 
 **Broad interpretation.** Can include external category positioning, competitor evidence, ecosystem mapping, internal stakeholder environment, or deployment-context intelligence.
 
-### 6.7 `product/design/protos/`
+### 6.9 `product/design/protos/`
 
 **Canonical meaning.** Durable design or interaction contracts tied to prototypes.
 
 **Broad interpretation.** Can include high-fidelity prototypes, wireframes, flow sketches, interactive references, and linked external design sources.
 
-### 6.8 `product/technical/specs/`
+### 6.10 `product/technical/specs/`
 
 **Canonical meaning.** Executable software specs.
 
 **Broad interpretation.** This is the kernel path for requirements, feature specs, API contracts, technical requirement documents, and any other durable software spec an execution surface will rely on.
 
-### 6.9 `growth/`
+### 6.11 `growth/`
 
 **Canonical meaning.** Go-to-market and adoption.
 
 **Broad interpretation.** Can mean revenue growth, brand development, demand generation, sales motion, customer success, support, internal adoption, rollout, enablement, retention, or expansion depending on the software context.
 
-### 6.10 Universal `decisions/`
+### 6.12 Universal `decisions/`
 
 **Canonical meaning.** The accumulating record of local choices, tradeoffs, and rulings within a domain or subdomain.
 
 **Broad interpretation.** May capture ADR-style technical decisions, strategic decisions, design rulings, operating policy choices, or growth-program decisions as long as the decision remains local to the owning path.
 
-### 6.11 Universal `conventions/`
+### 6.13 Universal `conventions/`
 
 **Canonical meaning.** The living statement of local defaults, preferences, and standard ways of doing things within a domain or subdomain.
 
 **Broad interpretation.** May capture naming conventions, authoring defaults, expected review patterns, default sequencing, recurring heuristics, and house style. `conventions/` is softer than formal external standards and stronger than individual preference.
 
-### 6.12 Universal `learnings/`
+### 6.14 Universal `learnings/`
 
 **Canonical meaning.** The accumulating record of lessons, mistakes, discoveries, and reusable insights within a domain or subdomain.
 
 **Broad interpretation.** May capture postmortem lessons, user-research takeaways, execution lessons, architectural lessons, or go-to-market findings, provided they are preserved as local learning rather than rewritten into current canonical truth.
 
-### 6.13 `operations/guides/`
+### 6.15 `operations/optimization/guides/`
 
 **Canonical meaning.** The procedural operating surface for repeatable work.
 
-**Broad interpretation.** `operations/guides/` may contain how-tos, playbooks, runbooks, and workflow guides for one domain, multiple domains, or the whole Archeia tree. A guide may explain how to carry out repeatable work involving `strategy/`, `product/`, `growth/`, or cross-domain coordination, but the guide itself remains an `operations/` artifact because it governs execution behavior rather than domain truth.
+**Broad interpretation.** `operations/optimization/guides/` may contain how-tos, SOPs, playbooks, runbooks, workflow guides, rollout instructions, adoption material, and knowledge-hub content for one domain, multiple domains, or the whole Archeia tree. A guide may explain how to carry out repeatable work involving `strategy/`, `product/`, `growth/`, or cross-domain coordination, but the guide itself remains an `operations/` artifact because it governs execution behavior rather than domain truth. These guides are the procedural output of operational learning, frameworks, and process improvement.
 
 ---
 
@@ -440,7 +455,7 @@ The kernel defines default lifecycle expectations for the canonical software tre
 
 - `execution/tasks/`, `execution/projects/`, `execution/plans/` → transient
 - `execution/retros/` → accumulating
-- `guides/`, `optimization/`, `people/`, `finance/`, `compliance/` → living by default unless a distribution adds accumulating record types
+- `optimization/`, `optimization/guides/`, `people/`, `finance/`, `compliance/` → living by default unless a distribution adds accumulating record types
 - `conventions/` → living
 - `decisions/`, `learnings/` → accumulating
 

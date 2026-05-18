@@ -31,7 +31,7 @@ A living document is a single file that represents one concept. It is edited in 
 ### Examples by domain
 
 - **`strategy/`** — `vision/*.md`, `values/*.md`, `roadmap/*.md`, and local `conventions/*.md`
-- **`operations/`** — `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, and local `conventions/*.md`
+- **`operations/`** — `optimization/*.md`, `optimization/guides/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, and local `conventions/*.md`
 - **`product/`** — `product/strategy/roadmap/*.md`, `product/technical/specs/*.md`, `product/execution/prds/*.md`, `product/technical/architecture/{c4,analysis,views}/*`, and local `conventions/*.md`
 - **`growth/`** — `strategy/*.md`, `marketing/*.md`, `sales/*.md`, `success/*.md`, and ongoing execution dashboards
 
@@ -214,7 +214,7 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
 | **`strategy/`** | `vision/*.md`, `values/*.md`, `roadmap/*.md`, `conventions/*.md` | `landscape/{competition,industry,market}/*.md`, `decisions/*.md`, `learnings/*.md` | distribution-defined purpose-named paths only |
-| **`operations/`** | `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
+| **`operations/`** | `optimization/*.md`, `optimization/guides/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
 | **`product/`** | `strategy/roadmap/*.md`, `technical/specs/*.md`, `execution/prds/*.md`, `technical/architecture/{c4,analysis,views}/*`, `technical/devs/*.md`, `*/conventions/*.md` | `design/feedback/*.md`, `*/decisions/*.md`, `*/learnings/*.md`, `execution/logs/*.md`, `execution/archive/*.md` | `execution/plans/*.md` |
 | **`growth/`** | `strategy/{roadmap,segments,positioning,metrics,channel-mix,pricing}/*.md`, `marketing/{brand,messaging,assets,style,campaigns,content,web,inbound,outbound,community,events}/*.md`, `sales/{outbound,pipeline,accounts,enablement,objections,pricing}/*.md`, `success/{onboarding,activation,adoption,retention,expansion,enablement,support}/*.md`, `execution/dashboards/*.md`, `*/conventions/*.md` | `sales/win-loss/*.md`, `execution/experiments/learnings/*.md`, `execution/logs/*.md`, `execution/retros/*.md`, `*/decisions/*.md`, `*/learnings/*.md` | `execution/plans/*.md`, `execution/programs/*.md`, `execution/experiments/running/*.md` |
 
