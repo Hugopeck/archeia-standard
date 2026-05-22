@@ -29,17 +29,33 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 - [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for living documents
 - [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for accumulating records
 - [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for transient artifacts
-- [`product.schema.json`](contracts/product.schema.json) — product execution surface → operations contract
+- [`product.schema.json`](contracts/product.schema.json) — product delivery surface contract
 - [`c4.schema.json`](contracts/c4.schema.json) — `product/technical/architecture/c4/` contract
 
 ## Canonical software kernel
 
 The software kernel uses four canonical domains:
 
-- `strategy/` — vision, values, landscape, roadmap, decisions, conventions, learnings
-- `operations/` — execution, guides, optimization, people, finance, compliance, decisions, conventions, learnings
+- `strategy/` — vision, values, landscape, roadmap, strategy execution, decisions, conventions, learnings
+- `operations/` — execution, optimization, people, finance, compliance, decisions, conventions, learnings; the support and improvement domain
 - `product/` — product strategy, design, technical, and product execution
 - `growth/` — growth strategy, marketing, sales, success, and growth execution
+
+Within `strategy/`, the canonical subareas are:
+
+- `strategy/vision/`
+- `strategy/values/`
+- `strategy/landscape/`
+- `strategy/roadmap/`
+- `strategy/execution/`
+
+Within `operations/`, the canonical subareas are:
+
+- `operations/execution/`
+- `operations/optimization/`
+- `operations/people/`
+- `operations/finance/`
+- `operations/compliance/`
 
 Within `product/`, the canonical validated subareas are:
 
@@ -58,7 +74,24 @@ Within `growth/`, the canonical subareas are:
 
 The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
 
-Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural how-to material lives canonically under `operations/guides/`, with the strongest guides often graduating into skills.
+`execution/` is the kernel's universal project-management surface. Its meaning is the same in every domain: the place where active work is organized, tracked, reviewed, and carried forward. Plans, programs, tasks, logs, retros, dashboards, and other execution-state artifacts belong under the owning domain's local `execution/` subtree rather than being centralized elsewhere.
+
+The reason `execution/` is universal is that every top-level domain can move from durable knowledge into active work:
+
+- `strategy/execution/` manages the execution of strategic initiatives and directional work
+- `operations/execution/` manages the execution of operational support and internal improvement work
+- `product/execution/` manages the execution of product delivery work
+- `growth/execution/` manages the execution of go-to-market, adoption, and revenue work
+
+In all four cases, the semantic is identical: `execution/` is the domain-local project-management layer for work in motion.
+
+Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural operating knowledge lives canonically under `operations/optimization/processes/`, with stronger process patterns often graduating into skills. Monitoring, bottleneck analysis, improvement initiatives, and process redesign live under `operations/optimization/`, while `people/`, `finance/`, and `compliance/` expand into explicit support-domain subtrees:
+
+- `operations/people/{hiring,performance,workplace,compensation}/`
+- `operations/finance/{operational,strategic,compliance}/`
+- `operations/compliance/{regulatory,data-security,risk,ethics}/`
+
+Every canonical `.archeia/` folder is also required to carry a scaffolded `README.md` describing its meaning and boundaries.
 
 ## Distributions
 

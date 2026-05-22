@@ -13,7 +13,7 @@ Archeia fixes that by putting the software project's operating mind inside the r
 A single directory, `.archeia/`, at the root of your software project. Four canonical domains inside it:
 
 - `**strategy/**` — vision, values, landscape, roadmap, decisions
-- `**operations/**` — execution, optimization, people, finance, compliance
+- `**operations/**` — execution, optimization, people, finance, compliance; the support and improvement domain
 - `**product/**` — product strategy, design, technical, and product execution
 - `**growth/**` — growth strategy, marketing, sales, success, and execution
 
@@ -24,15 +24,16 @@ Inside `product/`, the canonical subareas are:
 - `product/technical/`
 - `product/execution/`
 
-Every artifact has a temporal model. Every top-level domain has exactly one writer family. The filesystem is the canonical store. Ownership is the concurrency model. Git is the audit log. The kernel is thick because software work repeatedly needs the same distinctions: strategy, operations, product, growth; decisions, conventions, and learnings; delivery surfaces versus technical evidence; guides versus skills.
+Every artifact has a temporal model. Every top-level domain has exactly one writer family. The filesystem is the canonical store. Ownership is the concurrency model. Git is the audit log. The kernel is thick because software work repeatedly needs the same distinctions: strategy, operations, product, growth; decisions, conventions, and learnings; delivery surfaces versus technical evidence; processes versus skills.
 
 ## What it replaces
 
 - Notion and Confluence are replaced by `.archeia/product/`, `.archeia/strategy/`, and `.archeia/operations/` for the parts agents need to read.
-- Jira and Linear are replaced by `.archeia/operations/execution/` for active delivery state.
+- Jira and Linear are replaced by `.archeia/operations/execution/` for operations-owned delivery state and blocker-handling flow.
 - ADR repos are replaced by domain-local `decisions/` surfaces, especially under `product/technical/decisions/`.
 - scattered team norms are replaced by domain-local `conventions/` surfaces.
-- ad hoc internal how-tos are replaced by `operations/guides/`, with the best guides later formalized as skills.
+- ad hoc internal how-tos, SOPs, and runbooks are replaced by `operations/optimization/processes/`, with the best process patterns later formalized as skills.
+- process-improvement notes, monitoring, bottleneck analysis, and operational initiatives are replaced by `operations/optimization/`.
 - Architecture-analysis tools are replaced by `.archeia/product/technical/architecture/c4/` plus adjacent generated architecture intelligence.
 - Closed or tool-specific memory silos are replaced by the whole tree as the durable source of truth.
 

@@ -14,11 +14,12 @@ The set of automatable tests every conformant Archeia repo MUST pass and every c
 | S6 | Every domain declared in `standard/domains.yaml` has a corresponding directory under `.archeia/`. | walk + compare |
 | S7 (software) | Exactly the four canonical top-level domains are present: `strategy/`, `operations/`, `product/`, `growth/`. | walk + assert set equality |
 | S8 (software) | Canonical top-level domains are not renamed or replaced. | walk + path check |
-| S9 (software) | `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, and `execution/`, and `growth/` contains `strategy/`, `marketing/`, `sales/`, `success/`, and `execution/`, though omitted nested folders are allowed where unused. | walk + path check |
+| S9 (software) | `operations/` contains `execution/`, `optimization/`, `people/`, `finance/`, and `compliance/`; `product/` contains `strategy/`, `design/`, `technical/`, and `execution/`; and `growth/` contains `strategy/`, `marketing/`, `sales/`, `success/`, and `execution/`, though omitted nested folders are allowed where unused. | walk + path check |
 | S10 (software) | `product/technical/architecture/c4/` contains only living machine-readable architecture artifacts. | walk + glob filter |
 | S11 (software) | If a repo claims canonical `decisions/`, `conventions/`, or `learnings/` surfaces, they appear as direct children of their owning canonical domains or subdomains. | walk + path pattern check |
-| S12 (software) | If a repo claims a canonical `guides/` surface, that surface is `operations/guides/`. | walk + path pattern check |
-| S13 (software) | `docs/` is not required for software conformance. | skip / ignore |
+| S12 (software) | If a repo claims a canonical procedural surface, that surface is `operations/optimization/processes/`. | walk + path pattern check |
+| S13 (software) | Every canonical `.archeia/` folder contains a `README.md` scaffold. | walk + path check |
+| S14 (software) | `docs/` is not required for software conformance. | skip / ignore |
 
 ## 2. Schema tests
 

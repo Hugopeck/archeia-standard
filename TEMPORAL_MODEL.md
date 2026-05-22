@@ -16,7 +16,7 @@ Every artifact in every Archeia domain belongs to exactly one of three shapes. T
 | **Accumulating** | Append-only records that never leave disk | The disk itself (all records stay) |
 | **Transient** | Flows through states during its lifetime, then pruned | Disk during retention, git after |
 
-Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in `operations/execution/` plus running growth experiments.
+Most of `.archeia/` is shape 1 (living). A smaller but essential subset is shape 2 (accumulating). A minority is shape 3 (transient), and it is concentrated in ops-owned execution surfaces plus running growth experiments.
 
 The rest of this document specifies each shape in detail and maps kernel behavior onto them.
 
@@ -31,7 +31,7 @@ A living document is a single file that represents one concept. It is edited in 
 ### Examples by domain
 
 - **`strategy/`** — `vision/*.md`, `values/*.md`, `roadmap/*.md`, and local `conventions/*.md`
-- **`operations/`** — `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, and local `conventions/*.md`
+- **`operations/`** — `optimization/*.md`, `optimization/{monitoring,processes,initiatives}/*.md`, `people/**/*.md`, `finance/**/*.md`, `compliance/**/*.md`, and local `conventions/*.md`
 - **`product/`** — `product/strategy/roadmap/*.md`, `product/technical/specs/*.md`, `product/execution/prds/*.md`, `product/technical/architecture/{c4,analysis,views}/*`, and local `conventions/*.md`
 - **`growth/`** — `strategy/*.md`, `marketing/*.md`, `sales/*.md`, `success/*.md`, and ongoing execution dashboards
 
@@ -73,7 +73,7 @@ An accumulating record is an append-only artifact. Each record has its own file 
 
 - **`*/decisions/`** — domain-local decisions. The canonical example. Each decision is its own file, written once, referenced forever. Supersession writes a new decision that links to the old one; both stay.
 - **`*/learnings/`** — domain-local learnings. Each learning record captures a lesson worth preserving without rewriting current truth.
-- **`operations/execution/retros/`** — retrospectives. Each retro is a record of a past event. They never get deleted because later work references them.
+- **`operations/execution/retros/`** — retrospectives for operations-owned work. Each retro is a record of a past event. They never get deleted because later work references them.
 - **`strategy/landscape/{competition,industry,market}/`** — dated external landscape snapshots. Each snapshot is its own record. Old snapshots inform later product, growth, and strategy decisions and stay on disk.
 - **`growth/execution/experiments/learnings/`** — concluded experiment learnings. Each learning record stays forever. The raw running state of the experiment is different — that's shape 3 under `growth/execution/experiments/running/`.
 - **`growth/sales/win-loss/`** — concluded sales outcomes worth preserving as durable go-to-market evidence.
@@ -132,8 +132,8 @@ This is the only shape where temporal state (`future` / `present` / `past`) is a
 
 ### Examples by domain
 
-- **`operations/execution/tasks/`** — the canonical transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
-- **`operations/execution/plans/`** — sprint plans. Active during a sprint, then superseded by the next sprint's plan and pruned after a retention window (default 30 days).
+- **`operations/execution/tasks/`** — an ops-owned transient. A task is created as `todo`, becomes `active` when work starts, becomes `done` when work completes, and gets pruned from the filesystem after a retention window (default 14 days in Archeia Solo). Git preserves every state forever.
+- **`operations/execution/plans/`** — plans for operations-owned work. Active during a sprint or operational cycle, then superseded by the next plan and pruned after a retention window (default 30 days).
 - **Distribution-defined proposals** — temporary sketches or proposals may exist as transient artifacts in whichever domain owns them. The canonical software layout does not reserve a `drafts/` directory.
 - **`growth/execution/experiments/running/`** — an experiment's running state is transient. Once it concludes, the running artifact is completed and pruned after its retention window. Durable outcomes, when worth keeping, are written as separate accumulating records under `growth/execution/experiments/learnings/`.
 
@@ -214,7 +214,7 @@ The operations are **owner-performed**, per Truth #4 in [PRINCIPLES.md](PRINCIPL
 | Domain | Living | Accumulating | Transient |
 |---|---|---|---|
 | **`strategy/`** | `vision/*.md`, `values/*.md`, `roadmap/*.md`, `conventions/*.md` | `landscape/{competition,industry,market}/*.md`, `decisions/*.md`, `learnings/*.md` | distribution-defined purpose-named paths only |
-| **`operations/`** | `guides/*.md`, `optimization/*.md`, `people/*.md`, `finance/*.md`, `compliance/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
+| **`operations/`** | `optimization/*.md`, `optimization/{monitoring,processes,initiatives}/*.md`, `people/**/*.md`, `finance/**/*.md`, `compliance/**/*.md`, `conventions/*.md` | `execution/retros/*.md`, `decisions/*.md`, `learnings/*.md` | `execution/tasks/*.md`, `execution/plans/*.md`, `execution/projects/*.md` |
 | **`product/`** | `strategy/roadmap/*.md`, `technical/specs/*.md`, `execution/prds/*.md`, `technical/architecture/{c4,analysis,views}/*`, `technical/devs/*.md`, `*/conventions/*.md` | `design/feedback/*.md`, `*/decisions/*.md`, `*/learnings/*.md`, `execution/logs/*.md`, `execution/archive/*.md` | `execution/plans/*.md` |
 | **`growth/`** | `strategy/{roadmap,segments,positioning,metrics,channel-mix,pricing}/*.md`, `marketing/{brand,messaging,assets,style,campaigns,content,web,inbound,outbound,community,events}/*.md`, `sales/{outbound,pipeline,accounts,enablement,objections,pricing}/*.md`, `success/{onboarding,activation,adoption,retention,expansion,enablement,support}/*.md`, `execution/dashboards/*.md`, `*/conventions/*.md` | `sales/win-loss/*.md`, `execution/experiments/learnings/*.md`, `execution/logs/*.md`, `execution/retros/*.md`, `*/decisions/*.md`, `*/learnings/*.md` | `execution/plans/*.md`, `execution/programs/*.md`, `execution/experiments/running/*.md` |
 
@@ -222,7 +222,7 @@ A few observations that fall out:
 
 - **`product/technical/` is primarily living repo-intelligence artifacts.** Machine-readable architecture evidence, analysis, views, and dev-facing technical surfaces are regenerated or edited in place, with history in git.
 - **`product/` has a light transient presence.** Most product surfaces evolve in place or accumulate as records, while `product/execution/plans/` is the main canonical transient path inside the domain.
-- **`operations/execution/` is the main transient concentration.** Tasks, plans, projects — these are the things that flow.
+- **`operations/execution/` is the transient concentration for ops-owned work.** Tasks, plans, and projects here are operational execution artifacts, not the universal execution layer for every domain.
 - **`growth/` has a full domain grammar without strategy lock-in.** Strategy, marketing, sales, and success evolve mostly in place; execution carries the transient operating layer; learnings and decisions accumulate locally.
 
 ---

@@ -45,7 +45,7 @@ Ticket systems are transient-artifact stores for operational work. They do one s
 - Having no model for living documents (product specs) or accumulating records (decisions)
 - Imposing a workflow vocabulary that may not match the team's
 
-Archeia Solo's `operations/execution/` surface replaces the ticket-system-for-yourself use case — tasks, projects, plans, and retros all live in the repo as markdown files. The operator reads them in their editor; agents read them via tools; git preserves history.
+Archeia Solo's execution surfaces replace the ticket-system-for-yourself use case — tasks, projects, plans, and retros can live in the repo as markdown files under the owning domain. The operator reads them in their editor; agents read them via tools; git preserves history.
 
 **When a ticket system is still right:** customer-facing issue tracking, multi-team coordination across repos, or any case where non-developer stakeholders need a GUI to interact with the work.
 
@@ -118,9 +118,9 @@ Yes. The four top-level domains are the canonical software answer, but not every
 
 You have three options:
 
-1. **Keep external tooling authoritative.** Use the rest of the canonical domains and leave `operations/execution/` sparse.
-2. **Sync both ways.** Run a bridge that syncs between `.archeia/operations/execution/` and your external tool. The agents read the markdown; the humans use the GUI.
-3. **Use Archeia operations execution as the source of truth.** Write tasks in `.archeia/operations/execution/tasks/` and let agents and the operator both work against the markdown.
+1. **Keep external tooling authoritative.** Use the rest of the canonical domains and leave your execution surfaces sparse.
+2. **Sync both ways.** Run a bridge that syncs between the relevant `.archeia/*/execution/` surface and your external tool. The agents read the markdown; the humans use the GUI.
+3. **Use an Archeia execution surface as the source of truth.** Write execution artifacts in the owning domain and let agents and the operator both work against the markdown.
 
 ### Is `.archeia/` committed to git?
 
@@ -195,7 +195,7 @@ Both. The Archeia Standard is a spec. Archeia Solo is a distribution — a produ
 ## Still have questions?
 
 - **Read the manifesto**: [`manifesto.md`](../MANIFESTO.md) — the one-page pitch
-- **Read the principles**: [`PRINCIPLES.md`](../PRINCIPLES.md) — the six fundamental truths
+- **Read the principles**: [`PRINCIPLES.md`](../PRINCIPLES.md) — the seven fundamental truths
 - **Read the kernel**: [`KERNEL.md`](../KERNEL.md) — the formal substrate
 - **Read the temporal model**: [`TEMPORAL_MODEL.md`](../TEMPORAL_MODEL.md) — the three lifecycle shapes
 - **Read Archeia Solo**: [`distributions/solo-builder.md`](https://github.com/Hugopeck/archeia/blob/main/DISTRIBUTION.md) — the reference distribution

@@ -28,7 +28,7 @@ Every operation has a precondition and a postcondition. If the precondition fail
 
 **Precondition.** The implementation operates on an existing project root. A pre-existing `.archeia/` is permitted.
 
-**Postcondition.** The distribution's declared domain directories, standard metadata, required schemas, and scaffolded directory READMEs exist. Running on an already initialized root is a no-op plus validation.
+**Postcondition.** The distribution's declared domain directories, standard metadata, required schemas, and scaffolded directory READMEs for every canonical `.archeia/` folder exist. Running on an already initialized root is a no-op plus validation.
 
 ```
 function init(root, distribution):

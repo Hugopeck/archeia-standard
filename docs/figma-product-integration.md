@@ -23,7 +23,7 @@ The product-domain implication is bidirectional:
 Figma frame / FigJam / Make / variables
   → Figma MCP or REST extraction
   → product/design/*.md, product/technical/specs/*.md, product/execution/prds/*.md
-  → operations/execution/tasks/*.md
+  → product/execution/plans/*.md or operations/execution/tasks/*.md
   → implementation + visual QA
   → optional code-to-canvas / write-to-canvas update back into Figma
 ```
@@ -177,7 +177,7 @@ Archeia should support both interactive and durable ingestion.
 
 | Path | Tooling | Best For | Writes To |
 |---|---|---|---|
-| Interactive MCP | Figma remote MCP, desktop MCP, Claude Code, Codex | Design-to-code, visual iteration, selected-frame analysis, code-to-canvas | `product/design/*.md`, `product/technical/specs/*.md`, `operations/execution/tasks/*.md`, code, optionally Figma |
+| Interactive MCP | Figma remote MCP, desktop MCP, Claude Code, Codex | Design-to-code, visual iteration, selected-frame analysis, code-to-canvas | `product/design/*.md`, `product/technical/specs/*.md`, `product/execution/plans/*.md` or `operations/execution/tasks/*.md`, code, optionally Figma |
 | Durable API Sync | Figma REST API, Variables API, Dev Resources API, webhooks | Token sync, design index, traceability, audit, stale-link checks | `product/design/*.md`, generated reports, external-source metadata |
 
 Interactive MCP is for agent work. Durable API sync is for validation, indexing, and consistency checks.

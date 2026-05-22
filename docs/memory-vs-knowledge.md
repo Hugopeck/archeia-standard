@@ -75,7 +75,7 @@ This gap is real. The solution — some form of trigger-based re-consolidation p
 
 **Claim**: accumulating records preserve long-range episodic facts; living documents preserve long-range semantic facts.
 
-**What works**: ADRs in `product/technical/decisions/` and retros in `operations/execution/retros/` stay on disk forever. An agent working on a task today can read a decision from 18 months ago and understand why the system is shaped the way it is. This is long-range episodic memory and Archeia gets it right by default.
+**What works**: ADRs in `product/technical/decisions/` and retros in execution surfaces such as `operations/execution/retros/` stay on disk forever. An agent working on a task today can read a decision from 18 months ago and understand why the system is shaped the way it is. This is long-range episodic memory and Archeia gets it right by default.
 
 **What doesn't work**: Archeia has **no graph over artifacts**. There is no way to answer questions like:
 - "Which decisions affected which features, which are implemented by which tasks, which touched which files?"
@@ -119,7 +119,7 @@ A future `archeia:verify-stale` skill (not yet shipped) would walk living docume
 
 His example: "A coding agent drifts off-track and violates a pattern your team agreed on three months ago. The memory exists. The agent didn't search for it because it didn't know it was relevant."
 
-**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads `.archeia/operations/execution/tasks/<id>.md`, `.archeia/product/strategy/roadmap/`, the relevant `.archeia/product/technical/specs/*.md`, `.archeia/product/execution/prds/`, `.archeia/product/technical/architecture/c4/*.json`, and `.archeia/product/technical/devs/*.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
+**Archeia's answer for central cases**: the agent doesn't need to search. Path-based lookup means the agent working on a task reads the relevant execution artifact in the owning domain, `.archeia/product/strategy/roadmap/`, the relevant `.archeia/product/technical/specs/*.md`, `.archeia/product/execution/prds/`, `.archeia/product/technical/architecture/c4/*.json`, and `.archeia/product/technical/devs/*.md` at well-known paths because the skill specifies them. No search, no hit-or-miss retrieval, no embedding-ranking. This **dissolves the injection problem** for the central facts that every session needs.
 
 **Archeia's honest limit for peripheral cases**: when the relevant knowledge is not on a standard path — an ADR from 18 months ago that mentions a pattern the current task accidentally violates, a past growth experiment whose learning applies to the current channel decision — Archeia is in the same situation as every other in-repo knowledge system. The agent won't find it unless something triggers the search, and Archeia does not have a good trigger.
 
