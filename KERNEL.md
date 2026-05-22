@@ -93,6 +93,21 @@ The kernel also defines one operations-owned procedural surface:
 
 - `operations/optimization/processes/` — living or accumulating procedural operating knowledge for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
 
+### 2.10 Universal `execution/` surface
+
+`execution/` is the kernel's universal project-management surface. Its meaning is the same wherever it appears: the local layer where active work is organized, tracked, reviewed, and carried forward inside the owning domain.
+
+Plans, tasks, projects, programs, logs, dashboards, retros, and adjacent execution-state artifacts belong under the owning domain's `execution/` subtree rather than being centralized elsewhere.
+
+In the canonical software tree, that universal structure appears at:
+
+- `strategy/execution/` for strategy work in motion
+- `operations/execution/` for operations work in motion
+- `product/execution/` for product work in motion
+- `growth/execution/` for growth work in motion
+
+The content differs by domain, but the semantic does not: `execution/` always means the domain-local project-management layer for work in motion.
+
 ---
 
 ## 3. Invariants
@@ -401,13 +416,13 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 
 **Canonical meaning.** The execution surface for strategy-owned work.
 
-**Broad interpretation.** Can include strategy initiatives, execution plans, logs, and retros when strategic work is being actively carried out rather than only sequenced directionally.
+**Broad interpretation.** This is the strategy-local project-management layer. It can include strategy initiatives, plans, logs, retros, and adjacent execution-state artifacts when strategic work is being actively carried out rather than only sequenced directionally.
 
 ### 6.5 `operations/execution/`
 
 **Canonical meaning.** The execution surface for operations-owned work.
 
-**Broad interpretation.** Can include internal operational initiatives, support projects, operational tasks, plans, and retros that improve or sustain the business's operating system. It is not the universal execution center for every domain.
+**Broad interpretation.** This is the operations-local project-management layer. It can include internal operational initiatives, support projects, operational tasks, plans, retros, and adjacent execution-state artifacts that improve or sustain the business's operating system.
 
 ### 6.6 `operations/optimization/`
 
