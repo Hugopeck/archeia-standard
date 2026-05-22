@@ -91,7 +91,7 @@ A **domain-local knowledge surface** is a conventional subtree used to capture r
 
 The kernel also defines one operations-owned procedural surface:
 
-- `operations/optimization/guides/` — living or accumulating procedural guides for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
+- `operations/optimization/processes/` — living or accumulating procedural operating knowledge for repeatable work that may touch one domain, multiple domains, or the whole Archeia tree
 
 ---
 
@@ -125,7 +125,7 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 **Canonical meaning.** The upstream direction surface: why this software effort should exist, what values constrain it, what landscape it operates in, and what direction it is pursuing.
 
-**Broader semantic envelope.** `strategy/` covers business vision, founder intent, project direction, stakeholder direction, research-program direction, and major directional sequencing. It is not limited to a formal company strategy deck.
+**Broader semantic envelope.** `strategy/` covers business vision, founder intent, project direction, stakeholder direction, research-program direction, major directional sequencing, and strategy-owned execution. It is not limited to a formal company strategy deck.
 
 **What belongs here.**
 
@@ -133,31 +133,31 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 - values and non-negotiables
 - external landscape evidence
 - strategic roadmap sequencing
+- strategy-owned execution plans and retros when strategy work is being actively carried out
 - strategic decisions
 
 **What does not belong here.**
 
-- active task tracking
+- active task tracking outside strategy-owned execution
 - detailed implementation specs
 - channel operations
 - technical architecture evidence
 
 ### 4.2 `operations/`
 
-**Canonical meaning.** The operating and delivery surface: how software work is coordinated, constrained, measured, and improved.
+**Canonical meaning.** The support and improvement domain: the organizational systems and operational work that help the rest of the software business function effectively, sustainably, and in compliance with real-world constraints.
 
-**Broader semantic envelope.** `operations/` is not only task execution. It includes active delivery coordination under `execution/`, operating-system observation and improvement under `optimization/`, procedural operating knowledge under `optimization/guides/`, and the people, financial, and compliance constraints that shape what execution can actually do. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
+**Broader semantic envelope.** `operations/` includes operations-owned execution, organizational monitoring, process design, procedural operating knowledge, people systems, financial systems, compliance systems, and the conventions that stabilize how the organization works. In a solo project, `people/` may simply capture capability and availability constraints. In an internal project, `operations/` can encode stakeholder dependencies and rollout constraints.
 
 **What belongs here.**
 
-- active delivery coordination, execution state, and retros
-- blocker handling, operating cadences, and delivery workflows
-- operating metrics, bottleneck analysis, and process improvement
-- SOPs, playbooks, runbooks, and workflow guides
-- staffing/capacity/ownership boundaries
-- budgets and financial constraints
-- compliance, governance, legal, and procurement constraints
-- process, framework, rollout, adoption, and continuous-improvement work
+- operational support work, internal initiatives, and operational retros
+- monitoring, bottleneck analysis, and continuous improvement
+- processes, SOPs, runbooks, playbooks, and operating how-tos
+- hiring, performance, workplace, and compensation systems
+- finance operations, reporting, controls, and planning
+- compliance, risk, privacy, audit, and governance systems
+- operational conventions, decisions, and learnings
 
 **What does not belong here.**
 
@@ -165,13 +165,14 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 - customer adoption, revenue, and channel programs
 - detailed product design artifacts
 - executable product specs and PRDs
+- execution work owned by `strategy/`, `product/`, or `growth/`
 - technical architecture models and codebase truth
 
 ### 4.3 `product/`
 
 **Canonical meaning.** The product-development surface: what is being shaped, designed, specified, validated technically, and prepared for delivery.
 
-**Broader semantic envelope.** `product/` is not only a PM surface. It includes product strategy, design, technical feasibility, and integrated product-delivery surfaces. It is the center of the software kernel because most software work is transformed here from direction into executable truth.
+**Broader semantic envelope.** `product/` is not only a PM surface. It includes product strategy, design, technical feasibility, product-owned execution, and integrated product-delivery surfaces. It is the center of the software kernel because most software work is transformed here from direction into executable truth.
 
 **What belongs here.**
 
@@ -179,6 +180,7 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 - design contracts and feedback
 - technical specs and architecture evidence
 - PRDs, product execution logs, roles, and archived product artifacts
+- product-owned execution plans and retros
 
 **What does not belong here.**
 
@@ -190,7 +192,7 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 **Canonical meaning.** The go-to-market and adoption domain: how software is positioned, marketed, sold, adopted, supported, retained, expanded, and operationalized in the world.
 
-**Broader semantic envelope.** `growth/` is not only revenue growth. It includes brand, messaging, campaigns, inbound and outbound motions, sales execution, customer success, support, internal rollout, enablement, retention, expansion, and monetization depending on the software context.
+**Broader semantic envelope.** `growth/` is not only revenue growth. It includes brand, messaging, campaigns, inbound and outbound motions, growth-owned execution, sales execution, customer success, support, internal rollout, enablement, retention, expansion, and monetization depending on the software context.
 
 **What belongs here.**
 
@@ -199,12 +201,13 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 - sales motions, pipeline intelligence, and enablement
 - customer-success, support, adoption, retention, and expansion surfaces
 - growth execution programs, dashboards, logs, retros, and experiments
+- growth-owned execution plans and programs
 
 **What does not belong here.**
 
 - canonical product specs
 - technical architecture
-- active operations execution task state
+- active operations-owned execution task state
 
 ---
 
@@ -212,7 +215,9 @@ Every kernel-conforming software repo MUST have exactly these four top-level dom
 
 The rich canonical software tree is part of the kernel contract. Omission is allowed where irrelevant; meanings are not.
 
-**Universal naming rule.** Any canonical domain or subdomain MAY contain direct `decisions/`, `conventions/`, and `learnings/` subfolders when needed. These surfaces are first-class and MUST NOT be hidden under wrapper folders such as `meta/` or `memory/`. `optimization/guides/` is not universal; it is canonically owned by `operations/`.
+**Universal naming rule.** Any canonical domain or subdomain MAY contain direct `decisions/`, `conventions/`, and `learnings/` subfolders when needed. These surfaces are first-class and MUST NOT be hidden under wrapper folders such as `meta/` or `memory/`. `optimization/processes/` is not universal; it is canonically owned by `operations/`.
+
+**Directory README rule.** Every canonical folder in the `.archeia/` tree MUST contain a `README.md` scaffold that explains the folder's canonical meaning, what belongs there, what does not belong there, and any important lifecycle or boundary notes.
 
 ```text
 .archeia/
@@ -224,6 +229,7 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── industry/
 │   │   └── market/
 │   ├── roadmap/
+│   ├── execution/
 │   ├── decisions/
 │   ├── conventions/
 │   └── learnings/
@@ -237,10 +243,35 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 │   │   ├── conventions/
 │   │   └── learnings/
 │   ├── optimization/
-│   │   └── guides/
+│   │   ├── monitoring/
+│   │   ├── processes/
+│   │   ├── initiatives/
+│   │   ├── decisions/
+│   │   ├── conventions/
+│   │   └── learnings/
 │   ├── people/
+│   │   ├── hiring/
+│   │   ├── performance/
+│   │   ├── workplace/
+│   │   ├── compensation/
+│   │   ├── decisions/
+│   │   ├── conventions/
+│   │   └── learnings/
 │   ├── finance/
+│   │   ├── operational/
+│   │   ├── strategic/
+│   │   ├── compliance/
+│   │   ├── decisions/
+│   │   ├── conventions/
+│   │   └── learnings/
 │   ├── compliance/
+│   │   ├── regulatory/
+│   │   ├── data-security/
+│   │   ├── risk/
+│   │   ├── ethics/
+│   │   ├── decisions/
+│   │   ├── conventions/
+│   │   └── learnings/
 │   ├── decisions/
 │   ├── conventions/
 │   └── learnings/
@@ -366,77 +397,167 @@ The rich canonical software tree is part of the kernel contract. Omission is all
 
 **Broad interpretation.** Can represent a company roadmap, project roadmap, internal rollout sequence, or research-software direction sequence.
 
-### 6.4 `operations/people/`
+### 6.4 `strategy/execution/`
 
-**Canonical meaning.** People and capability constraints that shape execution.
+**Canonical meaning.** The execution surface for strategy-owned work.
 
-**Broad interpretation.** Can include org maps, ownership boundaries, support capacity, hiring gaps, collaborator maps, or solo-operator capacity limits. This path records capability and capacity as operating constraints on delivery; it does not replace product truth or growth hiring/adoption programs.
+**Broad interpretation.** Can include strategy initiatives, execution plans, logs, and retros when strategic work is being actively carried out rather than only sequenced directionally.
 
-### 6.5 `operations/finance/`
+### 6.5 `operations/execution/`
 
-**Canonical meaning.** Financial constraints and operating finance context that shape execution.
+**Canonical meaning.** The execution surface for operations-owned work.
 
-**Broad interpretation.** Can include budgets, runway constraints, procurement constraints, vendor cost context, approval thresholds, or funding limits that change what execution is possible. This path governs budget reality for delivery; it does not replace `growth/` revenue operations or `strategy/` directional planning.
+**Broad interpretation.** Can include internal operational initiatives, support projects, operational tasks, plans, and retros that improve or sustain the business's operating system. It is not the universal execution center for every domain.
 
-### 6.6 `operations/compliance/`
+### 6.6 `operations/optimization/`
 
-**Canonical meaning.** Constraints imposed by legal, privacy, compliance, procurement, or internal governance regimes.
+**Canonical meaning.** The improvement surface for how the organization works.
 
-**Broad interpretation.** Can be light in low-risk projects and heavy in regulated or internal-enterprise contexts. This path captures governance and risk constraints on how work is carried out; it does not replace product technical architecture or growth trust/adoption programs.
+**Broad interpretation.** Can include monitoring, bottleneck diagnosis, process refinement, initiative design, rollout support, and continuous improvement. `operations/optimization/` turns observation of operating reality into better ways of working across the organization.
 
-### 6.7 `operations/optimization/`
+### 6.7 `operations/optimization/monitoring/`
 
-**Canonical meaning.** The operating-system improvement surface for execution.
+**Canonical meaning.** Observation and diagnosis of operating reality.
 
-**Broad interpretation.** Can include operating metrics, adherence monitoring, bottleneck detection, workflow diagnostics, process redesign, service-level review, rollout and adoption material, framework-setting, and continuous-improvement loops. `operations/optimization/` turns evidence from execution into better ways of executing and houses the procedural operating knowledge that makes those improvements repeatable.
+**Broad interpretation.** Can include efficiency monitoring, data gathering, bottleneck detection, reporting, prioritization, and handoff for operational improvement work.
 
-### 6.8 `product/strategy/market/`
+### 6.8 `operations/optimization/processes/`
+
+**Canonical meaning.** The unified procedural surface for operational methods.
+
+**Broad interpretation.** Can include workflow design, tool selection, in-progress how-tos, procedural drafts, SOPs, runbooks, playbooks, rollout instructions, adoption material, and other process knowledge at varying levels of formalization.
+
+### 6.9 `operations/optimization/initiatives/`
+
+**Canonical meaning.** One-off operational improvement efforts.
+
+**Broad interpretation.** Can include scoping, resource coordination, initiative execution, post-review, and other bounded improvement efforts that go beyond routine support work.
+
+### 6.10 `operations/people/`
+
+**Canonical meaning.** The people-support surface for capability, staffing, performance, workplace health, and rewards.
+
+**Broad interpretation.** Can include capability planning, staffing systems, performance systems, workplace support, compensation systems, org maps, ownership boundaries, support capacity, hiring gaps, collaborator maps, or solo-operator capacity limits.
+
+### 6.11 `operations/people/hiring/`
+
+**Canonical meaning.** Hiring-support systems.
+
+**Broad interpretation.** Can include hiring strategy, sourcing, employer branding, and hiring execution systems that support organizational capability growth.
+
+### 6.12 `operations/people/performance/`
+
+**Canonical meaning.** Performance-support systems.
+
+**Broad interpretation.** Can include expectations, feedback, growth, engagement, onboarding, offboarding, and adjacent systems that support individual and team performance.
+
+### 6.13 `operations/people/workplace/`
+
+**Canonical meaning.** Workplace-support systems.
+
+**Broad interpretation.** Can include culture, collaboration, team health, conflict resolution, and the operational support structures that shape the day-to-day working environment.
+
+### 6.14 `operations/people/compensation/`
+
+**Canonical meaning.** Compensation-support systems.
+
+**Broad interpretation.** Can include payroll, benefits, salary and equity structures, and reward systems that support fair and sustainable compensation.
+
+### 6.15 `operations/finance/`
+
+**Canonical meaning.** The financial-support surface that shapes sustainability, control, and resource reality.
+
+**Broad interpretation.** Can include budgets, runway constraints, procurement constraints, vendor cost context, approval thresholds, funding limits, operating reporting, and other financial-support systems that shape what execution is possible.
+
+### 6.16 `operations/finance/operational/`
+
+**Canonical meaning.** Operational finance-support systems.
+
+**Broad interpretation.** Can include bookkeeping, reconciliation, AP/AR, vendor management, expense management, and routine operating reports.
+
+### 6.17 `operations/finance/strategic/`
+
+**Canonical meaning.** Strategic finance-support systems.
+
+**Broad interpretation.** Can include budgeting, forecasting, cash-flow management, financial analysis, capital planning, and fundraising support.
+
+### 6.18 `operations/finance/compliance/`
+
+**Canonical meaning.** Finance-owned compliance obligations.
+
+**Broad interpretation.** Can include tax planning and compliance, audits, internal controls, and investor or lender reporting obligations that are inherently finance-owned.
+
+### 6.19 `operations/compliance/`
+
+**Canonical meaning.** The governance, risk, and non-finance compliance-support surface.
+
+**Broad interpretation.** Can be light in low-risk projects and heavy in regulated or internal-enterprise contexts. This path captures broader governance, risk, privacy, security, and ethics support work outside finance-owned compliance.
+
+### 6.20 `operations/compliance/regulatory/`
+
+**Canonical meaning.** Regulatory-support systems.
+
+**Broad interpretation.** Can include legal and regulatory obligations, policies, licensing, permits, and general compliance requirements that shape how the organization operates.
+
+### 6.21 `operations/compliance/data-security/`
+
+**Canonical meaning.** Data-security and privacy-support systems.
+
+**Broad interpretation.** Can include privacy obligations, data-handling policy, security procedures, incident response, and related training.
+
+### 6.22 `operations/compliance/risk/`
+
+**Canonical meaning.** Risk-support systems.
+
+**Broad interpretation.** Can include risk assessment, business continuity, crisis planning, and operational risk controls.
+
+### 6.23 `operations/compliance/ethics/`
+
+**Canonical meaning.** Ethics-support systems.
+
+**Broad interpretation.** Can include ethics documentation, reporting mechanisms, whistleblowing, transparency, and conduct expectations.
+
+### 6.24 `product/strategy/market/`
 
 **Canonical meaning.** Product-relevant external or deployment landscape.
 
 **Broad interpretation.** Can include external category positioning, competitor evidence, ecosystem mapping, internal stakeholder environment, or deployment-context intelligence.
 
-### 6.9 `product/design/protos/`
+### 6.25 `product/design/protos/`
 
 **Canonical meaning.** Durable design or interaction contracts tied to prototypes.
 
 **Broad interpretation.** Can include high-fidelity prototypes, wireframes, flow sketches, interactive references, and linked external design sources.
 
-### 6.10 `product/technical/specs/`
+### 6.26 `product/technical/specs/`
 
 **Canonical meaning.** Executable software specs.
 
 **Broad interpretation.** This is the kernel path for requirements, feature specs, API contracts, technical requirement documents, and any other durable software spec an execution surface will rely on.
 
-### 6.11 `growth/`
+### 6.27 `growth/`
 
 **Canonical meaning.** Go-to-market and adoption.
 
 **Broad interpretation.** Can mean revenue growth, brand development, demand generation, sales motion, customer success, support, internal adoption, rollout, enablement, retention, or expansion depending on the software context.
 
-### 6.12 Universal `decisions/`
+### 6.28 Universal `decisions/`
 
 **Canonical meaning.** The accumulating record of local choices, tradeoffs, and rulings within a domain or subdomain.
 
 **Broad interpretation.** May capture ADR-style technical decisions, strategic decisions, design rulings, operating policy choices, or growth-program decisions as long as the decision remains local to the owning path.
 
-### 6.13 Universal `conventions/`
+### 6.29 Universal `conventions/`
 
 **Canonical meaning.** The living statement of local defaults, preferences, and standard ways of doing things within a domain or subdomain.
 
 **Broad interpretation.** May capture naming conventions, authoring defaults, expected review patterns, default sequencing, recurring heuristics, and house style. `conventions/` is softer than formal external standards and stronger than individual preference.
 
-### 6.14 Universal `learnings/`
+### 6.30 Universal `learnings/`
 
 **Canonical meaning.** The accumulating record of lessons, mistakes, discoveries, and reusable insights within a domain or subdomain.
 
 **Broad interpretation.** May capture postmortem lessons, user-research takeaways, execution lessons, architectural lessons, or go-to-market findings, provided they are preserved as local learning rather than rewritten into current canonical truth.
-
-### 6.15 `operations/optimization/guides/`
-
-**Canonical meaning.** The procedural operating surface for repeatable work.
-
-**Broad interpretation.** `operations/optimization/guides/` may contain how-tos, SOPs, playbooks, runbooks, workflow guides, rollout instructions, adoption material, and knowledge-hub content for one domain, multiple domains, or the whole Archeia tree. A guide may explain how to carry out repeatable work involving `strategy/`, `product/`, `growth/`, or cross-domain coordination, but the guide itself remains an `operations/` artifact because it governs execution behavior rather than domain truth. These guides are the procedural output of operational learning, frameworks, and process improvement.
 
 ---
 
@@ -447,6 +568,8 @@ The kernel defines default lifecycle expectations for the canonical software tre
 ### 7.1 `strategy/`
 
 - `vision/`, `values/`, `roadmap/` → living
+- `execution/plans/` → transient
+- `execution/retros/`, `execution/logs/` → accumulating
 - `landscape/*/` → accumulating
 - `conventions/` → living
 - `decisions/`, `learnings/` → accumulating
@@ -455,7 +578,7 @@ The kernel defines default lifecycle expectations for the canonical software tre
 
 - `execution/tasks/`, `execution/projects/`, `execution/plans/` → transient
 - `execution/retros/` → accumulating
-- `optimization/`, `optimization/guides/`, `people/`, `finance/`, `compliance/` → living by default unless a distribution adds accumulating record types
+- `optimization/`, `optimization/monitoring/`, `optimization/processes/`, `optimization/initiatives/`, `people/`, `people/*/`, `finance/`, `finance/*/`, `compliance/`, `compliance/*/` → living by default unless a distribution adds accumulating record types
 - `conventions/` → living
 - `decisions/`, `learnings/` → accumulating
 
@@ -496,12 +619,12 @@ Every file under `.archeia/` MUST have exactly one owning **top-level** domain.
 
 | Domain | Permitted shapes | Reads from |
 |---|---|---|
-| `strategy/` | living, accumulating | MAY read `growth/` and `operations/` evidence |
+| `strategy/` | living, accumulating, transient | MAY read `growth/` and `operations/` evidence |
 | `operations/` | living, accumulating, transient | `strategy/`, `product/` |
 | `product/` | living, accumulating, transient | `strategy/`, `operations/`, `growth/` |
 | `growth/` | living, accumulating, transient | `strategy/`, `operations/finance/`, `product/` |
 
-`product/strategy/`, `product/design/`, `product/technical/`, and `product/execution/` are not separate ownership domains.
+`strategy/execution/`, `product/strategy/`, `product/design/`, `product/technical/`, `product/execution/`, and `growth/execution/` are not separate ownership domains.
 
 Ownership rules:
 
@@ -517,7 +640,7 @@ Ownership rules:
 
 The kernel includes two canonical software contract surfaces.
 
-### 9.1 Product delivery surface → operations execution
+### 9.1 Product delivery surface
 
 **Paths.**
 
@@ -525,9 +648,9 @@ The kernel includes two canonical software contract surfaces.
 - `product/technical/specs/*.md`
 - `product/execution/prds/*.md`
 
-**Purpose.** These artifacts are the durable delivery contract operations execution relies on.
+**Purpose.** These artifacts are the durable delivery contract execution surfaces rely on when software work must be scoped, built, or operationally supported.
 
-**Who reads it.** `operations/execution/`.
+**Who reads it.** `product/execution/` and `operations/execution/`.
 
 ### 9.2 Technical evidence surface
 

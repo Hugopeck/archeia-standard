@@ -29,7 +29,7 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 - [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for living documents
 - [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for accumulating records
 - [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for transient artifacts
-- [`product.schema.json`](contracts/product.schema.json) — product execution surface → operations contract
+- [`product.schema.json`](contracts/product.schema.json) — product delivery surface contract
 - [`c4.schema.json`](contracts/c4.schema.json) — `product/technical/architecture/c4/` contract
 
 ## Canonical software kernel
@@ -37,7 +37,7 @@ Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](
 The software kernel uses four canonical domains:
 
 - `strategy/` — vision, values, landscape, roadmap, decisions, conventions, learnings
-- `operations/` — execution, optimization, people, finance, compliance, decisions, conventions, learnings; how work is executed, constrained, measured, and improved
+- `operations/` — execution, optimization, people, finance, compliance, decisions, conventions, learnings; the support and improvement domain
 - `product/` — product strategy, design, technical, and product execution
 - `growth/` — growth strategy, marketing, sales, success, and growth execution
 
@@ -58,7 +58,7 @@ Within `growth/`, the canonical subareas are:
 
 The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
 
-Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural how-to material lives canonically under `operations/optimization/guides/`, with the strongest guides often graduating into skills. Operational metrics, bottleneck analysis, process redesign, and related rollout/adoption work live under `operations/optimization/`, while `people/`, `finance/`, and `compliance/` remain operational support and constraint surfaces.
+Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural operating knowledge lives canonically under `operations/optimization/processes/`, with stronger process patterns often graduating into skills. Monitoring, bottleneck analysis, improvement initiatives, and process redesign live under `operations/optimization/`, while `people/`, `finance/`, and `compliance/` expand into explicit support-domain subtrees.
 
 ## Distributions
 

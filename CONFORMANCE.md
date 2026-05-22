@@ -31,6 +31,7 @@ A conforming `validate` implementation MUST check:
 - every transient artifact has a valid status
 - every terminal transient artifact has a terminal timestamp
 - ownership is respected as an advisory check
+- every canonical `.archeia/` folder has a `README.md` scaffold
 
 ## 3. Kernel software-tree conformance
 
@@ -42,12 +43,18 @@ A repo claiming kernel conformance MUST additionally satisfy the thick software-
 - omission and sparse use are allowed where the kernel says they are allowed
 - direct `decisions/`, `conventions/`, and `learnings/` subfolders are permitted under canonical domains and subdomains when needed
 - wrapper folders do not satisfy the canonical direct-surface convention for `decisions/`, `conventions/`, and `learnings/`
-- `optimization/guides/` is canonically owned by `operations/`
+- `optimization/processes/` is canonically owned by `operations/`
+- every canonical `.archeia/` folder contains a `README.md` scaffold
+- `operations/` contains the canonical kernel subareas `execution/`, `optimization/`, `people/`, `finance/`, and `compliance/`
+- `operations/optimization/` contains the canonical kernel subareas `monitoring/`, `processes/`, and `initiatives/`
+- `operations/people/` contains `hiring/`, `performance/`, `workplace/`, and `compensation/`
+- `operations/finance/` contains `operational/`, `strategic/`, and `compliance/`
+- `operations/compliance/` contains `regulatory/`, `data-security/`, `risk/`, and `ethics/`
 - `product/` contains the canonical kernel subareas `strategy/`, `design/`, `technical/`, `execution/`
 - `growth/` contains the canonical kernel subareas `strategy/`, `marketing/`, `sales/`, `success/`, `execution/`
 - `product/technical/architecture/c4/` is the canonical machine-readable architecture surface and contains only living artifacts
 - both cross-domain contracts are enforced:
-  - product execution surface → `operations/execution/`
+  - product delivery surface → `product/execution/` and `operations/execution/`
   - `product/technical/architecture/c4/` → product feasibility review / operations scoping
 - product artifacts that depend on external product sources cite those sources with extraction and freshness metadata
 - `docs/` is not required for software conformance and is not inspected by the canonical validator

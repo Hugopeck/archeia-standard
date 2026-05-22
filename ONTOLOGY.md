@@ -331,28 +331,28 @@ The third point is Archeia's one hard requirement on harnesses: **compaction mus
 
 **Archeia role:** Skills live outside `.archeia/` — they are writers, not artifacts. The `skills/` folder at the repo root is where the reference implementation keeps them. A conforming distribution may organize skills differently; what matters is that skills produce and consume artifacts conforming to the schemas.
 
-### 8.1 Guides as the precursor to skills
+### 8.1 Processes as the precursor to skills
 
 There is a real formalization ladder in Archeia:
 
 - **`conventions/`** — declarative local defaults and expected patterns
-- **`operations/optimization/guides/`** — weakly structured procedural knowledge for repeatable work
+- **`operations/optimization/processes/`** — procedural operating knowledge for repeatable work
 - **`skills/`** — strongly structured, parameterizable procedural methods for agent execution
 
 This is not three unrelated surfaces. It is a progression from weaker to stronger procedural formalization.
 
-`operations/optimization/guides/` sits at the boundary between declarative repo knowledge and procedural memory. A guide explains how to carry out repeatable work and may cover one domain, multiple domains, or the whole Archeia tree. It remains an `operations/` artifact because it governs execution behavior rather than source-of-truth domain content.
+`operations/optimization/processes/` sits at the boundary between declarative repo knowledge and procedural memory. A process document explains how to carry out repeatable work and may range from a rough how-to to a strongly standardized SOP. It remains an `operations/` artifact because it governs execution behavior rather than source-of-truth domain content.
 
-Skills are the subset of procedural knowledge that has become stable, reusable, and formal enough to justify explicit invocation structure and parameterization. In this sense, guides are often the precursor to skills.
+Skills are the subset of procedural knowledge that has become stable, reusable, and formal enough to justify explicit invocation structure and parameterization. In this sense, process documents are often the precursor to skills.
 
-The progression is important but not mandatory. Many guides should remain guides:
+The progression is important but not mandatory. Many process documents should remain just process documents:
 
 - rare procedures
 - judgment-heavy workflows
 - onboarding material
 - social or cross-functional rituals that are too contextual to automate cleanly
 
-Archeia therefore treats `operations/optimization/guides/` as the procedural staging ground and `skills/` as the formalized execution layer.
+Archeia therefore treats `operations/optimization/processes/` as the procedural staging ground and `skills/` as the formalized execution layer.
 
 ### The parameterized-skill refinement
 
@@ -416,7 +416,7 @@ The authoritative mapping of Archeia terms to their academic or industry canonic
 | Domain-local semantic conventions | Tulving 1972 | 1972 | Classical | `*/conventions/` as local living defaults and preferences |
 | Domain-local episodic decisions | Tulving 1972; Nygard 2011; Ford, Parsons & Kua 2017 | 1972, 2011, 2017 | Classical | `*/decisions/` as accumulating local rulings |
 | Domain-local episodic learnings | Tulving 1972 | 1972 | Classical | `*/learnings/` as accumulating local lessons |
-| Weak procedural memory surface | Squire 1982; Anthropic Skills docs; Tan 2026 | 1982, 2026 | Classical + Industry | `operations/optimization/guides/` as the precursor surface to skills |
+| Weak procedural memory surface | Squire 1982; Anthropic Skills docs; Tan 2026 | 1982, 2026 | Classical + Industry | `operations/optimization/processes/` as the precursor surface to skills |
 | Prospective memory | McDaniel & Einstein 2007 | 2007 | Classical | Transient artifacts in `future` status |
 | Memory consolidation | Müller & Pilzecker 1900; Squire & Alvarez 1995 | 1900, 1995 | Classical | The biological process behind Archeia's consolidation skill pattern |
 | Knowledge consolidation | MemoryAgentBench (arXiv:2507.05257); Agent-Memory Survey | 2025 | Recent AI | Modern agent-literature term for the consolidation skill pattern |
@@ -458,7 +458,7 @@ Terms Archeia uses that have no canonical academic precedent, and why they exist
 | **Accumulating record** | Archeia coinage | Closest academic framings are "episodic memory store" and "append-only record." Archeia uses a compact term that combines both. |
 | **Transient artifact** | Archeia coinage | Closest academic framings are "prospective memory" + "operational working memory," which don't compose naturally. "Transient" captures the bounded-retention property. |
 | **Convention** (kernel subtree) | Archeia narrowing | Closest academic framing is semantic memory expressed as current local defaults. Archeia uses `conventions/` for living domain-local norms that are softer than formal standards and stronger than personal preference. |
-| **Guide** (kernel subtree) | Archeia narrowing | Closest academic framing is weakly formalized procedural memory. Archeia uses `operations/optimization/guides/` for repeatable procedures that may later be formalized as skills. |
+| **Process** (kernel subtree) | Archeia narrowing | Closest academic framing is weakly to strongly formalized procedural memory. Archeia uses `operations/optimization/processes/` for repeatable procedures that may later be formalized as skills. |
 | **Three lifecycle shapes** | Archeia coinage | Maps directly to Tulving taxonomy (see §3.2) but the specific triplet (living / accumulating / transient) is Archeia's organization. |
 | **Forward flow** (strategy → product → operations, with product/technical grounding execution) | Archeia coinage | The causal direction of work in software projects. No single academic source; the closest is the product-engineering handoff literature (Cagan, *Inspired*, 2008), which is non-academic. |
 | **Read flow** (everyone reads codebase and product) | Archeia coinage | Complement to forward flow. Context-fetching pattern. No academic source. |
