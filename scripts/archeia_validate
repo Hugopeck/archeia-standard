@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+TOP_DOMAINS = {"strategy", "operations", "product", "growth"}
+SCHEMAS = [
+    "living-doc.schema.json",
+    "accumulating-record.schema.json",
+    "transient-artifact.schema.json",
+    "product.schema.json",
+    "c4.schema.json",
+]
+
+FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.S)
+
+
+def issue(issues, severity, code, path, message):
+    issues.append({"severity": severity, "code": code, "path": str(path), "message": message})
+
+
+def load_json(path, issues, code):
+    try:
+        return json.loads(path.read_text())
+    except Exception as exc:
+        issue(issues, "error", code, path, f"cannot parse JSON: {exc}")
+        return None
+
+
+def parse_frontmatter(path):
+    text = path.read_text()
+    m = FM_RE.match(text)
+    if not m:
+        return {}, text
+    data = {}
+    for raw in m.group(1).splitlines():
+        if not raw.strip() or raw.strip().startswith("#") or ":" not in raw:
+            continue
+        key, value = raw.split(":", 1)
+        value = value.strip()
+        if value in {"null", "~"}:
+            parsed = None
+        elif value.startswith("[") and value.endswith("]"):
+            try:
+                parsed = json.loads(value)
+            except Exception:
+                parsed = value
+        else:
+            parsed = value.strip('"\'')
+        data[key.strip()] = parsed
+    return data, text[m.end():]
+
+
+def valid_status_sets(spec):
+    statuses = spec.get("lifecycles", {}).get("transient_statuses", {})
+    future = set(statuses.get("future", []))
+    present = set(statuses.get("present", []))
+    past = set(statuses.get("past", []))
+    return future | present | past, past
+
+
+def validate(root):
+    root = Path(root)
+    issues = []
+    archeia = root / ".archeia"
+    standard = archeia / ".system"
+    spec_path = standard / "spec.yaml"
+
+    if not archeia.exists():
+        issue(issues, "fatal", "A001", archeia, "missing .archeia directory")
+        return issues
+
+    if not spec_path.exists():
+        issue(issues, "fatal", "S001", spec_path, "missing .archeia/.system/spec.yaml")
+        if (standard / "domains.yaml").exists():
+            issue(issues, "warning", "S002", standard / "domains.yaml", "domains.yaml is deprecated; use spec.yaml")
+        return issues
+
+    spec = load_json(spec_path, issues, "S003")
+    if spec is None:
+        return issues
+
+    contracts = standard / "contracts"
+    for schema in SCHEMAS:
+        schema_path = contracts / schema
+        if not schema_path.exists():
+            issue(issues, "error", "S010", schema_path, "missing installed schema")
+        else:
+            load_json(schema_path, issues, "S011")
+
+    for domain in TOP_DOMAINS:
+        if not (archeia / domain).is_dir():
+            issue(issues, "error", "T001", archeia / domain, "missing canonical top-level domain")
+
+    for child in archeia.iterdir():
+        if child.name == ".system":
+            continue
+        if child.is_dir() and child.name not in TOP_DOMAINS:
+            issue(issues, "error", "T002", child, "directory is outside declared top-level domains")
+
+    for rel in spec.get("canonical_tree", []):
+        path = root / rel
+        if not path.is_dir():
+            issue(issues, "error", "T010", path, "missing canonical directory")
+            continue
+        if rel != ".archeia/.system/contracts" and not (path / "README.md").exists():
+            issue(issues, "error", "T011", path / "README.md", "missing canonical directory README")
+
+    for md in archeia.rglob("*.md"):
+        rel = md.relative_to(archeia)
+        if rel.parts == ("README.md",):
+            continue
+        parts = rel.parts
+        if parts and parts[0] not in TOP_DOMAINS and parts[0] != ".system":
+            issue(issues, "error", "A010", md, "artifact is outside a declared domain")
+
+    for product in list((archeia / "product/strategy/roadmap").glob("*.md")) + list((archeia / "product/technical/specs").glob("*.md")) + list((archeia / "product/execution/prds").glob("*.md")):
+        if product.name == "README.md":
+            continue
+        fm, _ = parse_frontmatter(product)
+        for key in ["title", "owner", "status", "last_reviewed"]:
+            if key not in fm or fm[key] in (None, ""):
+                issue(issues, "error", "P001", product, f"product contract missing required frontmatter: {key}")
+        if fm.get("owner") != "product-skills":
+            issue(issues, "error", "P002", product, "product contract owner must be product-skills")
+
+    for c4 in (archeia / "product/technical/architecture/c4").glob("*.json"):
+        data = load_json(c4, issues, "C001")
+        if data is None:
+            continue
+        if not data.get("elements"):
+            issue(issues, "error", "C002", c4, "C4 file must contain at least one element")
+            continue
+        for index, element in enumerate(data.get("elements", [])):
+            evidence = element.get("evidence")
+            if not isinstance(evidence, list) or not evidence:
+                issue(issues, "error", "C003", c4, f"C4 element {index} must include non-empty evidence")
+            else:
+                for ev in evidence:
+                    if not (archeia / ev).exists() and not (root / ev).exists():
+                        issue(issues, "error", "C004", c4, f"C4 evidence path does not exist: {ev}")
+
+    valid_statuses, terminal_statuses = valid_status_sets(spec)
+    terminal_fields = spec.get("lifecycles", {}).get("terminal_timestamp_fields", [])
+    transient_dirs = [
+        archeia / "operations/execution/tasks",
+        archeia / "operations/execution/projects",
+        archeia / "operations/execution/plans",
+        archeia / "product/execution/plans",
+        archeia / "growth/execution/plans",
+        archeia / "growth/execution/programs",
+        archeia / "growth/execution/experiments/running",
+    ]
+    for tdir in transient_dirs:
+        if not tdir.exists():
+            continue
+        for artifact in tdir.glob("*.md"):
+            if artifact.name == "README.md":
+                continue
+            fm, _ = parse_frontmatter(artifact)
+            status = fm.get("status")
+            if status not in valid_statuses:
+                issue(issues, "error", "L001", artifact, f"invalid transient status: {status}")
+            if status in terminal_statuses and not any(fm.get(field) for field in terminal_fields):
+                issue(issues, "error", "L002", artifact, "terminal transient artifact missing terminal timestamp")
+
+    return issues
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Validate an installed Archeia tree")
+    parser.add_argument("root", help="project or fixture root")
+    args = parser.parse_args()
+    issues = validate(args.root)
+    for item in issues:
+        print(f"{item['severity'].upper()} {item['code']} {item['path']}: {item['message']}")
+    errors = [i for i in issues if i["severity"] in {"fatal", "error"}]
+    return 1 if errors else 0
+
+if __name__ == "__main__":
+    sys.exit(main())

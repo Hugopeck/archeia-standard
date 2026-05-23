@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archeia.dev/schemas/product.schema.json",
+  "title": "Product Execution Surface",
+  "description": "Frontmatter and section contract for the canonical product delivery surface. product/strategy/roadmap/ sequences work, product/technical/specs/ supplies executable technical specs, and product/execution/prds/ carries the integrated buildable mission for product and operations execution surfaces.",
+  "allOf": [
+    { "$ref": "living-doc.schema.json" }
+  ],
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the product artifact."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["current", "planned", "active", "shipped", "paused", "deprecated"],
+      "description": "Status of this product artifact."
+    },
+    "owner": {
+      "type": "string",
+      "const": "product-skills",
+      "description": "Owned by product skills."
+    },
+    "last_reviewed": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this product surface was last reviewed for execution readiness."
+    },
+    "source_artifact": {
+      "type": ["string", "null"],
+      "description": "Relative path to the artifact that most recently changed this product surface, if any."
+    },
+    "spec_id": {
+      "type": "string",
+      "description": "Stable identifier for specs and PRDs so execution artifacts can reference the implemented unit of work."
+    },
+    "external_sources": {
+      "type": "array",
+      "description": "External product sources this artifact depends on.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["design_tool", "prototype", "research_repo", "feedback_system", "analytics", "support", "planning", "other"]
+          },
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "object_id": { "type": "string" },
+          "extraction_method": {
+            "type": "string",
+            "enum": ["mcp", "api", "export", "manual", "other"]
+          },
+          "source_version": { "type": "string" },
+          "last_read": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_status": {
+            "type": "string",
+            "enum": ["current", "stale", "unreachable", "insufficient"]
+          }
+        },
+        "required": ["type", "name", "extraction_method", "last_read", "source_status"],
+        "additionalProperties": true
+      }
+    }
+  },
+  "required": ["title", "owner", "status", "last_reviewed"],
+  "additionalProperties": true,
+  "archeia": {
+    "shape": "living",
+    "domain": "product",
+    "paths": [
+      "product/strategy/roadmap/*.md",
+      "product/technical/specs/*.md",
+      "product/execution/prds/*.md"
+    ],
+    "contract": "product delivery",
+    "roadmap_required_body_sections": [
+      { "heading": "Now", "description": "Committed or active product bets and milestones." },
+      { "heading": "Next", "description": "Likely next bets, sequencing dependencies, and decision gates." },
+      { "heading": "Later", "description": "Deferred opportunities that are known but not yet committed." }
+    ],
+    "spec_required_body_sections": [
+      { "heading": "Problem", "description": "The user or system problem this spec resolves." },
+      { "heading": "Acceptance Criteria", "description": "Observable criteria execution work must satisfy." },
+      { "heading": "Dependencies", "description": "Sequencing, design, technical, or integration dependencies." },
+      { "heading": "Evidence", "description": "Links to supporting evidence, decisions, external sources, or codebase evidence." }
+    ],
+    "prd_required_body_sections": [
+      { "heading": "Mission", "description": "The integrated buildable mission." },
+      { "heading": "Scope", "description": "What is in and out of scope for delivery." },
+      { "heading": "Delivery Constraints", "description": "Constraints product or operations execution must respect." }
+    ]
+  }
+}

@@ -1,10 +1,23 @@
-# docs/
+# Archeia Docs
 
-Supporting material for the Archeia Standard. These files are not part of the spec itself — they explain, audit, and ground it.
+The docs are organized by role.
 
-| File | What it does |
-|---|---|
-| [`faq.md`](faq.md) | Answers structural, implementation, and political questions. Compares Archeia against wikis, vector DBs, RAG, knowledge graphs, docs-as-code tools, ADR repos, and current agent frameworks. |
-| [`figma-product-integration.md`](figma-product-integration.md) | Research report on integrating Figma, Figma MCP, Code Connect, Codex, and Claude Code into the `product/` domain. |
-| [`memory-vs-knowledge.md`](memory-vs-knowledge.md) | Honest audit of what Archeia solves and what it doesn't, measured against the four canonical memory competencies from MemoryAgentBench. Required reading before claiming Archeia "solves memory." |
-| [`references/`](references/) | The outward-facing leg of Archeia's OODA loop. Curated bibliography of articles, papers, and repos from leading AI labs and research groups that ground each design decision in current practice. Start with [`references/bibliography.md`](references/bibliography.md). |
+## Read The Standard
+
+- [`standard/overview.md`](standard/overview.md): why Archeia exists.
+- [`standard/ontology.md`](standard/ontology.md): the model, meanings, domains, and artifact shapes.
+- [`standard/rules.md`](standard/rules.md): packaging, validation, operations, and tests.
+
+## Use The Guides
+
+- [`guides/faq.md`](guides/faq.md): common questions.
+- [`guides/figma-product-integration.md`](guides/figma-product-integration.md): Figma and product-design integration.
+- [`guides/memory-vs-knowledge.md`](guides/memory-vs-knowledge.md): what Archeia solves and what it does not.
+- [`guides/distributions.md`](guides/distributions.md): how distributions extend the standard.
+- [`guides/enforcement.md`](guides/enforcement.md): validation and CI guardrail examples.
+
+## Inspect The Research Basis
+
+- [`research/terminology.md`](research/terminology.md): terms, citations, and vocabulary decisions.
+- [`research/bibliography.md`](research/bibliography.md): source index.
+- [`research/harness-engineering-synthesis.md`](research/harness-engineering-synthesis.md): harness-engineering synthesis notes.
