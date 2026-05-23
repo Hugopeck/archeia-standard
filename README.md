@@ -1,118 +1,140 @@
 # The Archeia Standard
 
-**Archeia is an Agentic Operating System for software businesses: an open, structured, in-repo substrate for software operators, teams, and agents to share durable operating knowledge.**
+**Archeia is a standard for durable project knowledge inside a software repo.**
 
-Version: [`0.5.0`](VERSION) · License: MIT
+It gives humans and AI agents one shared place to read, write, validate, and hand off software operating context. Instead of scattering project truth across chat logs, tickets, wikis, docs, and memory tools, Archeia puts the working knowledge of a software project in a predictable `.archeia/` tree.
 
-Archeia is an **Agentic Operating System** (**AOS**) for software businesses. More specifically, Archeia is the **in-repo knowledge-layer AOS** for software businesses: a minimal but rich in-repo substrate for structured software operating knowledge that humans and AI agents read, write, and coordinate through.
+The goal is simple: agents should not have to guess where the roadmap lives, which decision is current, what architecture evidence exists, or where active work is tracked. Humans should be able to inspect and review the same files.
 
-## Start here
+## The Core Idea
 
-- **[`MANIFESTO.md`](MANIFESTO.md)** — the one-page pitch.
-- **[`PRINCIPLES.md`](PRINCIPLES.md)** — the seven fundamental truths.
-- **[`KERNEL.md`](KERNEL.md)** — the thick software kernel: domains, meanings, rich tree, invariants, operations, and extension mechanism.
-- **[`SCHEMA.md`](SCHEMA.md)** — a short companion explainer for the kernel's software tree and migration.
-- **[`TEMPORAL_MODEL.md`](TEMPORAL_MODEL.md)** — the three lifecycle shapes.
-- **[`ONTOLOGY.md`](ONTOLOGY.md)** — canonical vocabulary and academic grounding.
+Archeia treats the repo as the collaboration surface.
 
-## Conformance and positioning
+```text
+.archeia/
+├── .system/
+├── strategy/
+├── operations/
+├── product/
+└── growth/
+```
 
-- **[`POSITIONING.md`](POSITIONING.md)** — what Archeia adds beyond the SOTA harness corpus.
-- **[`CONFORMANCE.md`](CONFORMANCE.md)** — the implementation checklist / definition of done.
-- **[`REFERENCE-ALGORITHMS.md`](REFERENCE-ALGORITHMS.md)** — language-agnostic pseudocode for the six deterministic kernel operations.
-- **[`TEST-MATRIX.md`](TEST-MATRIX.md)** — the per-schema and per-operation tests every conformant repo passes.
+The four public folders are the knowledge domains:
 
-## Contracts
+- `strategy/` — direction, values, landscape, roadmap, and strategic decisions.
+- `operations/` — execution, process, people, finance, compliance, and support.
+- `product/` — product strategy, design, technical context, and delivery.
+- `growth/` — adoption, go-to-market, sales, success, and rollout.
 
-Enforceable JSON Schemas for cross-domain interchange live under [`contracts/`](contracts/):
+The hidden `.system/` folder contains the installed standard metadata that tools use:
 
-- [`living-doc.schema.json`](contracts/living-doc.schema.json) — base schema for living documents
-- [`accumulating-record.schema.json`](contracts/accumulating-record.schema.json) — base schema for accumulating records
-- [`transient-artifact.schema.json`](contracts/transient-artifact.schema.json) — base schema for transient artifacts
-- [`product.schema.json`](contracts/product.schema.json) — product delivery surface contract
-- [`c4.schema.json`](contracts/c4.schema.json) — `product/technical/architecture/c4/` contract
+```text
+.archeia/.system/
+├── VERSION
+├── spec.yaml
+└── contracts/
+```
 
-## Canonical software kernel
+## Ontology + Rules
 
-The software kernel uses four canonical domains:
+The standard has two layers:
 
-- `strategy/` — vision, values, landscape, roadmap, strategy execution, decisions, conventions, learnings
-- `operations/` — execution, optimization, people, finance, compliance, decisions, conventions, learnings; the support and improvement domain
-- `product/` — product strategy, design, technical, and product execution
-- `growth/` — growth strategy, marketing, sales, success, and growth execution
+- **Ontology** explains what the folders, artifact shapes, ownership model, and contract surfaces mean.
+- **Rules** explain what validators, tools, and distributions must enforce.
 
-Within `strategy/`, the canonical subareas are:
+This split matters. The ontology gives humans and agents a shared map. The rules make that map checkable.
 
-- `strategy/vision/`
-- `strategy/values/`
-- `strategy/landscape/`
-- `strategy/roadmap/`
-- `strategy/execution/`
+## Why This Exists
 
-Within `operations/`, the canonical subareas are:
+AI agents are strongest when they can work from stable context. They struggle when every session has to reconstruct the project from scratch.
 
-- `operations/execution/`
-- `operations/optimization/`
-- `operations/people/`
-- `operations/finance/`
-- `operations/compliance/`
+Archeia gives agents and humans:
 
-Within `product/`, the canonical validated subareas are:
+- predictable paths for important project knowledge
+- clear ownership for writes
+- lifecycle rules for different kinds of artifacts
+- schemas for cross-domain contracts
+- git-backed history and review
+- a structure that works without a hosted service
 
-- `product/strategy/`
-- `product/design/`
-- `product/technical/`
-- `product/execution/`
+It is not a memory database, a wiki, a ticket system, or an agent framework. Those tools can integrate with it. Archeia is the repo-local knowledge contract underneath them.
 
-Within `growth/`, the canonical subareas are:
+## Start Here
 
-- `growth/strategy/`
-- `growth/marketing/`
-- `growth/sales/`
-- `growth/success/`
-- `growth/execution/`
+If you are reading the standard for the first time:
 
-The machine-readable architecture contract surface lives at `product/technical/architecture/c4/`.
+1. Read [`docs/standard/overview.md`](docs/standard/overview.md) for the motivation.
+2. Read [`docs/standard/ontology.md`](docs/standard/ontology.md) for the model.
+3. Read [`docs/standard/rules.md`](docs/standard/rules.md) for packaging and validation.
+4. Explore [`examples/.archeia/`](examples/.archeia/) to see the complete installed tree.
 
-`execution/` is the kernel's universal project-management surface. Its meaning is the same in every domain: the place where active work is organized, tracked, reviewed, and carried forward. Plans, programs, tasks, logs, retros, dashboards, and other execution-state artifacts belong under the owning domain's local `execution/` subtree rather than being centralized elsewhere.
+For terminology and citations, see [`docs/research/terminology.md`](docs/research/terminology.md).
 
-The reason `execution/` is universal is that every top-level domain can move from durable knowledge into active work:
+## Repository Layout
 
-- `strategy/execution/` manages the execution of strategic initiatives and directional work
-- `operations/execution/` manages the execution of operational support and internal improvement work
-- `product/execution/` manages the execution of product delivery work
-- `growth/execution/` manages the execution of go-to-market, adoption, and revenue work
+```text
+.
+├── contracts/                 # Source JSON Schemas
+├── docs/                      # Standard docs, guides, distributions, and research
+├── examples/                  # Valid and invalid installed trees
+├── scripts/                   # Deterministic validation tools
+├── VERSION
+└── README.md
+```
 
-In all four cases, the semantic is identical: `execution/` is the domain-local project-management layer for work in motion.
+The source schemas live in `contracts/`. A conforming project installs copies under `.archeia/.system/contracts/`.
 
-Across domains and subdomains, the kernel permits direct local `decisions/`, `conventions/`, and `learnings/` surfaces where needed. Procedural operating knowledge lives canonically under `operations/optimization/processes/`, with stronger process patterns often graduating into skills. Monitoring, bottleneck analysis, improvement initiatives, and process redesign live under `operations/optimization/`, while `people/`, `finance/`, and `compliance/` expand into explicit support-domain subtrees:
+## Validate The Canonical Example
 
-- `operations/people/{hiring,performance,workplace,compensation}/`
-- `operations/finance/{operational,strategic,compliance}/`
-- `operations/compliance/{regulatory,data-security,risk,ethics}/`
+Run:
 
-Every canonical `.archeia/` folder is also required to carry a scaffolded `README.md` describing its meaning and boundaries.
+```sh
+scripts/archeia_validate examples
+```
 
-## Distributions
+The canonical `examples/.archeia/` tree should pass with zero errors.
 
-A **distribution** is an opinionated bundle that extends the kernel for a specific software operating context. Distributions strengthen usage, policy, and workflow over the shared kernel tree. See [`distributions/README.md`](distributions/README.md) for the guide and current roster.
+Invalid fixtures live under:
 
-The reference distribution is **Archeia Solo**, at [github.com/Hugopeck/archeia](https://github.com/Hugopeck/archeia). A companion distribution-flavor also lives in this repo: [`distributions/archeia-enforcement.md`](distributions/archeia-enforcement.md).
+```text
+examples/invalid/
+```
 
-## Living standard
+Each invalid fixture is designed to fail with a specific validation error.
 
-The agentic software field is moving fast. Archeia tracks this evolution deliberately: design decisions are checked against current harness-engineering practice, then codified as repository contracts that humans and agents can both rely on.
+## What `spec.yaml` Declares
 
-## Versioning
+The installed `.archeia/.system/spec.yaml` file is the machine-readable companion to the ontology. It declares:
 
-The standard uses semantic versioning, with the usual pre-1.0 caveat that breaking revisions may still land as `0.x` minor bumps while the standard is stabilizing:
+- standard version
+- distribution metadata
+- domains and owners
+- canonical tree paths
+- artifact shapes
+- contract surfaces
+- lifecycle status mappings
+- retention windows
+- schema bindings
 
-- **Major** — breaking changes to primitives, invariants, operations, or required distribution tooling
-- **Minor** — additive changes that do not break existing conforming repos
-- **Patch** — clarifications and documentation fixes
+Validators read this file before checking an Archeia tree.
 
-The current version is **0.5.0**. This release makes the kernel thick again: the rich software tree, broad semantic definitions, and flex rules now live in `KERNEL.md`, while `SCHEMA.md` is reduced to a companion explainer.
+## Status
+
+Archeia is pre-1.0. The core model is stabilizing, but breaking changes may still happen while the standard is sharpened through examples, validators, and distribution work.
+
+Current version: [`VERSION`](VERSION)
 
 ## Contributing
 
-This repository is the open spec. Corrections, clarifications, and additions are welcome via PR.
+Good contributions make the standard clearer, more enforceable, or easier to adopt.
+
+Useful changes include:
+
+- clearer wording in the standard docs
+- tighter schemas
+- better validation fixtures
+- additional validator checks
+- distribution examples
+- research notes that affect the ontology or rules
+
+When changing the standard, update the docs, examples, and validator together where possible. A rule is strongest when it is explained, demonstrated, and checked.

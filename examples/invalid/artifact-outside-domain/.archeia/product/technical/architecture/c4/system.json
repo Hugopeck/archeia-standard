@@ -1,0 +1,18 @@
+{
+  "level": "system",
+  "generated_at": "2026-05-23T00:00:00Z",
+  "skill": "example-fixture",
+  "skill_version": "0.1.0",
+  "elements": [
+    {
+      "id": "archeia-tree",
+      "name": "Archeia Tree",
+      "description": "The installed Archeia knowledge tree.",
+      "technology": "filesystem",
+      "evidence": [
+        ".archeia/.system/spec.yaml"
+      ],
+      "relationships": []
+    }
+  ]
+}
