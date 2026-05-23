@@ -123,18 +123,3 @@ Validators read this file before checking an Archeia tree.
 Archeia is pre-1.0. The core model is stabilizing, but breaking changes may still happen while the standard is sharpened through examples, validators, and distribution work.
 
 Current version: [`VERSION`](VERSION)
-
-## Contributing
-
-Good contributions make the standard clearer, more enforceable, or easier to adopt.
-
-Useful changes include:
-
-- clearer wording in the standard docs
-- tighter schemas
-- better validation fixtures
-- additional validator checks
-- distribution examples
-- research notes that affect the ontology or rules
-
-When changing the standard, update the docs, examples, and validator together where possible. A rule is strongest when it is explained, demonstrated, and checked.
