@@ -1,66 +1,30 @@
-# Archeia Distributions
+# Blueprint Bundles (Deferred)
 
-A **distribution** is an opinionated bundle that extends [the Archeia ontology](../standard/ontology.md) for a specific software operating context.
+Earlier versions of Archeia used **distribution** for a reusable opinionated bundle on top of the shared ontology: owners, lifecycles, skills, agents, and emphasis rules that could be applied to many projects.
 
-Each distribution declares:
+That model made sense when Archeia was a public standard with multiple external adopters shipping their own bundles (for example, Archeia Solo).
 
-1. its target audience
-2. which ontology paths are required, emphasized, or left sparse
-3. its owner assignments per domain
-4. its status vocabularies and temporal mappings for transient artifacts
-5. its retention windows
-6. its inherent skill roster
-7. its agent roster
-8. its ethos and workflow
+## Current model
 
-All distributions share the same software ontology from [`docs/standard/ontology.md`](../standard/ontology.md):
+Archeia Factory now has two forms:
 
-- `strategy/`
-- `operations/`
-- `product/`
-- `growth/`
+- **Blueprint** — the reusable source architecture in this repo.
+- **Instance** — the `.archeia/` operating layer installed into a specific project repo.
 
-The reference distribution is [Archeia Solo](https://github.com/Hugopeck/archeia).
+`init` creates an Instance from the Blueprint. The Instance manifest (`spec.yaml`) describes that installation directly: domains, owners, lifecycles, tree, schemas, and contracts.
 
-## Required distribution artifacts
+There is no separate distribution layer in the current model.
 
-Every distribution must provide:
+## Legacy manifest field
 
-- `.archeia/.system/spec.yaml`
-- lifecycle specifications for transient artifacts
-- JSON Schemas that install to `.archeia/.system/contracts/`
-- implementations of the six standard operations plus the `archivist` agent
-- any stricter usage rules over the shared ontology tree
+Installed manifests may still carry a `distribution` block recording which Blueprint bundle was used to create the Instance. This is lineage metadata, not a live concept in the Factory docs. The field name will be updated in a future schema pass.
 
-## Example
+## If reusable Blueprint bundles return
 
-```yaml
-distribution: archeia-solo
-version: 1.0.0
+If the Factory later needs multiple reusable init recipes (for example, solo vs company-ops), those bundles would live on the Blueprint side. The installed result would still be called an Instance.
 
-domains:
-  - id: strategy
-    owner: strategy-skills
-    shapes: [living, accumulating]
-    reads: []
-  - id: operations
-    owner: operations-skills
-    shapes: [living, accumulating, transient]
-    reads: [strategy, product]
-  - id: product
-    owner: product-skills
-    shapes: [living, accumulating, transient]
-    reads: [strategy, operations, growth]
-  - id: growth
-    owner: growth-skills
-    shapes: [living, accumulating, transient]
-    reads: [strategy, operations, product]
-```
+Until then, see:
 
-Typical distributions differ by emphasis and policy, not by replacing the ontology tree. A solo distribution may leave many ontology paths sparse. A startup distribution may strengthen `growth/` and `operations/finance/`. An internal-project distribution may interpret `growth/` primarily as adoption and rollout.
-
-## See also
-
-- [`../standard/ontology.md`](../standard/ontology.md)
-- [`../standard/rules.md`](../standard/rules.md)
-- [`../standard/overview.md`](../standard/overview.md)
+- [`../standard/ontology.md`](../standard/ontology.md) — operational model
+- [`../standard/rules.md`](../standard/rules.md) — manifest and validation
+- [`../guides/faq.md`](faq.md) — common questions

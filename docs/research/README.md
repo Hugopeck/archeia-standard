@@ -1,12 +1,12 @@
 # Research — the Observe-Orient leg of Archeia's OODA loop
 
-This folder is the part of the repository that looks outward. Every other directory in this repo acts inward — defining the spec, enforcing contracts, documenting decisions already made. This one watches what is happening in the world and feeds that signal back into the standard before it calcifies.
+This folder is the part of the repository that looks outward. Every other directory in this repo acts inward — defining the Blueprint, enforcing contracts, documenting decisions already made. This one watches what is happening in the world and feeds that signal back into the Factory before it calcifies.
 
 The **[bibliography](bibliography.md)** is the primary artifact: a curated, date-sorted table of articles, papers, repos, and guides from the leading AI labs, AI-native companies, academic research groups, and open-source communities working on the same problems Archeia is solving.
 
 ---
 
-## The OODA loop, applied to a living standard
+## The OODA loop, applied to a living Factory
 
 The OODA loop — **Observe, Orient, Decide, Act** — is a model for how any adaptive system maintains relevance in a fast-moving environment. For Archeia, each phase maps to a concrete activity:
 
@@ -16,9 +16,9 @@ The OODA loop — **Observe, Orient, Decide, Act** — is a model for how any ad
 
 **Decide** — translate the orientation into a spec decision. If the observation is trivial, nothing changes. If it reveals a genuine gap or a better approach, it becomes a candidate for the next spec revision, an ADR in `.archeia/product/decisions/`, or a prompt to revisit a principle in `docs/standard/overview.md`. The bibliography entry is the evidence trail for that decision.
 
-**Act** — update the spec, the ontology, the schema, or a distribution. The loop closes. The standard advances because of what was observed, not despite it.
+**Act** — update the Blueprint, the ontology, the schema, or the validators. The loop closes. The Factory advances because of what was observed, not despite it.
 
-Without this folder actively maintained, the loop breaks at **Observe**. The spec makes decisions in a vacuum, accumulates assumptions the field has already falsified, and diverges from what agents and harnesses actually need. The research folder is the instrument that keeps the standard honest over time.
+Without this folder actively maintained, the loop breaks at **Observe**. The Blueprint makes decisions in a vacuum, accumulates assumptions the field has already falsified, and diverges from what agents and harnesses actually need. The research folder is the instrument that keeps the Factory honest over time.
 
 ---
 
@@ -64,6 +64,7 @@ Archeia sits at the intersection of four threads where the field is moving faste
 
 | File | Purpose |
 |---|---|
+| [`theoretical-basis.md`](theoretical-basis.md) | Theoretical framework — why Archeia uses each concept, with academic and industry citations |
 | [`bibliography.md`](bibliography.md) | Primary index — all sources in a single date-sorted table covering articles, papers, repos, and guides |
 | [`arxiv-ai-engineering-2026.md`](arxiv-ai-engineering-2026.md) | Curated arXiv papers from 2026, annotated with Archeia-specific relevance statements, split into Narrative support and Technical direction |
 | [`prompts/research-arxiv-2026.md`](prompts/research-arxiv-2026.md) | Reusable research prompt for instructing an agent to find and format new arXiv papers into this folder's format |

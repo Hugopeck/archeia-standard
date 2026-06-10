@@ -1,10 +1,10 @@
 # Archeia Rules
 
-Rules describe what tools and conforming repos must enforce. The ontology explains the meaning of the system. This document explains validation, packaging, operations, and test expectations.
+Rules describe what tools and installed `.archeia/` trees must enforce. The ontology explains the meaning of the system. This document explains validation, packaging, operations, and test expectations. For the consolidated build contract, see [`spec.md`](spec.md).
 
-## Source And Installed Layout
+## What Lives Where
 
-This repository is the source standard. It keeps prose, schemas, scripts, and fixtures in normal source paths:
+**Blueprint** — this repository. It keeps prose, schemas, scripts, and fixtures in normal source paths:
 
 ```text
 contracts/
@@ -14,7 +14,7 @@ scripts/
 VERSION
 ```
 
-A conforming project installs the standard under `.archeia/.system/`:
+**Instance** — the `.archeia/` layer in a project repo. System metadata lives under `.archeia/.system/`:
 
 ```text
 .archeia/.system/
@@ -23,7 +23,7 @@ A conforming project installs the standard under `.archeia/.system/`:
 └── contracts/
 ```
 
-`spec.yaml` is the installed machine-readable standard spec. It replaces the old `domains.yaml` name because it declares more than domains.
+`spec.yaml` is the installed machine-readable manifest. It replaces the old `domains.yaml` name because it declares more than domains.
 
 Validators may warn when they see `domains.yaml`, but new examples and tools should use `spec.yaml`.
 
@@ -31,8 +31,8 @@ Validators may warn when they see `domains.yaml`, but new examples and tools sho
 
 `spec.yaml` declares:
 
-- standard version
-- distribution name and version
+- Archeia version
+- instance name and version (legacy manifest field: `distribution`)
 - ontology document reference
 - domains and owners
 - canonical tree directories
@@ -42,9 +42,9 @@ Validators may warn when they see `domains.yaml`, but new examples and tools sho
 - retention windows
 - schema bindings
 
-The example spec is installed in `examples/.archeia/.system/spec.yaml`.
+The example manifest is installed in `examples/.archeia/.system/spec.yaml`.
 
-## Conformance Checks
+## Validation Checks
 
 A validator should check:
 
@@ -63,10 +63,10 @@ Ownership checks are advisory unless the validator has reliable writer identity 
 
 ## Operations
 
-Conforming distributions provide six deterministic operations:
+Archeia supports six deterministic operations on an installed `.archeia/` tree:
 
-- `init`: install `.archeia/.system/` and scaffold the tree.
-- `validate`: return structured conformance issues.
+- `init`: install an Instance (the `.archeia/` layer) into a target repo by writing `.archeia/.system/` and scaffolding the tree.
+- `validate`: return structured health issues.
 - `write`: create or update artifacts only when ownership, shape, schema, and contract rules pass.
 - `transition`: move transient artifacts through declared statuses.
 - `prune`: remove expired transient artifacts after their retention window.
@@ -79,13 +79,13 @@ Tools may implement these operations in any language if the observable behavior 
 - Failed preconditions should stop the operation before partial writes.
 - Living artifacts are edited in place.
 - Accumulating records are not deleted; only declared metadata updates are allowed.
-- Transient deletion goes through pruning unless a distribution explicitly allows direct deletion.
+- Transient deletion goes through pruning unless the Instance manifest explicitly allows direct deletion.
 - Operations on the same artifact should be serialized.
 - Multi-file writes should be transactional where possible.
 
 ## Test Scenarios
 
-The standard fixtures cover these scenarios:
+The example fixtures cover these scenarios:
 
 - full canonical tree passes validation.
 - missing C4 evidence fails validation.
@@ -97,6 +97,6 @@ The standard fixtures cover these scenarios:
 
 ## Harness Boundary
 
-The harness is the runtime that loads skills, invokes models, manages context, and writes files. Archeia is the knowledge layer contract.
+The harness is the execution environment that loads skills, invokes models, manages context, and writes files. Archeia is the project knowledge contract.
 
 A harness must flush `.archeia/` writes to disk before it discards in-context state. Losing a pending `.archeia/` write during compaction is a harness bug.

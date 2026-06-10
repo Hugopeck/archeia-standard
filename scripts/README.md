@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains small deterministic tools for working with the standard.
+This folder contains small deterministic tools for working with the Blueprint and installed `.archeia/` trees.
 
 ## `archeia_validate`
 

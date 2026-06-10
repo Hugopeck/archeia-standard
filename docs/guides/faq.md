@@ -2,11 +2,11 @@
 
 ## What is Archeia?
 
-Archeia is a standard for project knowledge inside a software repo. It gives humans and agents a shared `.archeia/` tree with clear meanings, owners, lifecycle shapes, schemas, and validation rules.
+Archeia Factory is my private system for giving software projects a shared knowledge layer with clear meanings, owners, lifecycle shapes, schemas, and validation rules. The Blueprint lives in this repo. Each project gets an Instance: the `.archeia/` layer installed by `init`.
 
 ## Where should I start?
 
-Read [`../standard/overview.md`](../standard/overview.md) for the reason Archeia exists, [`../standard/ontology.md`](../standard/ontology.md) for the model, and [`../standard/rules.md`](../standard/rules.md) for packaging and validation.
+Read [`../standard/overview.md`](../standard/overview.md) for the reason Archeia exists, [`../standard/spec.md`](../standard/spec.md) for the build contract, [`../standard/ontology.md`](../standard/ontology.md) for the model, and [`../standard/rules.md`](../standard/rules.md) for validation and operations.
 
 ## Is this a wiki replacement?
 
@@ -35,8 +35,8 @@ Files are easy for humans and agents to inspect. Paths are stable. Git gives his
 
 ## What replaced `domains.yaml`?
 
-Installed repos now use `.archeia/.system/spec.yaml`. It declares domains, owners, the canonical tree, schemas, contracts, lifecycles, retention, and distribution metadata.
+Installed repos now use `.archeia/.system/spec.yaml`. It declares domains, owners, the canonical tree, schemas, contracts, lifecycles, retention, and instance identity.
 
-## Can distributions extend Archeia?
+## Can an Instance extend the canonical tree?
 
-Yes. A distribution can add stricter rules, workflow defaults, or extra subtrees. It should not rename or redefine canonical ontology paths.
+Yes. An Instance may add stricter local rules, workflow defaults, or extra subtrees. It should not rename or redefine canonical ontology paths.

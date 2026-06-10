@@ -281,4 +281,4 @@ Cited directly in this document:
 - Reliability Limits of LLM-Based Multi-Agent Planning (2026). arXiv:2603.26993.
 - A-MemGuard (2025). arXiv:2510.02373.
 
-Full citation details for all Archeia-referenced work are in [`../research/terminology.md`](../research/terminology.md).
+Full citation details for all Archeia-referenced work are in [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
