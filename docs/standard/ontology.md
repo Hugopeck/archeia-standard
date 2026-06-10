@@ -1,16 +1,19 @@
 # Archeia Ontology
 
-The ontology defines what Archeia means. It names the core concepts, the canonical folders, the lifecycle shapes, and the ownership model.
+The ontology defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model.
 
-Rules and validators are described in [`rules.md`](rules.md). Terminology and citations live in [`../research/terminology.md`](../research/terminology.md).
+Rules and validators are described in [`rules.md`](rules.md). The build contract is in [`spec.md`](spec.md). Theoretical basis and citations live in [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
 
 ## Scope
 
-Archeia defines a software-project knowledge layer under `.archeia/`. It does not define a non-software operating model, a hosted service, a UI, or one universal approval workflow.
+**Archeia Factory** is the complete system. The **Blueprint** is the reusable source architecture maintained in this repository. An **Instance** is the `.archeia/` operating layer that `init` installs into a project repo.
+
+This ontology defines what an Instance means: folders, shapes, ownership, and contracts. It does not define a non-software operating model, a hosted service, a UI, one universal approval workflow, or a public adoption process.
 
 ## Primitives
 
-- **Root**: a project root containing `.archeia/`.
+- **Instance**: the installed `.archeia/` layer in a project repo.
+- **Project root**: a software repo that hosts an Instance.
 - **Domain**: one top-level folder under `.archeia/`.
 - **Artifact**: a file inside a domain.
 - **Shape**: the lifecycle category of an artifact: living, accumulating, or transient.
@@ -22,7 +25,7 @@ Archeia defines a software-project knowledge layer under `.archeia/`. It does no
 
 ## Domains
 
-Every conforming software project uses four top-level domains:
+Every Instance uses four top-level domains:
 
 - `strategy/`: direction, values, landscape, roadmap, and strategy-owned execution.
 - `operations/`: support, improvement, execution, people, finance, compliance, and process.
@@ -33,7 +36,7 @@ Each artifact belongs to exactly one top-level domain.
 
 ## Canonical Tree
 
-The full canonical tree is shown in `examples/`. A project may use the tree sparsely, but canonical names and meanings do not change.
+The full folder tree is shown in `examples/`. A project may use the tree sparsely, but canonical names and meanings do not change.
 
 The top-level shape is:
 
@@ -85,7 +88,7 @@ Examples: tasks, plans, projects, programs, and running experiments.
 
 Each top-level domain has one owner family. Writers may read across domains, but writes go through the owning domain.
 
-Ownership keeps parallel agent work simple. Delegation is allowed, but the owning domain remains responsible for the write.
+Ownership is the concurrency model for parallel human and agent work. Delegation is allowed, but the owning domain remains responsible for the write.
 
 ## Contract Surfaces
 
@@ -103,9 +106,25 @@ These surfaces are validated by schemas in `contracts/` when installed into `.ar
 - Sparse use is normal.
 - Omission is allowed when a subtree is irrelevant.
 - Broader interpretation is allowed inside the defined meaning.
-- Arbitrary repurposing is not conforming.
-- Distributions may add stricter rules or extra subtrees, but should not redefine canonical paths.
+- Arbitrary repurposing of canonical paths is invalid.
+- An Instance may add stricter local rules or extra subtrees, but should not redefine canonical paths.
 
 ## Evidence Policy
 
-Descriptive artifacts should cite their sources. This is a policy until the standard defines a concrete citation grammar that validators can check without guessing.
+Descriptive artifacts should cite their sources. This is a policy until Archeia defines a concrete citation grammar that validators can check without guessing.
+
+## Block Model
+
+Archeia treats domains, artifacts, procedures, and agent roles as lightweight system blocks. This is how agents read the ontology — not a requirement to model every workflow step.
+
+A block should be clear about:
+
+- **Boundary**: what it owns and what it does not own.
+- **State**: the properties that describe its current condition.
+- **Inputs**: the files, events, or context it consumes.
+- **Outputs**: the artifacts, summaries, decisions, or signals it produces.
+- **Interfaces**: the stable handoffs other blocks can rely on.
+- **Constraints**: the rules that keep writes and transitions safe.
+- **Agent roles**: the writers or readers expected to operate it.
+
+Define the outside of the block with care. Let humans and agents handle the inside with judgment.

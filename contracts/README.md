@@ -1,8 +1,8 @@
 # Contracts
 
-This folder contains the source JSON Schemas for the Archeia Standard.
+This folder contains the source JSON Schemas for the Archeia Blueprint.
 
-These schemas are copied into a conforming project at `.archeia/.system/contracts/`.
+These schemas are copied into an installed `.archeia/` tree at `.archeia/.system/contracts/`.
 The installed copies are what validators read when they check Archeia artifacts.
 
 ## Files

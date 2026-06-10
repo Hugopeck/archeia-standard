@@ -1,13 +1,12 @@
 ---
-distribution: archeia-enforcement
 status: draft
-target-audience: any team running a software-conforming Archeia repo in CI
-standard-pin: ">=0.5.0, <1.0.0"
+target-audience: any project running Archeia validation in CI
+blueprint-pin: ">=0.5.0, <1.0.0"
 ---
 
 # Archeia Enforcement — the mechanical-guardrails companion
 
-`archeia-enforcement` is a companion distribution-flavor: linters, CI checks, validators, and hooks that turn the standard's normative requirements into mechanical guardrails.
+`archeia-enforcement` is a companion guardrail pack: linters, CI checks, validators, and hooks that turn the Blueprint's validation rules into mechanical checks.
 
 ## Example failure formats
 
