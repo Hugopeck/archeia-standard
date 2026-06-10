@@ -14,9 +14,9 @@ The OODA loop — **Observe, Orient, Decide, Act** — is a model for how any ad
 
 **Orient** — read those signals against Archeia's current design. Does the new harness pattern assume something that `docs/standard/ontology.md` has already ruled out? Does a paper's finding about context window management invalidate a choice in the `.archeia/` directory layout? Does an open-source repo solve a problem Archeia was planning to solve differently? This is the interpretive step — understanding what the signal means *for this project specifically*, not just in the abstract.
 
-**Decide** — translate the orientation into a spec decision. If the observation is trivial, nothing changes. If it reveals a genuine gap or a better approach, it becomes a candidate for the next spec revision, an ADR in `.archeia/product/decisions/`, or a prompt to revisit a principle in `docs/standard/overview.md`. The bibliography entry is the evidence trail for that decision.
+**Decide** — translate the orientation into an operational change. If the observation is trivial, nothing changes. If it reveals a genuine gap or a better approach, it becomes a candidate for ontology, rules, or an ADR in `.archeia/product/decisions/`. The bibliography entry is the evidence trail for that decision.
 
-**Act** — update the Blueprint, the ontology, the schema, or the validators. The loop closes. The Factory advances because of what was observed, not despite it.
+**Act** — update the ontology, rules, schema, or validators — then mirror in `docs/standard/spec.md`. The loop closes. The Factory advances because of what was observed, not despite it.
 
 Without this folder actively maintained, the loop breaks at **Observe**. The Blueprint makes decisions in a vacuum, accumulates assumptions the field has already falsified, and diverges from what agents and harnesses actually need. The research folder is the instrument that keeps the Factory honest over time.
 
@@ -50,9 +50,11 @@ Archeia sits at the intersection of four threads where the field is moving faste
 
 ## How to use this folder
 
-**When designing a new spec area** — start here before writing anything. Check whether a leading lab has already published patterns that should inform or constrain the approach. Designing without observing is the fastest path to building something the field has already tried and abandoned.
+**When building or changing tools** — start in `docs/standard/ontology.md`, `docs/standard/rules.md`, and `docs/standard/spec.md`. Research informs those docs; it does not replace them.
 
-**When challenging an existing decision** — look for papers or posts that contradict or complicate a choice already in the spec. Those are the ones that deserve a serious read and, if warranted, an ADR explaining why Archeia departs from the field's direction.
+**When designing a new model area** — check here whether a leading lab has already published patterns worth citing. Do not treat `theoretical-basis.md` as a scope-expansion checklist — it can pull toward architecture cosplay over shipping.
+
+**When challenging an existing decision** — look for papers or posts that contradict or complicate a choice already in ontology or rules. Those deserve a serious read and, if warranted, an ontology/rules edit plus ADR — not an ad hoc spec-only change.
 
 **When evaluating implementation options** — repos in the bibliography are reference implementations. Studying them before building is faster than rediscovering their lessons.
 
@@ -64,7 +66,7 @@ Archeia sits at the intersection of four threads where the field is moving faste
 
 | File | Purpose |
 |---|---|
-| [`theoretical-basis.md`](theoretical-basis.md) | Theoretical framework — why Archeia uses each concept, with academic and industry citations |
+| [`theoretical-basis.md`](theoretical-basis.md) | Theoretical framework — why Archeia uses each concept (research only; not operational canon) |
 | [`bibliography.md`](bibliography.md) | Primary index — all sources in a single date-sorted table covering articles, papers, repos, and guides |
 | [`arxiv-ai-engineering-2026.md`](arxiv-ai-engineering-2026.md) | Curated arXiv papers from 2026, annotated with Archeia-specific relevance statements, split into Narrative support and Technical direction |
 | [`prompts/research-arxiv-2026.md`](prompts/research-arxiv-2026.md) | Reusable research prompt for instructing an agent to find and format new arXiv papers into this folder's format |

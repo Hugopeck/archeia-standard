@@ -1,6 +1,6 @@
 # Archeia Rules
 
-Rules describe what tools and installed `.archeia/` trees must enforce. The ontology explains the meaning of the system. This document explains validation, packaging, operations, and test expectations. For the consolidated build contract, see [`spec.md`](spec.md).
+Rules describe what tools and installed `.archeia/` trees must enforce. The ontology explains the meaning of the system. **This is the authoritative source for enforcement changes** — edit here first, then mirror in [`spec.md`](spec.md). For the consolidated build contract, see [`spec.md`](spec.md).
 
 ## What Lives Where
 
@@ -31,8 +31,8 @@ Validators may warn when they see `domains.yaml`, but new examples and tools sho
 
 `spec.yaml` declares:
 
-- Archeia version
-- instance name and version (legacy manifest field: `distribution`)
+- `archeia_version`
+- `instance_identity` (name and version)
 - ontology document reference
 - domains and owners
 - canonical tree directories

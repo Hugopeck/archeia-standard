@@ -82,6 +82,14 @@ def validate(root):
     if spec is None:
         return issues
 
+    if "standard_version" in spec or "distribution" in spec:
+        issue(issues, "error", "S004", spec_path, "legacy manifest fields (standard_version, distribution) are removed; use archeia_version and instance_identity")
+    if "archeia_version" not in spec:
+        issue(issues, "error", "S005", spec_path, "missing required field: archeia_version")
+    identity = spec.get("instance_identity")
+    if not isinstance(identity, dict) or not identity.get("name"):
+        issue(issues, "error", "S006", spec_path, "missing required field: instance_identity.name")
+
     contracts = standard / "contracts"
     for schema in SCHEMAS:
         schema_path = contracts / schema

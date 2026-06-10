@@ -15,9 +15,18 @@ Archeia Factory now has two forms:
 
 There is no separate distribution layer in the current model.
 
-## Legacy manifest field
+## Instance identity in the manifest
 
-Installed manifests may still carry a `distribution` block recording which Blueprint bundle was used to create the Instance. This is lineage metadata, not a live concept in the Factory docs. The field name will be updated in a future schema pass.
+Installed manifests record lineage in `instance_identity`:
+
+```json
+"instance_identity": {
+  "name": "full-canonical-tree",
+  "version": "0.1.0"
+}
+```
+
+Legacy fields `standard_version` and `distribution` are removed. Validators reject them.
 
 ## If reusable Blueprint bundles return
 

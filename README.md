@@ -2,6 +2,8 @@
 
 **Archeia Factory is my private system for giving software projects a durable, shared knowledge layer that humans and AI agents can both read and write.**
 
+**North star:** I never re-explain project context in a new chat.
+
 Important context scatters fast: chat logs, tickets, wikis, docs, and agent memory. Archeia puts project operating knowledge in one predictable place inside the repo — the `.archeia/` tree — so nobody has to reconstruct the roadmap, the current decision, the architecture evidence, or active work from scratch.
 
 ## Two Forms
@@ -18,6 +20,8 @@ Archeia Factory
 ```
 
 **Factory** is the whole system — Blueprint plus Instance shape, validation, and the procedures that keep installations useful over time. This is not a public adoption program. It is a private operating system for my own projects.
+
+Blueprint **v0** is a rough, complete address space — every canonical path exists so postures and defaults have a settled place, even when the answer is two sentences or "N/A". See [`docs/standard/spec.md`](docs/standard/spec.md#2-blueprint-v0-philosophy).
 
 In prose, prefer `.archeia/`, `spec.yaml`, and domain names over repeating "instance."
 
@@ -86,6 +90,8 @@ Archeia gives agents and humans:
 - a repo-local structure that works without a hosted service
 
 It is not a memory database, a wiki, a ticket system, or an agent framework. Those tools can integrate with it. Archeia is the repo-local knowledge layer underneath them.
+
+Archeia does not replace `AGENTS.md`, harness rules, Conductor workspaces, or project skills. It composes with them — the stack works together, not as competing alternatives.
 
 ## Start Here
 
