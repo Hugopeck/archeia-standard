@@ -2,6 +2,8 @@
 
 **Archeia Factory is my private system for giving software projects a durable, shared knowledge layer that humans and AI agents can both read and write.**
 
+**North star:** I never re-explain project context in a new chat.
+
 Important context scatters fast: chat logs, tickets, wikis, docs, and agent memory. Archeia puts project operating knowledge in one predictable place inside the repo — the `.archeia/` tree — so nobody has to reconstruct the roadmap, the current decision, the architecture evidence, or active work from scratch.
 
 ## Two Forms
@@ -88,6 +90,8 @@ Archeia gives agents and humans:
 - a repo-local structure that works without a hosted service
 
 It is not a memory database, a wiki, a ticket system, or an agent framework. Those tools can integrate with it. Archeia is the repo-local knowledge layer underneath them.
+
+Archeia does not replace `AGENTS.md`, harness rules, Conductor workspaces, or project skills. It composes with them — the stack works together, not as competing alternatives.
 
 ## Start Here
 

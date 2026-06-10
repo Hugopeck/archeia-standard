@@ -58,7 +58,7 @@ This companion:
 
 - does **not** define domains or contracts
 - does **not** implement standard operations
-- does wrap validation and CI behavior around the parent distribution
+- does wrap validation and CI behavior around the Blueprint contract
 
 ## References
 

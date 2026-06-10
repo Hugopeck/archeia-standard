@@ -2,9 +2,21 @@
 
 This document is the build contract for Archeia Factory. It consolidates what implementers need from the operational model ([`ontology.md`](ontology.md)) and enforcement rules ([`rules.md`](rules.md)) into one place.
 
-Use this document when building tools — especially `init` and `validate`. For motivation, see [`overview.md`](overview.md). For theoretical grounding, see [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
+Use this document when building tools — especially `init` and `validate`. For motivation, see [`overview.md`](overview.md). For theoretical grounding (non-canonical), see [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
 
 Archeia is at **Blueprint v0**: a rough, complete starting point meant to be tested by real use, not perfected in advance.
+
+### Document authority
+
+This spec consolidates ontology and rules for implementers. It is **not** a third source of truth.
+
+| Change type | Authoritative doc | Then mirror in |
+|---|---|---|
+| Model — concepts, domains, shapes, ownership | [`ontology.md`](ontology.md) | [`rules.md`](rules.md), this spec |
+| Enforcement — validation, operations, tests | [`rules.md`](rules.md) | this spec |
+| Build contract summary | — | this spec mirrors only; do not invent here |
+
+**Rule:** Change the model in ontology. Change enforcement in rules. Mirror both in spec. **Never invent only in spec.**
 
 ---
 
@@ -28,6 +40,12 @@ Blueprint (this repo)  --init-->  Instance (.archeia/ in a project)
 ```
 
 In prose, prefer `.archeia/`, `spec.yaml`, and domain names over repeating "instance."
+
+### Success criterion
+
+> I never re-explain project context in a new chat.
+
+When an agent starts cold, it should find current work, product intent, operating constraints, and architecture evidence in the canonical tree — or read an explicit "N/A" / "not applicable yet" at the right path.
 
 ---
 
@@ -95,6 +113,10 @@ Instance           address space exists
 
 Product value in v0 is proven by dogfooding, not by validation alone.
 
+### v0 Factory scope (expected gaps)
+
+Blueprint v0 is intentionally incomplete as a runnable Factory. Today this repo ships **`validate`** and the build contract; **`init`**, **`write`**, **`transition`**, **`prune`**, and harness skills are future work. That is acceptable for v0 — the address space and contract check come first; the operating loop hardens through use.
+
 ### v0 success criterion
 
 > When an agent faces a decision in domain X, it can find the canonical path for X without asking the human — and the file either contains an answer or explicitly says it is not applicable yet.
@@ -159,6 +181,12 @@ Every Instance uses four top-level domains. Each artifact belongs to exactly one
 | `operations/` | Support, improvement, execution, people, finance, compliance, and process. |
 | `product/` | Product strategy, design, technical evidence, and delivery context. |
 | `growth/` | Adoption, go-to-market, sales, success, support, and rollout. |
+
+### Why business-shaped names
+
+The domain names look like a company org chart. They are meant as a **universal decomposition**, not a demand that every repo is a startup.
+
+Every endeavor — including a solo weekend project — has direction (strategy), boundaries and operating rules (operations/compliance), something to build (product), and an audience or story to tell even informally (growth). Financial and opportunity cost exist even when cash spend is zero. The tree holds those questions in settled places; answers can be two sentences or "N/A."
 
 ### Important subtrees
 
@@ -255,7 +283,7 @@ Two canonical cross-domain contract surfaces are validated by installed schemas:
 
 ## 9. Instance Manifest (`spec.yaml`)
 
-The installed manifest is `.archeia/.system/spec.yaml`. Despite the extension, the current format is **JSON**.
+The installed manifest is `.archeia/.system/spec.yaml`. The filename is historical; the format is **JSON** (not YAML). Keep the path for v0; content is what tools parse.
 
 Reference: `examples/.archeia/.system/spec.yaml`
 
@@ -263,10 +291,10 @@ Reference: `examples/.archeia/.system/spec.yaml`
 
 | Field | Type | Purpose |
 |---|---|---|
-| `standard_version` | string | Blueprint version this Instance was built from. **Legacy name** — planned rename to `archeia_version`. |
-| `distribution` | object | Instance identity. **Legacy name** — planned rename. |
-| `distribution.name` | string | Instance configuration name (example: `archeia-standard-full-canonical-tree`). |
-| `distribution.version` | string | Instance configuration version. |
+| `archeia_version` | string | Blueprint version this Instance was built from. |
+| `instance_identity` | object | Lineage metadata for this installation. |
+| `instance_identity.name` | string | Instance configuration name (example: `full-canonical-tree`). |
+| `instance_identity.version` | string | Instance configuration version. |
 | `ontology` | object | Reference to the ontology document. |
 | `ontology.document` | string | Path to ontology in Blueprint (example: `docs/standard/ontology.md`). |
 | `domains` | string[] | Declared top-level domains. Must include all four. |
@@ -390,6 +418,9 @@ What `scripts/archeia_validate` checks today. These are **contract checks** for 
 | S001 | fatal | `.archeia/.system/spec.yaml` exists |
 | S002 | warning | `domains.yaml` present without `spec.yaml` (deprecated) |
 | S003 | error | `spec.yaml` parses as JSON |
+| S004 | error | no legacy manifest fields (`standard_version`, `distribution`) |
+| S005 | error | `archeia_version` present |
+| S006 | error | `instance_identity.name` present |
 | S010 | error | each installed schema file exists |
 | S011 | error | each installed schema parses as JSON |
 | T001 | error | four top-level domains exist |
@@ -453,6 +484,19 @@ A harness must flush `.archeia/` writes to disk before it discards in-context st
 
 Archeia does not specify the harness. It specifies what the harness produces and consumes.
 
+### Stack composition (not either/or)
+
+Archeia is not meant to win a false comparison against a single alternative:
+
+| Layer | Examples | Role |
+|---|---|---|
+| Harness runtime | Claude Code, Conductor | execution, compaction, tool loops |
+| Harness instructions | `AGENTS.md`, `.cursor/rules`, skills | session behavior and tool affordances |
+| Workspace context | Conductor `.context/`, chat attachments | ephemeral collaboration |
+| Archeia Instance | `.archeia/` tree | durable, structured project operating knowledge |
+
+The bet is the **whole stack together** — not `AGENTS.md` alone vs `.archeia/product/technical/specs/` alone. Archeia holds what should survive across sessions; harness rules hold how agents behave in a session.
+
 ---
 
 ## 13. What Archeia Is Not
@@ -476,14 +520,14 @@ Items not yet specified. Resolve before or during implementation.
 - [x] v0 does not copy example artifact templates beyond stubs.
 - [ ] CLI flags: `--dry-run`, `--force` on existing `.archeia/`?
 - [ ] Where do README question templates live in the Blueprint (`templates/readmes/` or keyed map)?
-- [ ] How should `init` set `distribution.name` / instance identity — fixed default or configurable?
+- [ ] How should `init` set `instance_identity.name` — fixed default or configurable?
 - [ ] Should `VERSION` in `.archeia/.system/` mirror Blueprint `VERSION` or track Instance config version separately?
 
-### Schema rename (planned)
+### Schema (settled in v0)
 
-- [ ] Rename `standard_version` → `archeia_version` in `spec.yaml`
-- [ ] Rename `distribution` → instance identity field (name TBD)
-- [ ] Rename `spec.yaml` to `spec.json` or keep extension with JSON content?
+- [x] `archeia_version` replaces `standard_version`.
+- [x] `instance_identity` replaces `distribution`.
+- [x] Keep manifest path as `spec.yaml`; content is JSON until a breaking rename is worth it.
 
 ### Update and sync
 
@@ -520,6 +564,6 @@ Items not yet specified. Resolve before or during implementation.
 | [`overview.md`](overview.md) | Why Archeia exists |
 | [`ontology.md`](ontology.md) | Operational model and block model |
 | [`rules.md`](rules.md) | Rules, operations, and test scenarios |
-| [`../research/theoretical-basis.md`](../research/theoretical-basis.md) | Research grounding and citations |
+| [`../research/theoretical-basis.md`](../research/theoretical-basis.md) | Research grounding and citations (not operational canon) |
 | [`../../examples/.archeia/`](../../examples/.archeia/) | Valid reference Instance |
 | [`../../scripts/archeia_validate`](../../scripts/archeia_validate) | Current validator implementation |

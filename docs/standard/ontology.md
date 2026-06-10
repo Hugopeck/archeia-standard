@@ -1,8 +1,8 @@
 # Archeia Ontology
 
-The ontology defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model.
+The ontology defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model. **This is the authoritative source for model changes** — edit here first, then mirror in [`rules.md`](rules.md) and [`spec.md`](spec.md).
 
-Rules and validators are described in [`rules.md`](rules.md). The build contract is in [`spec.md`](spec.md). Theoretical basis and citations live in [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
+Rules and validators are described in [`rules.md`](rules.md). The build contract is in [`spec.md`](spec.md). Theoretical basis and citations live in [`../research/theoretical-basis.md`](../research/theoretical-basis.md) (research only, not operational canon).
 
 ## Scope
 
@@ -33,6 +33,19 @@ Every Instance uses four top-level domains:
 - `growth/`: adoption, go-to-market, sales, success, support, and rollout.
 
 Each artifact belongs to exactly one top-level domain.
+
+### Why business-shaped names for every project
+
+The four domains use business vocabulary on purpose. From a general view, **every endeavor is a kind of business** — not only startups or companies.
+
+Even a small weekend personal project has:
+
+- **Strategy** — a vision, goals, and tradeoffs about what to build.
+- **Growth** — a story you sell to yourself, your partner, a friend at the bar; adoption and audience even when informal.
+- **Operations / compliance** — boundaries: house rules, family agreements, platform policies, ethics postures, what you refuse to ship.
+- **Finance / cost** — effort, opportunity cost, and sunk cost even when the cash outlay is zero.
+
+The names may feel heavy for a tiny repo. The decomposition is meant to be universal, not corporate cosplay. Sparse or "N/A" answers are valid; the paths still give agents settled coordinates.
 
 ## Canonical Tree
 

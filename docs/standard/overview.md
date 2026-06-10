@@ -4,6 +4,8 @@ Archeia gives each software project a shared knowledge layer inside the repo.
 
 The goal is simple: humans and agents should not have to reconstruct project truth from scattered chats, tickets, docs, and guesses. Important context should live in predictable files, with clear ownership and validation.
 
+**North star:** I never re-explain project context in a new chat.
+
 ## Two Forms
 
 Archeia Factory has two forms:
@@ -68,6 +70,8 @@ It does not try to model every internal step. Humans and agents can use judgment
 ## What Archeia Is Not
 
 Archeia is not a hosted service, ticket system, wiki, vector database, agent framework, or public compliance program. Those tools can sit around it. Archeia is the repo-local knowledge contract that those tools can read from and write to.
+
+Archeia is not a narrow alternative to `AGENTS.md`, harness rules, or workspace context. It is the durable project-knowledge layer those tools compose with — not a fair one-to-one comparison against any single piece of the stack.
 
 ## When To Use It
 

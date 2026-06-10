@@ -4,6 +4,8 @@
 >
 > The field is pre-paradigmatic. Garry Tan, Harrison Chase, Sarah Wooders, Michael Chomsky, Letta, Zep, Supermemory, Mem0, Anthropic, and a dozen academic groups are all using different words for overlapping concepts. Archeia's job is not to invent new words; it is to pick the canonical ones and say why.
 
+> **Not operational canon.** This file is research grounding, not a build contract. It is large relative to day-to-day Factory use and still carries residue from earlier public-standard framing (e.g. "conforming", distribution-era language in places). Read it for intellectual context — not as permission to expand scope before shipping. When theory and dogfood conflict, **dogfood wins**: translate the lesson into [`../standard/ontology.md`](../standard/ontology.md) and [`../standard/rules.md`](../standard/rules.md), then mirror in [`../standard/spec.md`](../standard/spec.md). Never invent model or enforcement changes only here.
+
 ---
 
 ## 1. How to read this document
