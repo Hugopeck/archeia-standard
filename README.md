@@ -19,6 +19,8 @@ Archeia Factory
 
 **Factory** is the whole system — Blueprint plus Instance shape, validation, and the procedures that keep installations useful over time. This is not a public adoption program. It is a private operating system for my own projects.
 
+Blueprint **v0** is a rough, complete address space — every canonical path exists so postures and defaults have a settled place, even when the answer is two sentences or "N/A". See [`docs/standard/spec.md`](docs/standard/spec.md#2-blueprint-v0-philosophy).
+
 In prose, prefer `.archeia/`, `spec.yaml`, and domain names over repeating "instance."
 
 ## The `.archeia/` Tree

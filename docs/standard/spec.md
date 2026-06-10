@@ -4,6 +4,8 @@ This document is the build contract for Archeia Factory. It consolidates what im
 
 Use this document when building tools — especially `init` and `validate`. For motivation, see [`overview.md`](overview.md). For theoretical grounding, see [`../research/theoretical-basis.md`](../research/theoretical-basis.md).
 
+Archeia is at **Blueprint v0**: a rough, complete starting point meant to be tested by real use, not perfected in advance.
+
 ---
 
 ## 1. Identity
@@ -29,7 +31,95 @@ In prose, prefer `.archeia/`, `spec.yaml`, and domain names over repeating "inst
 
 ---
 
-## 2. What Lives Where
+## 2. Blueprint v0 Philosophy
+
+Blueprint v0 is intentionally broad. The canonical tree defines a **complete address space** for project operating knowledge — not because every project needs full answers everywhere, but because every project should have a **settled place** for every class of question.
+
+### The core bet
+
+Important postures, defaults, and decisions often live only in someone's head. They sound obvious to the person who holds them. They are not obvious to an agent. Archeia challenges that by making coordinates explicit:
+
+- For any topic — ethics, hiring, compliance, roadmap, architecture — there is exactly one canonical path.
+- The file at that path holds an answer, however small: two sentences, "N/A", or "not applicable for this project."
+- An agent does not have to guess where truth should live; it only has to read whether it has been written yet.
+
+Sparse content is normal. Missing paths are not.
+
+### What v0 is and is not
+
+| Blueprint v0 is | Blueprint v0 is not |
+|---|---|
+| A complete question bank distributed across paths | A demand for full company documentation in every repo |
+| A rough starting Blueprint to iterate by using | A finished operating system |
+| An address space contract agents can rely on | A judgment of content quality |
+| A decomposition map for future agent ownership | A replacement for harness skills today |
+
+The roughness of ~170 canonical directories is accepted. Improvement comes from dogfooding, not from shrinking the tree before the first real Instance.
+
+### Question-stub READMEs
+
+Each canonical directory gets a `README.md` that is a **question stub**, not an empty placeholder. `init` scaffolds these from Blueprint templates.
+
+A stub should:
+
+- name the path's purpose in plain language
+- include one to three prompts for what to answer here
+- allow minimal valid answers ("N/A", "solo — no hiring yet", two sentences)
+
+Example pattern:
+
+```markdown
+# Ethics
+
+Answer here (even "N/A" or "not applicable yet"):
+
+- What is our minimum ethics posture for this project?
+- What would we refuse to build or ship?
+```
+
+### How tools serve v0 (Option A)
+
+```text
+Blueprint v0 (question bank + contract)
+    ↓ init           primary v0 deliverable — scaffold full tree + stubs
+Instance           address space exists
+    ↓ humans/agents fill slots (minimally is fine)
+    ↓ validate       contract check — Instance still matches Blueprint
+    ↓ dogfood log    which paths were used, skipped, or wrong
+    ↓ Blueprint v1   refine questions, merge paths, agent-absorb subtrees
+```
+
+**`init`** is the main v0 tool. It removes the friction of creating the tree by hand.
+
+**`validate`** is a **contract check**, not a content-quality gate. It verifies that the Instance implements the Blueprint address space (paths, manifest, declared schemas). It does not judge whether answers are good or whether agents benefited.
+
+Product value in v0 is proven by dogfooding, not by validation alone.
+
+### v0 success criterion
+
+> When an agent faces a decision in domain X, it can find the canonical path for X without asking the human — and the file either contains an answer or explicitly says it is not applicable yet.
+
+### Dogfood iteration (manual, pre-tooling)
+
+After using an Instance on a real project, mark paths:
+
+| Mark | Meaning |
+|---|---|
+| **used** | agent or human read/wrote here; question was valuable |
+| **skipped** | never touched; may be fine for this project type |
+| **wrong question** | path exists but the framing misfired; Blueprint candidate for change |
+
+This log feeds Blueprint v1. No validator enforces it in v0.
+
+### Future evolution: agent absorption
+
+Over time, mature subtrees may compress into **domain agents** (skills or harness roles). Example: a compliance agent owns `operations/compliance/*` — embedded questions, update rules, and judgments — and the scattered README stubs become agent instructions rather than 170 human-maintained entry points.
+
+v0 does not implement agent absorption. The wide tree is a **decomposition map** for that future handoff.
+
+---
+
+## 3. What Lives Where
 
 ### Blueprint (this repository)
 
@@ -59,7 +149,7 @@ The Blueprint copies source schemas from `contracts/` into `.archeia/.system/con
 
 ---
 
-## 3. Domains
+## 4. Domains
 
 Every Instance uses four top-level domains. Each artifact belongs to exactly one.
 
@@ -94,7 +184,7 @@ The full canonical directory list lives in `examples/.archeia/.system/spec.yaml`
 
 ---
 
-## 4. Lifecycle Shapes
+## 5. Lifecycle Shapes
 
 | Shape | Behavior | Examples |
 |---|---|---|
@@ -112,7 +202,7 @@ The full canonical directory list lives in `examples/.archeia/.system/spec.yaml`
 
 ---
 
-## 5. Ownership
+## 6. Ownership
 
 Each top-level domain has one owner family. Writers may read across domains, but writes go through the owning domain.
 
@@ -131,7 +221,7 @@ Ownership checks are advisory unless a validator has reliable writer identity fr
 
 ---
 
-## 6. Contract Surfaces
+## 7. Contract Surfaces
 
 Two canonical cross-domain contract surfaces are validated by installed schemas:
 
@@ -151,7 +241,7 @@ Two canonical cross-domain contract surfaces are validated by installed schemas:
 
 ---
 
-## 7. Flex Rules
+## 8. Flex Rules
 
 - Canonical names stay fixed.
 - Canonical meanings stay fixed.
@@ -163,7 +253,7 @@ Two canonical cross-domain contract surfaces are validated by installed schemas:
 
 ---
 
-## 8. Instance Manifest (`spec.yaml`)
+## 9. Instance Manifest (`spec.yaml`)
 
 The installed manifest is `.archeia/.system/spec.yaml`. Despite the extension, the current format is **JSON**.
 
@@ -226,14 +316,14 @@ Validators may warn on `domains.yaml`. New Instances must use `spec.yaml`.
 
 ---
 
-## 9. Operations
+## 10. Operations
 
 Archeia defines six deterministic operations. Tools may implement them in any language if observable behavior matches.
 
 | Operation | Purpose |
 |---|---|
 | `init` | Install an Instance into a project repo. |
-| `validate` | Return structured health issues. |
+| `validate` | Contract check — return structured Blueprint compliance issues. |
 | `write` | Create or update artifacts when ownership, shape, schema, and contract rules pass. |
 | `transition` | Move transient artifacts through declared statuses. |
 | `prune` | Remove expired transient artifacts after their retention window. |
@@ -241,9 +331,11 @@ Archeia defines six deterministic operations. Tools may implement them in any la
 
 Failed preconditions should stop an operation before partial writes.
 
-### `init` — build requirements
+### `init` — build requirements (v0)
 
 This section is the contract for implementing `init`. No `init` tool ships yet; `scripts/archeia_validate` defines the acceptance bar.
+
+See [section 2](#2-blueprint-v0-philosophy) for why v0 scaffolds the full canonical tree with question-stub READMEs.
 
 **Input:** a project root directory (target repo).
 
@@ -254,11 +346,17 @@ This section is the contract for implementing `init`. No `init` tool ships yet; 
 1. Create `.archeia/` and the four top-level domain directories.
 2. Create `.archeia/.system/` with `VERSION`, `spec.yaml`, and `contracts/`.
 3. Copy all five schema files from Blueprint `contracts/` into `.archeia/.system/contracts/`.
-4. Write `spec.yaml` declaring domains, owners, canonical tree, shapes, contracts, lifecycles, retention, and schema bindings.
-5. Scaffold every path listed in `canonical_tree` with a `README.md` (except `.archeia/.system/contracts/`).
+4. Write `spec.yaml` from the Blueprint reference template (`examples/.archeia/.system/spec.yaml`), updating instance identity as needed.
+5. Scaffold every path listed in `canonical_tree` with a **question-stub** `README.md` (except `.archeia/.system/contracts/`). Each stub names the path purpose and includes one to three prompts. Stubs may be rendered from Blueprint templates keyed by path.
 6. Not write artifacts outside declared top-level domains.
 
-**Reference template:** `examples/.archeia/` (valid full-canonical-tree Instance).
+**v0 decisions (settled):**
+
+- Full canonical tree — not a sparse or optional subset.
+- Question-stub READMEs — not blank files.
+- No example artifact templates beyond stubs in v0.
+
+**Reference Instance:** `examples/.archeia/` (passes validate today; README stubs will gain question prompts when templates land).
 
 **Suggested invocation (not yet implemented):**
 
@@ -266,7 +364,7 @@ This section is the contract for implementing `init`. No `init` tool ships yet; 
 scripts/archeia_init <project-root>
 ```
 
-### `validate` — implemented
+### `validate` — implemented (contract check)
 
 ```sh
 scripts/archeia_validate <project-root>
@@ -274,13 +372,15 @@ scripts/archeia_validate <project-root>
 
 Exits `0` when no fatal or error issues exist. Prints structured issues to stdout.
 
-See [section 10](#10-validation-checks) for the full check list.
+**Job in v0:** verify Blueprint contract compliance — manifest, paths, scaffolds, and declared schema surfaces. Does **not** judge content quality, answer completeness, or agent outcomes.
+
+See [section 11](#11-validation-checks) for the full check list.
 
 ---
 
-## 10. Validation Checks
+## 11. Validation Checks
 
-What `scripts/archeia_validate` checks today:
+What `scripts/archeia_validate` checks today. These are **contract checks** for Blueprint v0 (see [section 2](#2-blueprint-v0-philosophy)), not content-quality gates:
 
 ### Structure
 
@@ -345,7 +445,7 @@ Checked in these directories when present:
 
 ---
 
-## 11. Harness Boundary
+## 12. Harness Boundary
 
 The harness is the execution environment that loads skills, invokes models, manages context, and writes files. Archeia is the project knowledge contract at the layer below.
 
@@ -355,7 +455,7 @@ Archeia does not specify the harness. It specifies what the harness produces and
 
 ---
 
-## 12. What Archeia Is Not
+## 13. What Archeia Is Not
 
 - A hosted service, ticket system, wiki, vector database, or agent framework.
 - A public adoption or conformance program.
@@ -365,14 +465,17 @@ Those tools can sit around an Instance. Archeia is the repo-local knowledge cont
 
 ---
 
-## 13. Open Questions
+## 14. Open Questions
 
 Items not yet specified. Resolve before or during implementation.
 
-### `init`
+### `init` (v0 settled / still open)
 
-- [ ] CLI flags: `--dry-run`, `--force` on existing `.archeia/`, sparse tree vs full canonical tree?
-- [ ] Should `init` copy example artifact templates or only scaffold empty `README.md` files?
+- [x] v0 scaffolds the **full canonical tree** (not sparse).
+- [x] v0 scaffolds **question-stub READMEs** (not blank placeholders).
+- [x] v0 does not copy example artifact templates beyond stubs.
+- [ ] CLI flags: `--dry-run`, `--force` on existing `.archeia/`?
+- [ ] Where do README question templates live in the Blueprint (`templates/readmes/` or keyed map)?
 - [ ] How should `init` set `distribution.name` / instance identity — fixed default or configurable?
 - [ ] Should `VERSION` in `.archeia/.system/` mirror Blueprint `VERSION` or track Instance config version separately?
 
@@ -403,9 +506,14 @@ Items not yet specified. Resolve before or during implementation.
 
 - [ ] Multiple reusable init recipes on the Blueprint side — see [`../guides/distributions.md`](../guides/distributions.md)
 
+### Agent absorption (post-v0)
+
+- [ ] Manifest metadata for agent-owned subtrees vs directory-owned stubs
+- [ ] Validate rules when a subtree is owned by a skill instead of README files
+
 ---
 
-## 14. Related Documents
+## 15. Related Documents
 
 | Document | Role |
 |---|---|
