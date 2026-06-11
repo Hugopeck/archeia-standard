@@ -60,6 +60,8 @@ Archeia sits at the intersection of four threads where the field is moving faste
 
 **When the bibliography feels stale** — update it. If three months have passed and no new entries have been added, the Observe step has gone dark and the loop is broken.
 
+**When research contradicts dogfood** — dogfood wins. Update ontology and rules first, then mirror in spec. The bibliography entry becomes the evidence trail for why the change was made.
+
 ---
 
 ## Files in this folder
@@ -68,6 +70,7 @@ Archeia sits at the intersection of four threads where the field is moving faste
 |---|---|
 | [`theoretical-basis.md`](theoretical-basis.md) | Theoretical framework — why Archeia uses each concept (research only; not operational canon) |
 | [`bibliography.md`](bibliography.md) | Primary index — all sources in a single date-sorted table covering articles, papers, repos, and guides |
+| [`harness-engineering-synthesis.md`](harness-engineering-synthesis.md) | Synthesis notes on harness engineering patterns and their implications for Archeia |
 | [`arxiv-ai-engineering-2026.md`](arxiv-ai-engineering-2026.md) | Curated arXiv papers from 2026, annotated with Archeia-specific relevance statements, split into Narrative support and Technical direction |
 | [`prompts/research-arxiv-2026.md`](prompts/research-arxiv-2026.md) | Reusable research prompt for instructing an agent to find and format new arXiv papers into this folder's format |
 

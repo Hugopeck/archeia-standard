@@ -6,6 +6,8 @@
 
 Important context scatters fast: chat logs, tickets, wikis, docs, and agent memory. Archeia puts project operating knowledge in one predictable place inside the repo — the `.archeia/` tree — so nobody has to reconstruct the roadmap, the current decision, the architecture evidence, or active work from scratch.
 
+**Current version:** [`0.5.0`](VERSION) (pre-1.0; breaking changes still possible)
+
 ## Two Forms
 
 Archeia Factory has two forms:
@@ -53,6 +55,8 @@ The hidden `.system/` folder holds metadata that tools read:
 ├── spec.yaml
 └── contracts/
 ```
+
+See [`examples/.archeia/`](examples/.archeia/) for a complete canonical installation.
 
 ## Designed For Agents
 
@@ -103,39 +107,52 @@ If you are reading Archeia for the first time:
 4. Read [`docs/standard/rules.md`](docs/standard/rules.md) for validation and operations.
 5. Explore [`examples/.archeia/`](examples/.archeia/) to see a complete installation.
 
-For theoretical basis and citations, see [`docs/research/theoretical-basis.md`](docs/research/theoretical-basis.md).
+For practical questions, see [`docs/guides/faq.md`](docs/guides/faq.md). For theoretical basis and citations, see [`docs/research/theoretical-basis.md`](docs/research/theoretical-basis.md).
 
 ## Repository Layout
 
 ```text
 .
-├── contracts/                 # Source JSON Schemas
-├── docs/                      # Architecture docs, guides, and research
-├── examples/                  # Valid and invalid installations
-├── scripts/                   # Deterministic validation tools
+├── contracts/                 # Source JSON Schemas (see contracts/README.md)
+├── docs/                      # Architecture docs, guides, and research (see docs/README.md)
+├── examples/                  # Valid and invalid installations (see examples/README.md)
+├── scripts/                   # Deterministic validation tools (see scripts/README.md)
 ├── VERSION
 └── README.md
 ```
 
 The source schemas live in `contracts/`. An installed `.archeia/` layer copies them under `.archeia/.system/contracts/`.
 
+## Operations
+
+Archeia defines six deterministic operations on an installed `.archeia/` tree:
+
+| Operation | Purpose | Status |
+|---|---|---|
+| `init` | Install an Instance into a project repo | Specified, not yet implemented |
+| `validate` | Return structured health issues | **Implemented** (`scripts/archeia_validate`) |
+| `write` | Create or update artifacts with precondition checks | Specified, not yet implemented |
+| `transition` | Move transient artifacts through declared statuses | Specified, not yet implemented |
+| `prune` | Remove expired transient artifacts | Specified, not yet implemented |
+| `history` | Show history by artifact shape | Specified, not yet implemented |
+
 ## Validate The Example
 
-Run:
+Run from the repo root:
 
 ```sh
 scripts/archeia_validate examples
 ```
 
-The `examples/.archeia/` tree should pass with zero errors.
+The `examples/.archeia/` tree should pass with zero errors. The validator expects a **project root** (a directory containing `.archeia/`), not the `.archeia/` folder itself.
 
-Invalid fixtures live under:
+To validate a real project:
 
-```text
-examples/invalid/
+```sh
+scripts/archeia_validate /path/to/your/project
 ```
 
-Each invalid fixture is designed to fail with a specific validation error.
+Invalid fixtures live under [`examples/invalid/`](examples/invalid/). Each fixture is designed to fail with a specific validation error — see [`examples/invalid/README.md`](examples/invalid/README.md) for the full matrix.
 
 ## What `spec.yaml` Declares
 
@@ -144,14 +161,14 @@ The installed `.archeia/.system/spec.yaml` file is the machine-readable manifest
 - Archeia version
 - instance identity (name and version)
 - domains and owners
-- canonical tree paths
-- artifact shapes
-- contract surfaces
+- canonical tree paths (~154 directories in Blueprint v0)
+- artifact shapes (living, accumulating, transient)
+- contract surfaces (product delivery, C4 evidence)
 - lifecycle status mappings
 - retention windows
 - schema bindings
 
-Validators read this file before checking a `.archeia/` tree.
+Validators read this file before checking a `.archeia/` tree. The deprecated `domains.yaml` name is replaced by `spec.yaml`.
 
 ## Status
 
