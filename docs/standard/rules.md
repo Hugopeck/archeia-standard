@@ -1,10 +1,10 @@
 # Archeia Rules
 
-Rules describe what tools and installed `.archeia/` trees must enforce. The ontology explains the meaning of the system. **This is the authoritative source for enforcement changes** — edit here first, then mirror in [`spec.md`](spec.md). For the consolidated build contract, see [`spec.md`](spec.md).
+Rules describe what tools and installed `.archeia/` trees must enforce. The model (`ontology.md`) explains the meaning of the system. **This is the authoritative source for enforcement changes** — edit here first, then mirror in [`spec.md`](spec.md). For the consolidated build contract, see [`spec.md`](spec.md).
 
 ## What Lives Where
 
-**Blueprint** — this repository. It keeps prose, schemas, scripts, and fixtures in normal source paths:
+**Standard** — this repository. It keeps prose, schemas, scripts, and fixtures in normal source paths:
 
 ```text
 contracts/
@@ -33,7 +33,7 @@ Validators may warn when they see `domains.yaml`, but new examples and tools sho
 
 - `archeia_version`
 - `instance_identity` (name and version)
-- ontology document reference
+- model document reference (`ontology` in `spec.yaml`)
 - domains and owners
 - canonical tree directories
 - artifact shapes
@@ -53,7 +53,7 @@ A validator should check:
 - installed schemas exist and parse as JSON.
 - the four top-level domains exist: `strategy/`, `operations/`, `product/`, and `growth/`.
 - artifacts belong to a declared top-level domain.
-- canonical directories in the full tree fixture have `README.md` scaffolds.
+- canonical directories in the full tree fixture have `README.md` with instructionss.
 - product contract artifacts satisfy the product schema.
 - C4 artifacts have at least one element, and every element has non-empty evidence.
 - transient artifacts use a valid status.
@@ -65,7 +65,7 @@ Ownership checks are advisory unless the validator has reliable writer identity 
 
 Archeia supports six deterministic operations on an installed `.archeia/` tree:
 
-- `init`: install an Instance (the `.archeia/` layer) into a target repo by writing `.archeia/.system/` and scaffolding the tree.
+- `init`: install an Instance (the `.archeia/` layer) into a target repo by writing `.archeia/.system/` and writing README instructions for the tree.
 - `validate`: return structured health issues.
 - `write`: create or update artifacts only when ownership, shape, schema, and contract rules pass.
 - `transition`: move transient artifacts through declared statuses.

@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains small deterministic tools for working with the Archeia Blueprint and installed `.archeia/` trees.
+This folder contains small deterministic tools for working with the Archeia Standard and installed `.archeia/` trees.
 
 These tools use **stdlib Python only** — no pip dependencies. They are designed to run in any project environment without setup.
 
@@ -40,7 +40,7 @@ scripts/archeia_validate examples/invalid/missing-c4-evidence
 - Installed schemas exist and parse as JSON
 - Four top-level domains exist: `strategy/`, `operations/`, `product/`, `growth/`
 - No directories or artifacts outside declared domains
-- Every canonical directory has a `README.md` scaffold
+- Every canonical directory has a `README.md` with instructions
 - Product contract artifacts satisfy required frontmatter
 - C4 artifacts have elements with non-empty evidence pointing to real files
 - Transient artifacts use valid lifecycle statuses
@@ -86,6 +86,16 @@ Exit code: `0` if no fatal or error issues; `1` otherwise.
 | `L002` | error | Terminal transient missing terminal timestamp |
 
 See [`examples/invalid/README.md`](../examples/invalid/README.md) for fixtures that exercise each code.
+
+## `generate_readmes_from_kernel`
+
+Regenerates canonical README instructions in `examples/.archeia/` from historical `KERNEL.md` (commit `0cc4585^`). Use when recovering or refreshing per-path canonical meanings after model changes.
+
+```sh
+python3 -c "from scripts.generate_readmes_from_kernel import main; raise SystemExit(main())"
+```
+
+The script reads `KERNEL.md` section 4 (domain meanings), section 6 (subtree meanings), and supplementary path definitions for paths not explicitly covered in section 6. Each README gets canonical meaning, broad interpretation, answer prompts, and belong/not-belong guidance.
 
 ## Planned Tools
 

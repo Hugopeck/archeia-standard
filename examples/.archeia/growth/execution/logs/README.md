@@ -1,7 +1,16 @@
-# `.archeia/growth/execution/logs`
+# Logs
 
-**Purpose:** Work in motion for the owning domain.
+**Canonical meaning.** Accumulating growth execution logs.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include campaign journals, launch logs, and chronological GTM records.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/execution/logs` for this project?
+- Or: N/A / not applicable yet for logs.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

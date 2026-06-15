@@ -9,20 +9,20 @@ These four documents are the source of truth for what Archeia means and what it 
 | Document | Read for | Edit when |
 |---|---|---|
 | [`overview.md`](overview.md) | Motivation, principles, and what Archeia is not | The "why" or positioning changes |
-| [`ontology.md`](ontology.md) | Domains, shapes, ownership, contracts, canonical tree | The model changes — **edit here first** |
+| [`ontology.md`](ontology.md) | Model — domains, shapes, ownership, contracts, canonical tree | Model changes — **edit here first** |
 | [`rules.md`](rules.md) | Validation checks, operations, and enforcement | Tool behavior or checks change — **edit here first** |
-| [`spec.md`](spec.md) | Consolidated build contract for implementers | Mirroring ontology + rules changes |
+| [`spec.md`](spec.md) | Consolidated build contract for implementers | Mirroring model + rules changes |
 
 ## Authority Hierarchy
 
 ```text
-ontology.md  ──defines──>  what the system means
+ontology.md (Model)  ──defines──>  what the system means
 rules.md     ──defines──>  what tools must enforce
 spec.md      ──mirrors──>  both, for implementers
 overview.md  ──explains──>  why any of it exists
 ```
 
-**Rule:** Change the model in ontology. Change enforcement in rules. Mirror both in spec. Never invent only in spec.
+**Rule:** Change the model in `ontology.md`. Change enforcement in rules. Mirror both in spec. Never invent only in spec.
 
 Research docs in [`../research/`](../research/) inform these documents but do not override them. Guides in [`../guides/`](../guides/) supplement them but do not override them.
 
@@ -36,7 +36,7 @@ Research docs in [`../research/`](../research/) inform these documents but do no
 
 ### Build or extend a tool
 
-1. [`spec.md`](spec.md) — build contract (consolidated from ontology + rules)
+1. [`spec.md`](spec.md) — build contract (consolidated from model + rules)
 2. [`rules.md`](rules.md) — validation checks and six operations
 3. [`../../contracts/`](../../contracts/) — JSON Schemas
 4. [`../../scripts/archeia_validate`](../../scripts/archeia_validate) — reference implementation
@@ -51,7 +51,7 @@ Research docs in [`../research/`](../research/) inform these documents but do no
 
 ## Key Concepts (Quick Reference)
 
-**Two forms:** Blueprint (this repo) and Instance (`.archeia/` in a project repo).
+**Two forms:** Standard (this repo) and Instance (`.archeia/` in a project repo).
 
 **Four domains:** `strategy/`, `operations/`, `product/`, `growth/` — each with a single owner family.
 
@@ -64,7 +64,7 @@ Research docs in [`../research/`](../research/) inform these documents but do no
 - Product delivery (`product.schema.json`) — roadmap, specs, PRDs
 - C4 evidence (`c4.schema.json`) — architecture elements with file evidence
 
-**Blueprint v0 philosophy:** a complete address space (~154 canonical directories). Every class of project question has exactly one settled path. Content can be sparse ("N/A", two sentences); missing paths are not allowed.
+**Standard v0 philosophy:** a complete address space (~154 canonical directories). Every class of project question has exactly one settled path. Content can be sparse ("N/A", two sentences); missing paths are not allowed.
 
 ## What Is Not Here
 
@@ -75,4 +75,4 @@ Research docs in [`../research/`](../research/) inform these documents but do no
 
 ## Status
 
-Archeia is at Blueprint v0 ([`../../VERSION`](../../VERSION)). The `init` operation is specified but not yet implemented. `validate` is implemented in [`../../scripts/archeia_validate`](../../scripts/archeia_validate).
+Archeia is at Standard v0 ([`../../VERSION`](../../VERSION)). The `init` operation is specified but not yet implemented. `validate` is implemented in [`../../scripts/archeia_validate`](../../scripts/archeia_validate).

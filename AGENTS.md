@@ -4,7 +4,7 @@ This file provides guidance for agents when working with code in this repository
 
 ## What This Repo Is
 
-This is the **Archeia Factory Blueprint** — a specification repo (not a runnable application). It defines a structured `.archeia/` knowledge layer that gets installed into project repos. The repo contains the standard definition, JSON schemas, a Python validator, example fixtures, and documentation. There is no build step, no package manager, and no compiled output.
+This is the **Archeia Standard** repo — a specification package (not a runnable application). It defines a structured `.archeia/` knowledge layer that gets installed into project repos. The repo contains the standard definition, JSON schemas, a Python validator, example fixtures, and documentation. There is no build step, no package manager, and no compiled output.
 
 Current version: `0.5.0` (pre-1.0, breaking changes possible).
 

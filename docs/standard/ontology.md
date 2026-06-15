@@ -1,14 +1,16 @@
-# Archeia Ontology
+# Archeia Model
 
-The ontology defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model. **This is the authoritative source for model changes** — edit here first, then mirror in [`rules.md`](rules.md) and [`spec.md`](spec.md).
+The model defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model. **This is the authoritative source for model changes** — edit here first, then mirror in [`rules.md`](rules.md) and [`spec.md`](spec.md).
 
 Rules and validators are described in [`rules.md`](rules.md). The build contract is in [`spec.md`](spec.md). Theoretical basis and citations live in [`../research/theoretical-basis.md`](../research/theoretical-basis.md) (research only, not operational canon).
 
 ## Scope
 
-**Archeia Factory** is the complete system. The **Blueprint** is the reusable source architecture maintained in this repository. An **Instance** is the `.archeia/` operating layer that `init` installs into a project repo.
+**Archeia** is a software factory. The **Standard** is the reusable source package maintained in this repository. An **Instance** is the `.archeia/` operating layer that `init` installs into a project repo.
 
-This ontology defines what an Instance means: folders, shapes, ownership, and contracts. It does not define a non-software operating model, a hosted service, a UI, one universal approval workflow, or a public adoption process.
+> **Note:** This document is the **Model** in outward docs. The internal path remains `ontology.md`.
+
+This model defines what an Instance means: folders, shapes, ownership, and contracts. It does not define a non-software operating model, a hosted service, a UI, one universal approval workflow, or a public adoption process.
 
 ## Primitives
 
@@ -49,33 +51,228 @@ The names may feel heavy for a tiny repo. The decomposition is meant to be unive
 
 ## Canonical Tree
 
-The full folder tree is shown in `examples/`. A project may use the tree sparsely, but canonical names and meanings do not change.
+The canonical tree is a **complete address space** — roughly 150 settled directories under `.archeia/` where every class of project operating question has exactly one path. A project may use the tree sparsely; canonical names and meanings do not change.
 
-The top-level shape is:
+This document defines the **model**: domains, shapes, ownership, contracts, and the **full canonical tree** below. Per-path semantics (canonical meaning, broad interpretation) live in README instructions at each directory — not repeated here.
+
+### How the tree decomposes
+
+Each top-level domain branches into subtrees that mirror how software businesses actually run:
+
+| Domain | Major subtrees (high level) |
+|---|---|
+| `strategy/` | `vision/`, `values/`, `landscape/`, `roadmap/`, `execution/` |
+| `operations/` | `execution/`, `optimization/`, `people/`, `finance/`, `compliance/` |
+| `product/` | `strategy/`, `design/`, `technical/`, `execution/` |
+| `growth/` | `strategy/`, `marketing/`, `sales/`, `success/`, `execution/` |
+
+Three **local knowledge surfaces** may appear directly under any domain or subdomain — never hidden under `meta/` or `memory/`:
+
+- `decisions/` — accumulating records of choices and tradeoffs.
+- `conventions/` — living documents for local defaults and ways of working.
+- `learnings/` — accumulating records of lessons and discoveries.
+
+### Full tree
+
+155 paths — matches `canonical_tree` in [`examples/.archeia/.system/spec.yaml`](../../examples/.archeia/.system/spec.yaml). Every directory below (except `.system/contracts/`) has a `README.md` with instructions.
 
 ```text
 .archeia/
-├── strategy/
+├── .system/
+│   └── contracts/
+├── growth/
+│   ├── execution/
+│   │   ├── conventions/
+│   │   ├── dashboards/
+│   │   ├── decisions/
+│   │   ├── experiments/
+│   │   │   ├── learnings/
+│   │   │   └── running/
+│   │   ├── learnings/
+│   │   ├── logs/
+│   │   ├── plans/
+│   │   ├── programs/
+│   │   └── retros/
+│   ├── marketing/
+│   │   ├── assets/
+│   │   ├── brand/
+│   │   ├── campaigns/
+│   │   ├── community/
+│   │   ├── content/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── events/
+│   │   ├── inbound/
+│   │   ├── learnings/
+│   │   ├── messaging/
+│   │   ├── outbound/
+│   │   ├── style/
+│   │   └── web/
+│   ├── sales/
+│   │   ├── accounts/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── enablement/
+│   │   ├── learnings/
+│   │   ├── objections/
+│   │   ├── outbound/
+│   │   ├── pipeline/
+│   │   ├── pricing/
+│   │   └── win-loss/
+│   ├── strategy/
+│   │   ├── channel-mix/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── metrics/
+│   │   ├── positioning/
+│   │   ├── pricing/
+│   │   ├── roadmap/
+│   │   └── segments/
+│   └── success/
+│       ├── activation/
+│       ├── adoption/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── enablement/
+│       ├── expansion/
+│       ├── learnings/
+│       ├── onboarding/
+│       ├── retention/
+│       └── support/
 ├── operations/
+│   ├── compliance/
+│   │   ├── conventions/
+│   │   ├── data-security/
+│   │   ├── decisions/
+│   │   ├── ethics/
+│   │   ├── learnings/
+│   │   ├── regulatory/
+│   │   └── risk/
+│   ├── conventions/
+│   ├── decisions/
+│   ├── execution/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── plans/
+│   │   ├── projects/
+│   │   ├── retros/
+│   │   └── tasks/
+│   ├── finance/
+│   │   ├── compliance/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── operational/
+│   │   └── strategic/
+│   ├── learnings/
+│   ├── optimization/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── initiatives/
+│   │   ├── learnings/
+│   │   ├── monitoring/
+│   │   └── processes/
+│   └── people/
+│       ├── compensation/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── hiring/
+│       ├── learnings/
+│       ├── performance/
+│       └── workplace/
 ├── product/
-└── growth/
+│   ├── design/
+│   │   ├── assets/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── feedback/
+│   │   ├── flows/
+│   │   ├── learnings/
+│   │   └── protos/
+│   ├── execution/
+│   │   ├── archive/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── logs/
+│   │   ├── plans/
+│   │   ├── prds/
+│   │   ├── retros/
+│   │   └── roles/
+│   ├── strategy/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── market/
+│   │   ├── metrics/
+│   │   ├── roadmap/
+│   │   └── users/
+│   └── technical/
+│       ├── architecture/
+│       │   ├── analysis/
+│       │   ├── c4/
+│       │   └── views/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── devs/
+│       ├── learnings/
+│       ├── specs/
+│       └── studies/
+└── strategy/
+    ├── conventions/
+    ├── decisions/
+    ├── execution/
+    ├── landscape/
+    │   ├── competition/
+    │   ├── industry/
+    │   └── market/
+    ├── learnings/
+    ├── roadmap/
+    ├── values/
+    └── vision/
 ```
 
-Important subtrees include:
+Materialized in [`examples/.archeia/`](../../examples/.archeia/).
 
-- `operations/optimization/processes/`: repeatable operating methods, SOPs, runbooks, and process knowledge.
-- `product/technical/specs/`: executable software specs.
-- `product/technical/architecture/c4/`: machine-readable architecture evidence.
-- `product/execution/prds/`: integrated buildable product missions.
-- `growth/execution/experiments/`: growth experiment state and learnings.
+### Important paths
 
-Across canonical domains and subdomains, three local knowledge surfaces may appear directly:
+These subtrees carry extra contract or handoff weight:
 
-- `decisions/`: accumulating records of choices and tradeoffs.
-- `conventions/`: living documents for local defaults and ways of working.
-- `learnings/`: accumulating records of lessons and discoveries.
+- `operations/optimization/processes/` — repeatable operating methods, SOPs, runbooks, and process knowledge.
+- `product/technical/specs/` — executable software specs.
+- `product/technical/architecture/c4/` — machine-readable architecture evidence.
+- `product/execution/prds/` — integrated buildable product missions.
+- `growth/execution/experiments/` — growth experiment state and learnings.
 
-These surfaces should not be hidden under wrappers such as `meta/` or `memory/`.
+### README instructions
+
+Every canonical directory (except `.archeia/.system/contracts/`) has a `README.md` that serves as **instructions** for that path — not an empty placeholder and not a duplicate of this document.
+
+Each README follows a consistent structure:
+
+| Section | Role |
+|---|---|
+| **Canonical meaning** | The fixed semantic envelope for this path. What kind of knowledge belongs here, in one precise sentence. |
+| **Broad interpretation** | How the path may be used broadly *within* that meaning — solo projects, startups, internal tools, research software. Sparse or informal use is valid. |
+| **Answer prompts** | One to three questions inviting an answer, however small ("N/A", two sentences). |
+| **What belongs / does not belong** | Boundary hints; top-level domain READMEs carry the fullest belong/not-belong lists. |
+
+**Canonical meaning** is normative — it does not change per project. **Broad interpretation** is where legitimate variation lives: a solo builder's `operations/people/` may record only personal capacity; a startup's may hold hiring systems. Both are valid if they stay inside the canonical meaning.
+
+Per-path meanings are recovered from the historical kernel contract and maintained in the example tree. Regenerate with [`scripts/generate_readmes_from_kernel.py`](../../scripts/generate_readmes_from_kernel.py). When a path's meaning changes, update the generator source and re-run — then mirror any model-level change here.
+
+**Division of labor:**
+
+```text
+ontology.md (this doc)     concepts, shapes, ownership, contracts, full tree
+examples/.archeia/         complete tree as filesystem fixture
+each path/README.md        per-path canonical meaning + prompts
+spec.yaml canonical_tree   machine-readable path list for validate/init
+```
+
+An agent that needs to know *what a path means* reads the README at that path. An agent that needs to know *how artifacts behave* reads this model and [`rules.md`](rules.md).
 
 ## Lifecycle Shapes
 
@@ -128,7 +325,7 @@ Descriptive artifacts should cite their sources. This is a policy until Archeia 
 
 ## Block Model
 
-Archeia treats domains, artifacts, procedures, and agent roles as lightweight system blocks. This is how agents read the ontology — not a requirement to model every workflow step.
+Archeia treats domains, artifacts, procedures, and agent roles as lightweight system blocks. This is how agents read the model — not a requirement to model every workflow step.
 
 A block should be clear about:
 

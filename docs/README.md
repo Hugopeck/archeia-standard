@@ -4,7 +4,7 @@ The docs are organized by role. Each subfolder has its own README with a deeper 
 
 ```text
 docs/
-├── standard/     # Operational canon — ontology, rules, spec
+├── standard/     # Operational canon — model, rules, spec
 ├── guides/       # Practical how-tos and honest scope audits
 └── research/     # Theoretical basis and field signals (not canon)
 ```
@@ -16,10 +16,10 @@ docs/
 | [`standard/overview.md`](standard/overview.md) | Why Archeia exists |
 | [`standard/ontology.md`](standard/ontology.md) | What concepts mean — **edit here to change the model** |
 | [`standard/rules.md`](standard/rules.md) | What tools enforce — **edit here to change enforcement** |
-| [`standard/spec.md`](standard/spec.md) | Build contract — **mirrors ontology + rules; do not invent here** |
+| [`standard/spec.md`](standard/spec.md) | Build contract — **mirrors model + rules; do not invent here** |
 | [`research/theoretical-basis.md`](research/theoretical-basis.md) | Research grounding and citations — **not operational canon** |
 
-**Rule:** Change the model in ontology. Change enforcement in rules. Mirror both in spec. Never invent only in spec.
+**Rule:** Change the model in `ontology.md`. Change enforcement in rules. Mirror both in spec. Never invent only in spec.
 
 When theory and dogfood conflict, dogfood wins — then update the operational docs.
 
@@ -55,7 +55,7 @@ The authoritative model and enforcement docs. See [`standard/README.md`](standar
 
 - [`standard/overview.md`](standard/overview.md): why Archeia exists.
 - [`standard/spec.md`](standard/spec.md): build contract — start here to implement tools.
-- [`standard/ontology.md`](standard/ontology.md): the operational model — domains, shapes, ownership, and contracts.
+- [`standard/ontology.md`](standard/ontology.md): the model — domains, shapes, ownership, and contracts.
 - [`standard/rules.md`](standard/rules.md): validation, operations, and tests.
 
 ## Guides — Practical How-Tos
@@ -65,12 +65,12 @@ Supplementary docs that do not override standard canon. See [`guides/README.md`]
 - [`guides/faq.md`](guides/faq.md): common questions.
 - [`guides/memory-vs-knowledge.md`](guides/memory-vs-knowledge.md): what Archeia solves and what it does not.
 - [`guides/figma-product-integration.md`](guides/figma-product-integration.md): Figma and product-design integration.
-- [`guides/distributions.md`](guides/distributions.md): note on deferred Blueprint bundles (legacy "distribution" concept).
+- [`guides/distributions.md`](guides/distributions.md): note on deferred Standard bundles (legacy "distribution" concept).
 - [`guides/enforcement.md`](guides/enforcement.md): validation and CI guardrail examples (draft).
 
 ## Research — Theoretical Basis
 
-Research docs ground decisions intellectually. They do not override ontology, rules, or spec. See [`research/README.md`](research/README.md).
+Research docs ground decisions intellectually. They do not override the model, rules, or spec. See [`research/README.md`](research/README.md).
 
 - [`research/theoretical-basis.md`](research/theoretical-basis.md): theoretical framework, citations, and word choices (large; read for *why*, not as a build checklist).
 - [`research/bibliography.md`](research/bibliography.md): source index.

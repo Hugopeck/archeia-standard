@@ -1,7 +1,16 @@
-# `.archeia/growth/marketing/events`
+# Events
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Events and experiential marketing.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include conferences, webinars, meetups, and event playbooks.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/marketing/events` for this project?
+- Or: N/A / not applicable yet for events.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

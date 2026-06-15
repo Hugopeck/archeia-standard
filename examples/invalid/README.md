@@ -4,7 +4,7 @@ This folder is the negative test matrix for `scripts/archeia_validate`. Each sub
 
 ## Purpose
 
-Valid fixtures prove the canonical tree passes. Invalid fixtures prove the validator catches specific failures with the right error codes. Together they form a regression suite for Blueprint v0 enforcement.
+Valid fixtures prove the canonical tree passes. Invalid fixtures prove the validator catches specific failures with the right error codes. Together they form a regression suite for Standard v0 enforcement.
 
 Run all fixtures from the repo root:
 

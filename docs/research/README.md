@@ -1,12 +1,12 @@
 # Research — the Observe-Orient leg of Archeia's OODA loop
 
-This folder is the part of the repository that looks outward. Every other directory in this repo acts inward — defining the Blueprint, enforcing contracts, documenting decisions already made. This one watches what is happening in the world and feeds that signal back into the Factory before it calcifies.
+This folder is the part of the repository that looks outward. Every other directory in this repo acts inward — defining the Standard, enforcing contracts, documenting decisions already made. This one watches what is happening in the world and feeds that signal back into Archeia before it calcifies.
 
 The **[bibliography](bibliography.md)** is the primary artifact: a curated, date-sorted table of articles, papers, repos, and guides from the leading AI labs, AI-native companies, academic research groups, and open-source communities working on the same problems Archeia is solving.
 
 ---
 
-## The OODA loop, applied to a living Factory
+## The OODA loop, applied to a living Archeia
 
 The OODA loop — **Observe, Orient, Decide, Act** — is a model for how any adaptive system maintains relevance in a fast-moving environment. For Archeia, each phase maps to a concrete activity:
 
@@ -14,11 +14,11 @@ The OODA loop — **Observe, Orient, Decide, Act** — is a model for how any ad
 
 **Orient** — read those signals against Archeia's current design. Does the new harness pattern assume something that `docs/standard/ontology.md` has already ruled out? Does a paper's finding about context window management invalidate a choice in the `.archeia/` directory layout? Does an open-source repo solve a problem Archeia was planning to solve differently? This is the interpretive step — understanding what the signal means *for this project specifically*, not just in the abstract.
 
-**Decide** — translate the orientation into an operational change. If the observation is trivial, nothing changes. If it reveals a genuine gap or a better approach, it becomes a candidate for ontology, rules, or an ADR in `.archeia/product/decisions/`. The bibliography entry is the evidence trail for that decision.
+**Decide** — translate the orientation into an operational change. If the observation is trivial, nothing changes. If it reveals a genuine gap or a better approach, it becomes a candidate for the model (`ontology.md`), rules, or an ADR in `.archeia/product/decisions/`. The bibliography entry is the evidence trail for that decision.
 
-**Act** — update the ontology, rules, schema, or validators — then mirror in `docs/standard/spec.md`. The loop closes. The Factory advances because of what was observed, not despite it.
+**Act** — update the model (`ontology.md`), rules, schema, or validators — then mirror in `docs/standard/spec.md`. The loop closes. Archeia advances because of what was observed, not despite it.
 
-Without this folder actively maintained, the loop breaks at **Observe**. The Blueprint makes decisions in a vacuum, accumulates assumptions the field has already falsified, and diverges from what agents and harnesses actually need. The research folder is the instrument that keeps the Factory honest over time.
+Without this folder actively maintained, the loop breaks at **Observe**. The Standard makes decisions in a vacuum, accumulates assumptions the field has already falsified, and diverges from what agents and harnesses actually need. The research folder is the instrument that keeps Archeia honest over time.
 
 ---
 
@@ -54,13 +54,13 @@ Archeia sits at the intersection of four threads where the field is moving faste
 
 **When designing a new model area** — check here whether a leading lab has already published patterns worth citing. Do not treat `theoretical-basis.md` as a scope-expansion checklist — it can pull toward architecture cosplay over shipping.
 
-**When challenging an existing decision** — look for papers or posts that contradict or complicate a choice already in ontology or rules. Those deserve a serious read and, if warranted, an ontology/rules edit plus ADR — not an ad hoc spec-only change.
+**When challenging an existing decision** — look for papers or posts that contradict or complicate a choice already in the model or rules. Those deserve a serious read and, if warranted, a model (`ontology.md`)/rules edit plus ADR — not an ad hoc spec-only change.
 
 **When evaluating implementation options** — repos in the bibliography are reference implementations. Studying them before building is faster than rediscovering their lessons.
 
 **When the bibliography feels stale** — update it. If three months have passed and no new entries have been added, the Observe step has gone dark and the loop is broken.
 
-**When research contradicts dogfood** — dogfood wins. Update ontology and rules first, then mirror in spec. The bibliography entry becomes the evidence trail for why the change was made.
+**When research contradicts dogfood** — dogfood wins. Update the model (`ontology.md`) and rules first, then mirror in spec. The bibliography entry becomes the evidence trail for why the change was made.
 
 ---
 

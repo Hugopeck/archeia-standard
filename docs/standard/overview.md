@@ -8,16 +8,16 @@ The goal is simple: humans and agents should not have to reconstruct project tru
 
 ## Two Forms
 
-Archeia Factory has two forms:
+Archeia has two forms:
 
-- **Blueprint** — the reusable architecture maintained in this repo.
+- **Standard** — the reusable architecture maintained in this repo.
 - **Instance** — the `.archeia/` operating layer installed into a specific project repo.
 
 ```text
-Blueprint (this repo)  --init-->  Instance (.archeia/ in a project)
+Standard (this repo)  --init-->  Instance (.archeia/ in a project)
 ```
 
-**Factory** is the whole system: Blueprint, Instance shape, validation, and the procedures that keep installations useful over time.
+Archeia is a **software factory** — Standard plus Instance shape, validation, and the procedures that keep installations useful over time.
 
 ## The Problem
 

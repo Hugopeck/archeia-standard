@@ -1,7 +1,16 @@
-# `.archeia/product/design/feedback`
+# Feedback
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Accumulating design feedback and review records.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include critique notes, usability findings, stakeholder feedback, and design review outcomes.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `product/design/feedback` for this project?
+- Or: N/A / not applicable yet for feedback.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

@@ -1,7 +1,16 @@
-# `.archeia/growth/execution/experiments`
+# Experiments
 
-**Purpose:** Work in motion for the owning domain.
+**Canonical meaning.** Growth experiment programs.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include experiment design, running experiments, and experiment learnings.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/execution/experiments` for this project?
+- Or: N/A / not applicable yet for experiments.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

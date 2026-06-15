@@ -1,7 +1,16 @@
-# `.archeia/growth/success/enablement`
+# Enablement
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Customer enablement and education.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include help docs, tutorials, training programs, and self-service resources.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/success/enablement` for this project?
+- Or: N/A / not applicable yet for enablement.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
