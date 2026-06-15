@@ -1,10 +1,10 @@
 # Archeia Theoretical Basis
 
-> **Purpose.** This document grounds Archeia Factory in established theory and research — cognitive science, multi-agent systems, temporal databases, knowledge representation — and in the recent (2023–2026) AI agent literature that is shaping the field in real time. Operational definitions live in [`../standard/ontology.md`](../standard/ontology.md). This document explains *why* Archeia uses each concept and cites the sources.
+> **Purpose.** This document grounds Archeia in established theory and research — cognitive science, multi-agent systems, temporal databases, knowledge representation — and in the recent (2023–2026) AI agent literature that is shaping the field in real time. Operational definitions live in [`../standard/ontology.md`](../standard/ontology.md). This document explains *why* Archeia uses each concept and cites the sources.
 >
 > The field is pre-paradigmatic. Garry Tan, Harrison Chase, Sarah Wooders, Michael Chomsky, Letta, Zep, Supermemory, Mem0, Anthropic, and a dozen academic groups are all using different words for overlapping concepts. Archeia's job is not to invent new words; it is to pick the canonical ones and say why.
 
-> **Not operational canon.** This file is research grounding, not a build contract. It is large relative to day-to-day Factory use and still carries residue from earlier public-standard framing (e.g. "conforming", distribution-era language in places). Read it for intellectual context — not as permission to expand scope before shipping. When theory and dogfood conflict, **dogfood wins**: translate the lesson into [`../standard/ontology.md`](../standard/ontology.md) and [`../standard/rules.md`](../standard/rules.md), then mirror in [`../standard/spec.md`](../standard/spec.md). Never invent model or enforcement changes only here.
+> **Not operational canon.** This file is research grounding, not a build contract. It is large relative to day-to-day Archeia use and still carries residue from earlier public-standard framing (e.g. "conforming", distribution-era language in places). Read it for intellectual context — not as permission to expand scope before shipping. When theory and dogfood conflict, **dogfood wins**: translate the lesson into [`../standard/ontology.md`](../standard/ontology.md) and [`../standard/rules.md`](../standard/rules.md), then mirror in [`../standard/spec.md`](../standard/spec.md). Never invent model or enforcement changes only here.
 
 ---
 
@@ -57,7 +57,7 @@ Before defining terms, we need to say where Archeia sits in the stack. Every dis
 +------------------------------------------------------+
 ```
 
-Archeia is the **knowledge layer contract**. It does not replace the execution layer and it does not compete with the model layer. Any harness and model pair that reads and writes `.archeia/` Instances according to the Blueprint operates at this layer.
+Archeia is the **knowledge layer contract**. It does not replace the execution layer and it does not compete with the model layer. Any harness and model pair that reads and writes `.archeia/` Instances according to the Standard operates at this layer.
 
 This three-layer framing is consistent with the architectural surveys in OpenDev (2026), Meta-Harness (Lee et al., 2026), and the Natural-Language Agent Harnesses paper (2026). All three treat the execution layer as a first-class concern distinct from the model below and the knowledge/artifact layer above. Archeia names the layer above.
 
@@ -494,7 +494,7 @@ This document is a living artifact (Archeia's own shape #1). It is edited in pla
 
 **Deletions** are avoided. If a term is deprecated, the table entry is marked `deprecated` with a pointer to the replacement. The old term and its justification stay, so the audit trail is preserved.
 
-**Versioning:** this document is versioned with the Blueprint (`VERSION` at the repo root). Breaking changes — renaming an operation, changing a shape — require a major version bump.
+**Versioning:** this document is versioned with the Standard (`VERSION` at the repo root). Breaking changes — renaming an operation, changing a shape — require a major version bump.
 
 ---
 
@@ -572,7 +572,7 @@ The research underlying this ontology draws on four specific pieces of prior wor
 
 - **Sarah Wooders, "Why memory isn't a plugin (it's the harness)"** (X thread, [April 4, 2026](https://x.com/sarahwooders/status/2040121230473457921)). Sarah is CTO of [Letta](https://letta.com) (formerly MemGPT). The verified exact quote: *"Asking to plug memory into an agent harness is like asking to plug driving into a car. Managing context, and therefore memory, is a core capability and responsibility of the agent harness."* This framing is the source of Archeia's harness-boundary section in [`../standard/ontology.md`](../standard/ontology.md) — the claim that compaction policy is harness business, but persistence guarantees are contract business.
 
-- **Harrison Chase, "Your harness, your memory"** (LangChain Blog, [April 11, 2026](https://blog.langchain.com/your-harness-your-memory/)). Harrison is CEO of LangChain. His essay argues that agent harnesses and agent memory are inseparable, that closed harnesses create memory lock-in ("if you use a closed harness, especially if its behind an API, you don't own your memory"), and that open harnesses (like LangChain's Deep Agents) are the right response. Archeia's Factory framing is aligned with this claim: the Blueprint is an open contract at the knowledge layer, and any harness — Claude Code, Cursor, Deep Agents, OpenCode, bespoke — can read and write Instances.
+- **Harrison Chase, "Your harness, your memory"** (LangChain Blog, [April 11, 2026](https://blog.langchain.com/your-harness-your-memory/)). Harrison is CEO of LangChain. His essay argues that agent harnesses and agent memory are inseparable, that closed harnesses create memory lock-in ("if you use a closed harness, especially if its behind an API, you don't own your memory"), and that open harnesses (like LangChain's Deep Agents) are the right response. Archeia's open-contract framing is aligned with this claim: the Standard is an open contract at the knowledge layer, and any harness — Claude Code, Cursor, Deep Agents, OpenCode, bespoke — can read and write Instances.
 
 - **Michael Chomsky, analysis essay** (X, [April 11, 2026](https://x.com/michael_chomsky/status/2043369126631207096)). Chomsky analyzed both Garry Tan and Harrison Chase and argued that *both* oversimplify memory — Garry by trusting markdown files alone, Harrison by making memory sound tractable. His essay introduced the four memory competencies as the audit framework (sourced from MemoryAgentBench, Hu et al. 2025). Archeia's [`../guides/memory-vs-knowledge.md`](../guides/memory-vs-knowledge.md) audit is a direct response to Chomsky's critique. Chomsky also points out that Garry Tan's own `gbrain` project uses Postgres + pgvector underneath the markdown interface — evidence that even the strongest file-based-memory advocate needed a real database to make it work.
 
@@ -584,4 +584,4 @@ Earlier drafts of Archeia's documentation incorrectly credited **Steve Yegge** w
 
 ---
 
-*This document is `docs/research/theoretical-basis.md` in the Archeia Factory repository. It is a living document per Archeia's own shape-1 convention: edited in place, history preserved in git, no superseded versions cluttering the directory.*
+*This document is `docs/research/theoretical-basis.md` in the Archeia Standard repository. It is a living document per Archeia's own shape-1 convention: edited in place, history preserved in git, no superseded versions cluttering the directory.*

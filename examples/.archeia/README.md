@@ -19,7 +19,7 @@ This is the root of an installed Archeia Instance — the repo-local knowledge l
 └── growth/           # Adoption, GTM, sales, success, rollout
 ```
 
-Each subdirectory has its own `README.md` scaffold explaining what belongs at that path.
+Each subdirectory has its own `README.md` with instructions explaining what belongs at that path.
 
 ## What Belongs Here
 
@@ -38,7 +38,7 @@ Each subdirectory has its own `README.md` scaffold explaining what belongs at th
 
 ## This Example
 
-This tree is the **canonical Blueprint v0 fixture** in the Archeia Factory repo. It demonstrates every canonical path with README scaffolds and sample valid artifacts.
+This tree is the **canonical Standard v0 fixture** in the Archeia Standard repo. It demonstrates every canonical path with README instructions and sample valid artifacts.
 
 Validate it:
 

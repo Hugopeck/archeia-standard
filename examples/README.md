@@ -1,6 +1,6 @@
 # Examples
 
-This folder contains the canonical Archeia example tree and validation fixtures. It is the primary way to see what a valid Blueprint v0 installation looks like and to test the validator against known-good and known-bad cases.
+This folder contains the canonical Archeia example tree and validation fixtures. It is the primary way to see what a valid Standard v0 installation looks like and to test the validator against known-good and known-bad cases.
 
 ## Layout
 
@@ -16,10 +16,10 @@ Each fixture is a **project root** — a directory containing its own `.archeia/
 
 The `examples/.archeia/` directory is the complete canonical Archeia tree. It includes:
 
-- every canonical folder from the ontology (~154 directories)
+- every canonical folder from the model (~154 directories)
 - installed `.archeia/.system/spec.yaml` manifest
 - installed schemas under `.archeia/.system/contracts/`
-- README scaffolds in every canonical folder
+- README instructions in every canonical folder
 - sample valid artifacts for the main artifact shapes and contract surfaces
 
 Validate it with:
@@ -37,7 +37,7 @@ This should pass with zero errors.
 - **Two contract surfaces** — product delivery frontmatter and C4 architecture evidence
 - **System metadata** — `VERSION`, `spec.yaml`, and installed contract schemas
 
-See [`../docs/standard/ontology.md`](../docs/standard/ontology.md) for what each path means.
+See [`../docs/standard/ontology.md`](../docs/standard/ontology.md) for what each path means (`ontology.md`).
 
 ## Invalid Fixtures
 
@@ -60,12 +60,12 @@ scripts/archeia_validate examples/invalid/<fixture-name>
 
 See [`invalid/README.md`](invalid/README.md) for details on each fixture and how to add new ones.
 
-## Blueprint vs Instance READMEs
+## Standard vs Instance READMEs
 
 This repo contains two kinds of README:
 
-- **Blueprint READMEs** — like this file and those in `contracts/`, `docs/`, `scripts/`. They explain the Factory source repo.
-- **Instance READMEs** — the ~154 scaffolds inside `examples/.archeia/`. They explain what belongs at each canonical path in an installed tree.
+- **Standard READMEs** — like this file and those in `contracts/`, `docs/`, `scripts/`. They explain the Standard source repo.
+- **Instance READMEs** — the ~154 README instruction files inside `examples/.archeia/`. They explain what belongs at each canonical path in an installed tree.
 
 ## Further Reading
 

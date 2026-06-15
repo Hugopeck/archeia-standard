@@ -16,7 +16,7 @@ This folder contains supplementary documentation for working with Archeia. Guide
 | [`memory-vs-knowledge.md`](memory-vs-knowledge.md) | Anyone evaluating scope | Before committing — honest audit of what Archeia solves and defers |
 | [`enforcement.md`](enforcement.md) | Projects running validation in CI | When wiring `archeia_validate` into hooks or pipelines (draft) |
 | [`figma-product-integration.md`](figma-product-integration.md) | Product/design workflows | When connecting Figma artifacts to the product domain |
-| [`distributions.md`](distributions.md) | Blueprint maintainers | When encountering the legacy "distribution" concept — now deferred |
+| [`distributions.md`](distributions.md) | Standard maintainers | When encountering the legacy "distribution" concept — now deferred |
 
 ## Suggested Reading Order
 
@@ -28,7 +28,7 @@ This folder contains supplementary documentation for working with Archeia. Guide
 ## Relationship to Other Docs
 
 ```text
-standard/     authoritative — ontology, rules, spec
+standard/     authoritative — model, rules, spec
 guides/       supplementary — how-tos, audits, integrations  ← you are here
 research/     theoretical — citations, field signals, OODA Observe leg
 ```
@@ -40,6 +40,6 @@ Guides may reference research (especially [`memory-vs-knowledge.md`](memory-vs-k
 New guides should:
 
 - State their audience and scope in the opening paragraphs
-- Not invent model changes — propose those in ontology, not in a guide
+- Not invent model changes — propose those in `ontology.md`, not in a guide
 - Link back to the relevant standard doc for authoritative definitions
 - Live as a single `.md` file in this folder (no subdirectories unless the topic genuinely needs one)

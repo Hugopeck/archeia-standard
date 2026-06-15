@@ -2,7 +2,7 @@
 
 ## What is Archeia?
 
-Archeia Factory is my private system for giving software projects a shared knowledge layer with clear meanings, owners, lifecycle shapes, schemas, and validation rules. The Blueprint lives in this repo. Each project gets an Instance: the `.archeia/` layer installed by `init`.
+Archeia is my private system for giving software projects a shared knowledge layer with clear meanings, owners, lifecycle shapes, schemas, and validation rules. The Standard lives in this repo. Each project gets an Instance: the `.archeia/` layer installed by `init`.
 
 ## Where should I start?
 
@@ -39,4 +39,4 @@ Installed repos now use `.archeia/.system/spec.yaml`. It declares domains, owner
 
 ## Can an Instance extend the canonical tree?
 
-Yes. An Instance may add stricter local rules, workflow defaults, or extra subtrees. It should not rename or redefine canonical ontology paths.
+Yes. An Instance may add stricter local rules, workflow defaults, or extra subtrees. It should not rename or redefine canonical model paths.

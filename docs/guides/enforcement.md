@@ -6,7 +6,7 @@ blueprint-pin: ">=0.5.0, <1.0.0"
 
 # Archeia Enforcement — the mechanical-guardrails companion
 
-`archeia-enforcement` is a companion guardrail pack: linters, CI checks, validators, and hooks that turn the Blueprint's validation rules into mechanical checks.
+`archeia-enforcement` is a companion guardrail pack: linters, CI checks, validators, and hooks that turn the Standard's validation rules into mechanical checks.
 
 ## Example failure formats
 
@@ -58,7 +58,7 @@ This companion:
 
 - does **not** define domains or contracts
 - does **not** implement standard operations
-- does wrap validation and CI behavior around the Blueprint contract
+- does wrap validation and CI behavior around the Standard contract
 
 ## References
 

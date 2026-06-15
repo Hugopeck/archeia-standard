@@ -1,14 +1,16 @@
-# Archeia Ontology
+# Archeia Model
 
-The ontology defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model. **This is the authoritative source for model changes** — edit here first, then mirror in [`rules.md`](rules.md) and [`spec.md`](spec.md).
+The model defines what Archeia means. It names the core concepts, the `.archeia/` folders, the lifecycle shapes, and the ownership model. **This is the authoritative source for model changes** — edit here first, then mirror in [`rules.md`](rules.md) and [`spec.md`](spec.md).
 
 Rules and validators are described in [`rules.md`](rules.md). The build contract is in [`spec.md`](spec.md). Theoretical basis and citations live in [`../research/theoretical-basis.md`](../research/theoretical-basis.md) (research only, not operational canon).
 
 ## Scope
 
-**Archeia Factory** is the complete system. The **Blueprint** is the reusable source architecture maintained in this repository. An **Instance** is the `.archeia/` operating layer that `init` installs into a project repo.
+**Archeia** is a software factory. The **Standard** is the reusable source package maintained in this repository. An **Instance** is the `.archeia/` operating layer that `init` installs into a project repo.
 
-This ontology defines what an Instance means: folders, shapes, ownership, and contracts. It does not define a non-software operating model, a hosted service, a UI, one universal approval workflow, or a public adoption process.
+> **Note:** This document is the **Model** in outward docs. The internal path remains `ontology.md`.
+
+This model defines what an Instance means: folders, shapes, ownership, and contracts. It does not define a non-software operating model, a hosted service, a UI, one universal approval workflow, or a public adoption process.
 
 ## Primitives
 
@@ -128,7 +130,7 @@ Descriptive artifacts should cite their sources. This is a policy until Archeia 
 
 ## Block Model
 
-Archeia treats domains, artifacts, procedures, and agent roles as lightweight system blocks. This is how agents read the ontology — not a requirement to model every workflow step.
+Archeia treats domains, artifacts, procedures, and agent roles as lightweight system blocks. This is how agents read the model — not a requirement to model every workflow step.
 
 A block should be clear about:
 

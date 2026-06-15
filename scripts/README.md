@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains small deterministic tools for working with the Archeia Blueprint and installed `.archeia/` trees.
+This folder contains small deterministic tools for working with the Archeia Standard and installed `.archeia/` trees.
 
 These tools use **stdlib Python only** — no pip dependencies. They are designed to run in any project environment without setup.
 
@@ -40,7 +40,7 @@ scripts/archeia_validate examples/invalid/missing-c4-evidence
 - Installed schemas exist and parse as JSON
 - Four top-level domains exist: `strategy/`, `operations/`, `product/`, `growth/`
 - No directories or artifacts outside declared domains
-- Every canonical directory has a `README.md` scaffold
+- Every canonical directory has a `README.md` with instructions
 - Product contract artifacts satisfy required frontmatter
 - C4 artifacts have elements with non-empty evidence pointing to real files
 - Transient artifacts use valid lifecycle statuses

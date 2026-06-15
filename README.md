@@ -1,6 +1,6 @@
-# Archeia Factory
+# Archeia
 
-**Archeia Factory is my private system for giving software projects a durable, shared knowledge layer that humans and AI agents can both read and write.**
+**Archeia is my private system for giving software projects a durable, shared knowledge layer that humans and AI agents can both read and write.**
 
 **North star:** I never re-explain project context in a new chat.
 
@@ -10,20 +10,20 @@ Important context scatters fast: chat logs, tickets, wikis, docs, and agent memo
 
 ## Two Forms
 
-Archeia Factory has two forms:
+Archeia has two forms:
 
-- **Blueprint** — the reusable architecture maintained in this repo: theory, schemas, procedures, examples, and validation rules.
+- **Standard** — the reusable architecture maintained in this repo: theory, schemas, procedures, examples, and validation rules.
 - **Instance** — the `.archeia/` operating layer installed into a specific project repo.
 
 ```text
-Archeia Factory
-├── Blueprint (this repo)
+Archeia
+├── Standard (this repo)
 └── Instance (.archeia/ in a project)   ← init creates this
 ```
 
-**Factory** is the whole system — Blueprint plus Instance shape, validation, and the procedures that keep installations useful over time. This is not a public adoption program. It is a private operating system for my own projects.
+Archeia is a **software factory** — Standard plus Instance shape, validation, and the procedures that keep installations useful over time. This is not a public adoption program. It is a private operating system for my own projects.
 
-Blueprint **v0** is a rough, complete address space — every canonical path exists so postures and defaults have a settled place, even when the answer is two sentences or "N/A". See [`docs/standard/spec.md`](docs/standard/spec.md#2-blueprint-v0-philosophy).
+Standard **v0** is a rough, complete address space — every canonical path exists so postures and defaults have a settled place, even when the answer is two sentences or "N/A". See [`docs/standard/spec.md`](docs/standard/spec.md#2-standard-v0-philosophy).
 
 In prose, prefer `.archeia/`, `spec.yaml`, and domain names over repeating "instance."
 
@@ -71,14 +71,14 @@ AI agents work best when boundaries, handoffs, and state are explicit. Archeia b
 
 The goal is enough structure for reliable agent work — not a process map of every internal step.
 
-## Ontology + Rules
+## Model + Rules
 
 Archeia has two documentation layers:
 
-- **Ontology** — what the folders, artifact shapes, ownership model, and contract surfaces mean.
+- **Model** — what the folders, artifact shapes, ownership model, and contract surfaces mean.
 - **Rules** — what validators, tools, and operations must enforce.
 
-The ontology is the shared map. The rules make that map checkable.
+The model is the shared map. The rules make that map checkable.
 
 ## Why This Exists
 
@@ -161,7 +161,7 @@ The installed `.archeia/.system/spec.yaml` file is the machine-readable manifest
 - Archeia version
 - instance identity (name and version)
 - domains and owners
-- canonical tree paths (~154 directories in Blueprint v0)
+- canonical tree paths (~154 directories in Standard v0)
 - artifact shapes (living, accumulating, transient)
 - contract surfaces (product delivery, C4 evidence)
 - lifecycle status mappings
@@ -172,6 +172,6 @@ Validators read this file before checking a `.archeia/` tree. The deprecated `do
 
 ## Status
 
-Archeia is pre-1.0. The core model is stabilizing, but breaking changes may still happen while the Factory is sharpened through examples, validators, and real project use.
+Archeia is pre-1.0. The core model is stabilizing, but breaking changes may still happen while Archeia is sharpened through examples, validators, and real project use.
 
 Current version: [`VERSION`](VERSION)

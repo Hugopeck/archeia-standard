@@ -1,6 +1,6 @@
 # Contracts
 
-This folder contains the source JSON Schemas for the Archeia Blueprint.
+This folder contains the source JSON Schemas for the Archeia Standard.
 
 These schemas define the machine-readable contracts for Archeia artifacts. They are copied into an installed `.archeia/` tree at `.archeia/.system/contracts/`. The installed copies are what validators read when they check Archeia artifacts.
 
@@ -57,7 +57,7 @@ The canonical installed copy lives at [`examples/.archeia/.system/contracts/`](.
 
 ## Versioning
 
-Schema changes follow Blueprint versioning in [`VERSION`](../VERSION). Pre-1.0, breaking schema changes are still possible. When changing a schema:
+Schema changes follow Standard versioning in [`VERSION`](../VERSION). Pre-1.0, breaking schema changes are still possible. When changing a schema:
 
 1. Update the source file here.
 2. Mirror the change in `examples/.archeia/.system/contracts/`.
@@ -68,4 +68,4 @@ Schema changes follow Blueprint versioning in [`VERSION`](../VERSION). Pre-1.0, 
 
 - Validation behavior and error codes: [`docs/standard/rules.md`](../docs/standard/rules.md)
 - Build contract for implementers: [`docs/standard/spec.md`](../docs/standard/spec.md)
-- Ontology (what shapes and contracts mean): [`docs/standard/ontology.md`](../docs/standard/ontology.md)
+- Model (what shapes and contracts mean): [`docs/standard/ontology.md`](../docs/standard/ontology.md)
