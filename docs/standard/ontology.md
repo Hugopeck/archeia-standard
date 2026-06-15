@@ -51,33 +51,77 @@ The names may feel heavy for a tiny repo. The decomposition is meant to be unive
 
 ## Canonical Tree
 
-The full folder tree is shown in `examples/`. A project may use the tree sparsely, but canonical names and meanings do not change.
+The canonical tree is a **complete address space** — roughly 150 settled directories under `.archeia/` where every class of project operating question has exactly one path. A project may use the tree sparsely; canonical names and meanings do not change.
 
-The top-level shape is:
+This document defines the **model**: domains, shapes, ownership, and contracts. It does not enumerate every path. The tree itself is the coordinate system; per-path semantics live in README instructions at each directory (see below).
+
+### Top-level shape
 
 ```text
 .archeia/
+├── .system/          # manifest, schemas (not project knowledge)
 ├── strategy/
 ├── operations/
 ├── product/
 └── growth/
 ```
 
-Important subtrees include:
+### How the tree decomposes
 
-- `operations/optimization/processes/`: repeatable operating methods, SOPs, runbooks, and process knowledge.
-- `product/technical/specs/`: executable software specs.
-- `product/technical/architecture/c4/`: machine-readable architecture evidence.
-- `product/execution/prds/`: integrated buildable product missions.
-- `growth/execution/experiments/`: growth experiment state and learnings.
+Each top-level domain branches into subtrees that mirror how software businesses actually run:
 
-Across canonical domains and subdomains, three local knowledge surfaces may appear directly:
+| Domain | Major subtrees (high level) |
+|---|---|
+| `strategy/` | `vision/`, `values/`, `landscape/`, `roadmap/`, `execution/` |
+| `operations/` | `execution/`, `optimization/`, `people/`, `finance/`, `compliance/` |
+| `product/` | `strategy/`, `design/`, `technical/`, `execution/` |
+| `growth/` | `strategy/`, `marketing/`, `sales/`, `success/`, `execution/` |
 
-- `decisions/`: accumulating records of choices and tradeoffs.
-- `conventions/`: living documents for local defaults and ways of working.
-- `learnings/`: accumulating records of lessons and discoveries.
+Three **local knowledge surfaces** may appear directly under any domain or subdomain — never hidden under `meta/` or `memory/`:
 
-These surfaces should not be hidden under wrappers such as `meta/` or `memory/`.
+- `decisions/` — accumulating records of choices and tradeoffs.
+- `conventions/` — living documents for local defaults and ways of working.
+- `learnings/` — accumulating records of lessons and discoveries.
+
+The full directory list is declared in `examples/.archeia/.system/spec.yaml` under `canonical_tree` and materialized in [`examples/.archeia/`](../../examples/.archeia/).
+
+### Important paths
+
+These subtrees carry extra contract or handoff weight:
+
+- `operations/optimization/processes/` — repeatable operating methods, SOPs, runbooks, and process knowledge.
+- `product/technical/specs/` — executable software specs.
+- `product/technical/architecture/c4/` — machine-readable architecture evidence.
+- `product/execution/prds/` — integrated buildable product missions.
+- `growth/execution/experiments/` — growth experiment state and learnings.
+
+### README instructions
+
+Every canonical directory (except `.archeia/.system/contracts/`) has a `README.md` that serves as **instructions** for that path — not an empty placeholder and not a duplicate of this document.
+
+Each README follows a consistent structure:
+
+| Section | Role |
+|---|---|
+| **Canonical meaning** | The fixed semantic envelope for this path. What kind of knowledge belongs here, in one precise sentence. |
+| **Broad interpretation** | How the path may be used broadly *within* that meaning — solo projects, startups, internal tools, research software. Sparse or informal use is valid. |
+| **Answer prompts** | One to three questions inviting an answer, however small ("N/A", two sentences). |
+| **What belongs / does not belong** | Boundary hints; top-level domain READMEs carry the fullest belong/not-belong lists. |
+
+**Canonical meaning** is normative — it does not change per project. **Broad interpretation** is where legitimate variation lives: a solo builder's `operations/people/` may record only personal capacity; a startup's may hold hiring systems. Both are valid if they stay inside the canonical meaning.
+
+Per-path meanings are recovered from the historical kernel contract and maintained in the example tree. Regenerate with [`scripts/generate_readmes_from_kernel.py`](../../scripts/generate_readmes_from_kernel.py). When a path's meaning changes, update the generator source and re-run — then mirror any model-level change here.
+
+**Division of labor:**
+
+```text
+ontology.md (this doc)     concepts, shapes, ownership, contracts
+examples/.archeia/         complete tree as filesystem fixture
+each path/README.md        per-path canonical meaning + prompts
+spec.yaml canonical_tree   machine-readable path list for validate/init
+```
+
+An agent that needs to know *what a path means* reads the README at that path. An agent that needs to know *how artifacts behave* reads this model and [`rules.md`](rules.md).
 
 ## Lifecycle Shapes
 

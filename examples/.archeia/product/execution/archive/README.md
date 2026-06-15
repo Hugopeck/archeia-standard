@@ -1,7 +1,16 @@
-# `.archeia/product/execution/archive`
+# Archive
 
-**Purpose:** Work in motion for the owning domain.
+**Canonical meaning.** Archived product execution artifacts.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include completed PRDs, shipped plans, and retired delivery records kept for reference.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `product/execution/archive` for this project?
+- Or: N/A / not applicable yet for archive.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

@@ -87,6 +87,16 @@ Exit code: `0` if no fatal or error issues; `1` otherwise.
 
 See [`examples/invalid/README.md`](../examples/invalid/README.md) for fixtures that exercise each code.
 
+## `generate_readmes_from_kernel`
+
+Regenerates canonical README instructions in `examples/.archeia/` from historical `KERNEL.md` (commit `0cc4585^`). Use when recovering or refreshing per-path canonical meanings after model changes.
+
+```sh
+python3 -c "from scripts.generate_readmes_from_kernel import main; raise SystemExit(main())"
+```
+
+The script reads `KERNEL.md` section 4 (domain meanings), section 6 (subtree meanings), and supplementary path definitions for paths not explicitly covered in section 6. Each README gets canonical meaning, broad interpretation, answer prompts, and belong/not-belong guidance.
+
 ## Planned Tools
 
 The standard defines five more operations not yet implemented as scripts:

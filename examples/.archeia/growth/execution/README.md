@@ -1,7 +1,16 @@
-# `.archeia/growth/execution`
+# Execution
 
-**Purpose:** Work in motion for the owning domain.
+**Canonical meaning.** Growth-owned execution surface.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include growth plans, programs, experiments, dashboards, logs, and retros.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/execution` for this project?
+- Or: N/A / not applicable yet for execution.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

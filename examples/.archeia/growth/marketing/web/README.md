@@ -1,7 +1,16 @@
-# `.archeia/growth/marketing/web`
+# Web
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Web presence and digital marketing surface.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include landing page specs, SEO posture, and web conversion strategy.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `growth/marketing/web` for this project?
+- Or: N/A / not applicable yet for web.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

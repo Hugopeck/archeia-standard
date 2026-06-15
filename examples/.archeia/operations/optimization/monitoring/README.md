@@ -1,7 +1,16 @@
-# `.archeia/operations/optimization/monitoring`
+# Monitoring
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Observation and diagnosis of operating reality.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can include efficiency monitoring, data gathering, bottleneck detection, reporting, prioritization, and handoff for operational improvement work.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `operations/optimization/monitoring` for this project?
+- Or: N/A / not applicable yet for monitoring.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

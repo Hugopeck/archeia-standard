@@ -1,7 +1,16 @@
-# `.archeia/operations/execution`
+# Execution
 
-**Purpose:** Work in motion for the owning domain.
+**Canonical meaning.** The execution surface for operations-owned work.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** This is the operations-local project-management layer. It can include internal operational initiatives, support projects, operational tasks, plans, retros, and adjacent execution-state artifacts that improve or sustain the business's operating system.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `operations/execution` for this project?
+- Or: N/A / not applicable yet for execution.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

@@ -1,7 +1,9 @@
-# `.archeia/.system`
+# System Metadata
 
-**Purpose:** Installed standard metadata and schemas used by validators.
+**Canonical meaning.** System metadata: version, manifest, and installed contract schemas.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Tools read this directory. Humans and agents typically do not store project knowledge here.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+**What belongs here:** `VERSION`, `spec.yaml`, and installed contract schemas only.
+
+**What does not belong here:** Project knowledge artifacts, domain content, or secrets.

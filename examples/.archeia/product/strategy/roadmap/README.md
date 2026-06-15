@@ -1,7 +1,16 @@
-# `.archeia/product/strategy/roadmap`
+# Roadmap
 
-**Purpose:** Canonical Archeia knowledge for this part of the project.
+**Canonical meaning.** Product roadmap sequencing and delivery contract surface.
 
-**What belongs here:** Artifacts that match this path's canonical meaning and owning domain.
+**Broad interpretation.** Can represent feature sequencing, release planning, or product initiative ordering that execution surfaces rely on.
 
-**What does not belong here:** Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.
+Answer here (even "N/A" or "not applicable yet"):
+
+- What should be written at `product/strategy/roadmap` for this project?
+- Or: N/A / not applicable yet for roadmap.
+
+**What belongs here:**
+- Artifacts that match this path's canonical meaning and owning domain.
+
+**What does not belong here:**
+- Unrelated project knowledge, hidden wrapper folders, or content owned by another top-level domain.

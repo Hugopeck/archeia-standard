@@ -19,7 +19,7 @@ This is the root of an installed Archeia Instance — the repo-local knowledge l
 └── growth/           # Adoption, GTM, sales, success, rollout
 ```
 
-Each subdirectory has its own `README.md` with instructions explaining what belongs at that path.
+Each subdirectory has its own `README.md` with instructions — canonical meaning, broad interpretation, and prompts — explaining what belongs at that path. Meanings are sourced from historical `KERNEL.md` (see `scripts/generate_readmes_from_kernel.py`).
 
 ## What Belongs Here
 

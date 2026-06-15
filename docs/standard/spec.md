@@ -76,18 +76,25 @@ The roughness of ~170 canonical directories is accepted. Improvement comes from 
 
 ### Canonical README instructions
 
-Each canonical directory gets a `README.md` with **instructions**, not an empty placeholder. `init` writes these from Standard templates.
+Each canonical directory gets a `README.md` with **instructions**, not an empty placeholder. `init` writes these from Standard templates (see [`generate_readmes_from_kernel.py`](../../scripts/generate_readmes_from_kernel.py) for the reference generator).
 
-Each README should:
+Each README should include:
 
-- name the path's purpose in plain language
-- include one to three prompts for what to answer here
-- allow minimal valid answers ("N/A", "solo — no hiring yet", two sentences)
+- **Canonical meaning** — fixed semantic envelope for the path
+- **Broad interpretation** — how the path may vary legitimately within that meaning
+- **Answer prompts** — one to three questions; minimal answers ("N/A", two sentences) are valid
+- **What belongs / does not belong** — boundary hints
+
+See [`ontology.md`](ontology.md#readme-instructions) for the division of labor between this model, the tree fixture, and per-path READMEs.
 
 Example pattern:
 
 ```markdown
 # Ethics
+
+**Canonical meaning.** Ethics-support systems.
+
+**Broad interpretation.** Can include ethics documentation, reporting mechanisms, and conduct expectations.
 
 Answer here (even "N/A" or "not applicable yet"):
 
@@ -208,7 +215,7 @@ Do not hide these under wrappers such as `meta/` or `memory/`.
 
 ### Canonical tree
 
-The full canonical directory list lives in `examples/.archeia/.system/spec.yaml` under `canonical_tree`. A project may use the tree sparsely, but canonical names and meanings do not change.
+The full canonical directory list lives in `examples/.archeia/.system/spec.yaml` under `canonical_tree`. A project may use the tree sparsely, but canonical names and meanings do not change. Per-path semantics are defined in each directory's README instructions, not duplicated here — see [`ontology.md`](ontology.md#canonical-tree).
 
 ---
 
@@ -384,7 +391,7 @@ See [section 2](#2-standard-v0-philosophy) for why v0 materializes the full cano
 - Canonical README instructions — not blank files.
 - No example artifact templates beyond README instructions in v0.
 
-**Reference Instance:** `examples/.archeia/` (passes validate today; README instructions will gain question prompts when templates land).
+**Reference Instance:** `examples/.archeia/` (passes validate today; README instructions include canonical meanings recovered from historical `KERNEL.md`).
 
 **Suggested invocation (not yet implemented):**
 
