@@ -53,18 +53,7 @@ The names may feel heavy for a tiny repo. The decomposition is meant to be unive
 
 The canonical tree is a **complete address space** — roughly 150 settled directories under `.archeia/` where every class of project operating question has exactly one path. A project may use the tree sparsely; canonical names and meanings do not change.
 
-This document defines the **model**: domains, shapes, ownership, and contracts. It does not enumerate every path. The tree itself is the coordinate system; per-path semantics live in README instructions at each directory (see below).
-
-### Top-level shape
-
-```text
-.archeia/
-├── .system/          # manifest, schemas (not project knowledge)
-├── strategy/
-├── operations/
-├── product/
-└── growth/
-```
+This document defines the **model**: domains, shapes, ownership, contracts, and the **full canonical tree** below. Per-path semantics (canonical meaning, broad interpretation) live in README instructions at each directory — not repeated here.
 
 ### How the tree decomposes
 
@@ -83,7 +72,169 @@ Three **local knowledge surfaces** may appear directly under any domain or subdo
 - `conventions/` — living documents for local defaults and ways of working.
 - `learnings/` — accumulating records of lessons and discoveries.
 
-The full directory list is declared in `examples/.archeia/.system/spec.yaml` under `canonical_tree` and materialized in [`examples/.archeia/`](../../examples/.archeia/).
+### Full tree
+
+155 paths — matches `canonical_tree` in [`examples/.archeia/.system/spec.yaml`](../../examples/.archeia/.system/spec.yaml). Every directory below (except `.system/contracts/`) has a `README.md` with instructions.
+
+```text
+.archeia/
+├── .system/
+│   └── contracts/
+├── growth/
+│   ├── execution/
+│   │   ├── conventions/
+│   │   ├── dashboards/
+│   │   ├── decisions/
+│   │   ├── experiments/
+│   │   │   ├── learnings/
+│   │   │   └── running/
+│   │   ├── learnings/
+│   │   ├── logs/
+│   │   ├── plans/
+│   │   ├── programs/
+│   │   └── retros/
+│   ├── marketing/
+│   │   ├── assets/
+│   │   ├── brand/
+│   │   ├── campaigns/
+│   │   ├── community/
+│   │   ├── content/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── events/
+│   │   ├── inbound/
+│   │   ├── learnings/
+│   │   ├── messaging/
+│   │   ├── outbound/
+│   │   ├── style/
+│   │   └── web/
+│   ├── sales/
+│   │   ├── accounts/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── enablement/
+│   │   ├── learnings/
+│   │   ├── objections/
+│   │   ├── outbound/
+│   │   ├── pipeline/
+│   │   ├── pricing/
+│   │   └── win-loss/
+│   ├── strategy/
+│   │   ├── channel-mix/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── metrics/
+│   │   ├── positioning/
+│   │   ├── pricing/
+│   │   ├── roadmap/
+│   │   └── segments/
+│   └── success/
+│       ├── activation/
+│       ├── adoption/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── enablement/
+│       ├── expansion/
+│       ├── learnings/
+│       ├── onboarding/
+│       ├── retention/
+│       └── support/
+├── operations/
+│   ├── compliance/
+│   │   ├── conventions/
+│   │   ├── data-security/
+│   │   ├── decisions/
+│   │   ├── ethics/
+│   │   ├── learnings/
+│   │   ├── regulatory/
+│   │   └── risk/
+│   ├── conventions/
+│   ├── decisions/
+│   ├── execution/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── plans/
+│   │   ├── projects/
+│   │   ├── retros/
+│   │   └── tasks/
+│   ├── finance/
+│   │   ├── compliance/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── operational/
+│   │   └── strategic/
+│   ├── learnings/
+│   ├── optimization/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── initiatives/
+│   │   ├── learnings/
+│   │   ├── monitoring/
+│   │   └── processes/
+│   └── people/
+│       ├── compensation/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── hiring/
+│       ├── learnings/
+│       ├── performance/
+│       └── workplace/
+├── product/
+│   ├── design/
+│   │   ├── assets/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── feedback/
+│   │   ├── flows/
+│   │   ├── learnings/
+│   │   └── protos/
+│   ├── execution/
+│   │   ├── archive/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── logs/
+│   │   ├── plans/
+│   │   ├── prds/
+│   │   ├── retros/
+│   │   └── roles/
+│   ├── strategy/
+│   │   ├── conventions/
+│   │   ├── decisions/
+│   │   ├── learnings/
+│   │   ├── market/
+│   │   ├── metrics/
+│   │   ├── roadmap/
+│   │   └── users/
+│   └── technical/
+│       ├── architecture/
+│       │   ├── analysis/
+│       │   ├── c4/
+│       │   └── views/
+│       ├── conventions/
+│       ├── decisions/
+│       ├── devs/
+│       ├── learnings/
+│       ├── specs/
+│       └── studies/
+└── strategy/
+    ├── conventions/
+    ├── decisions/
+    ├── execution/
+    ├── landscape/
+    │   ├── competition/
+    │   ├── industry/
+    │   └── market/
+    ├── learnings/
+    ├── roadmap/
+    ├── values/
+    └── vision/
+```
+
+Materialized in [`examples/.archeia/`](../../examples/.archeia/).
 
 ### Important paths
 
@@ -115,7 +266,7 @@ Per-path meanings are recovered from the historical kernel contract and maintain
 **Division of labor:**
 
 ```text
-ontology.md (this doc)     concepts, shapes, ownership, contracts
+ontology.md (this doc)     concepts, shapes, ownership, contracts, full tree
 examples/.archeia/         complete tree as filesystem fixture
 each path/README.md        per-path canonical meaning + prompts
 spec.yaml canonical_tree   machine-readable path list for validate/init
